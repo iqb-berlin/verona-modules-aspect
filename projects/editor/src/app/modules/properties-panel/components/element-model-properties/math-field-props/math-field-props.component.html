@@ -2,3 +2,7 @@
                         (valueChange)="updateModel.emit({ property: 'enableModeSwitch', value: $event })">
   {{'propertiesPanel.enableModeSwitch' | translate }}
 </aspect-merged-checkbox>
+<aspect-merged-checkbox [value]="combinedProperties.multiline"
+                        (valueChange)="updateModel.emit({ property: 'multiline', value: $event })">
+  {{'propertiesPanel.multiline' | translate }}
+</aspect-merged-checkbox>

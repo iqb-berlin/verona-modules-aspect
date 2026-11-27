@@ -16,6 +16,7 @@ import { ELEMENT_DEFAULTS } from 'common/models/elements/element-registry';
 export class MathFieldElement extends InputElement implements MathFieldProperties {
   type: UIElementType = 'math-field';
   enableModeSwitch: boolean = ELEMENT_DEFAULTS['math-field'].enableModeSwitch;
+  multiline: boolean = ELEMENT_DEFAULTS['math-field'].multiline;
   mathKeyboardPresets: MathKeyboardPreset[] =
     ELEMENT_DEFAULTS['math-field'].mathKeyboardPresets;
 
@@ -37,6 +38,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     super({ type: 'math-field', ...element }, idService);
     if (isMathFieldProperties(element)) {
       if (element.enableModeSwitch !== undefined) this.enableModeSwitch = element.enableModeSwitch;
+      if (element.multiline !== undefined) this.multiline = element.multiline;
       if (element.mathKeyboardPresets !== undefined) this.mathKeyboardPresets = element.mathKeyboardPresets;
       this.position = { ...this.position, ...element.position };
       this.dimensions = { ...this.dimensions, ...element.dimensions };
@@ -63,6 +65,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
 
 export interface MathFieldProperties extends InputElementProperties, MathKeyboardProperties {
   enableModeSwitch: boolean;
+  /** Lets Enter start a new line and long text wrap at the field's width (#1696). Off for units stored
+      without it. */
+  multiline: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;
   styling: BasicStyles & {

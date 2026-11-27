@@ -25,6 +25,16 @@ const DIVIDE_LABEL = convertLatexToMarkup('\\div');
 /** The label of the × key, typeset like `DIVIDE_LABEL` and for the same reason. The key inserts `\cdot`. */
 const TIMES_LABEL = convertLatexToMarkup('\\times');
 
+/** The key that starts a new line in a multi-line math field (#1696). `commit` is what MathLive does for
+    Return on a physical keyboard; inside `\displaylines`, where a multi-line field keeps its value, that
+    starts a new line. The key is shown in text mode only: MathLive marks its keyboard with the mode of the
+    field after every change, and hides an `if-text-mode` key in formula mode itself. */
+export const ENTER_KEY: Partial<VirtualKeyboardKeycap> = {
+  class: 'action if-text-mode',
+  command: 'performWithFeedback(commit)',
+  label: '<svg class=svg-glyph><use xlink:href=#svg-commit /></svg>'
+};
+
 export const FORMULA_KEYBOARD_PRESETS: Record<string, VirtualKeyboardLayout> = {
   iqbPhysics: {
     label: '123',

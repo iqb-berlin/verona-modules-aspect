@@ -2,7 +2,7 @@ Allgemein
 =========
 ## next
 ### Neue Funktionen
-- Formelfeld: Return beginnt eine neue Zeile, und zu langer Text bricht am Rand des Feldes um; eine Formel bleibt in einer Zeile ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648))
+- Formelfeld mit der neuen Option „Mehrzeilig“: Im Modus Text beginnen Return und die Enter-Taste der Tastatur unter „Lateinische Buchstaben“ eine neue Zeile, im Modus Formel nicht. Im Modus Formel bleiben auch die Pfeiltasten in ihrer Zeile, auf der Tastatur wie auf der Bildschirmtastatur; ein Tippen in eine andere Zeile setzt den Cursor weiterhin dorthin. Zu langer Text bricht am Rand des Feldes um; eine Formel bleibt in einer Zeile ([#1648](https://github.com/iqb-berlin/verona-modules-aspect/issues/1648), [#1696](https://github.com/iqb-berlin/verona-modules-aspect/issues/1696))
 
 ### Änderungen
 - **Formelfeld, Formelbereich**

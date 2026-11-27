@@ -2,10 +2,11 @@ import {
   ComponentFixture, fakeAsync, flush, TestBed, tick
 } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
-import { MathfieldElement } from 'mathlive';
+import { MathfieldElement, Selector } from 'mathlive';
 import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { userEvent } from 'vitest/browser';
 import { EmptyBoxRestorer } from 'common/modules/math-editor/utils/empty-box-restorer';
+import { ENTER_KEY } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 import { MathInputComponent } from './math-input.component';
 
 describe('MathInputComponent', () => {
@@ -44,6 +45,14 @@ describe('MathInputComponent', () => {
       value: new SimpleChange('1+2', 'x^2', false)
     });
     expect(component.mathFieldElement.getValue()).toBe('x^2');
+  });
+
+  // MathLive announces an empty value as text inserted without the text, as it announces a new line (#1696).
+  it('should empty the math field when its value is emptied', () => {
+    component.ngOnChanges({
+      value: new SimpleChange('1+2', '', false)
+    });
+    expect(component.mathFieldElement.getValue()).toBe('');
   });
 
   describe('on a press on the field\'s frame (#1648)', () => {
@@ -219,13 +228,13 @@ describe('MathInputComponent', () => {
       window.mathVirtualKeyboard.hide();
     });
 
-    const pressEnter = (field: MathfieldElement, mode?: 'math' | 'text'): void => {
+    const pressEnter = (field: MathfieldElement, mode?: 'math' | 'text', modifiers: KeyboardEventInit = {}): void => {
       field.focus();
       field.executeCommand('moveToMathfieldEnd');
       if (mode) field.mode = mode;
       // MathLive listens on its own input element in the shadow root, not on the host.
       const enter = new KeyboardEvent('keydown', {
-        key: 'Enter', code: 'Enter', bubbles: true, composed: true
+        ...modifiers, key: 'Enter', code: 'Enter', bubbles: true, composed: true
       });
       field.shadowRoot?.querySelector('[part=keyboard-sink]')?.dispatchEvent(enter);
     };
@@ -314,7 +323,7 @@ describe('MathInputComponent', () => {
       }, layout);
       const heightBefore = field.getBoundingClientRect().height;
       const lineHeight = field.shadowRoot?.querySelector('.ML__text')?.getBoundingClientRect().height ?? 0;
-      pressEnter(field);
+      pressEnter(field, 'text');
       await vi.waitFor(() => {
         expect(field.getBoundingClientRect().height).toBeGreaterThan(heightBefore);
       }, layout);
@@ -328,28 +337,63 @@ describe('MathInputComponent', () => {
       expect(lineCount(component.mathFieldElement)).toBe(1);
     });
 
-    it('should start a new line on Enter', () => {
-      const multiline = createMultilineField('a+b');
-      pressEnter(multiline.mathFieldElement);
-      multiline.mathFieldElement.insert('c');
-      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{a+b\\\\ c}');
-    });
-
-    it('should stay in text mode on Enter in text mode', () => {
+    it('should start a new line on Enter in text mode, and stay in text mode', () => {
       const multiline = createMultilineField('\\text{ab}');
       pressEnter(multiline.mathFieldElement, 'text');
       expect(multiline.mathFieldElement.mode).toBe('text');
+      multiline.mathFieldElement.executeCommand(['typedText', 'c']);
+      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{\\text{ab}\\\\ \\text{c}}');
     });
 
-    it('should stay in math mode on Enter in math mode', () => {
+    // A multi-line field is multi-line for text: a formula gets no new line, nor a field without text mode.
+    it('should start no new line on Enter in formula mode (#1696)', () => {
       const multiline = createMultilineField('a+b');
       pressEnter(multiline.mathFieldElement, 'math');
+      multiline.mathFieldElement.insert('c');
+      expect(multiline.mathFieldElement.getValue()).toBe('a+bc');
       expect(multiline.mathFieldElement.mode).toBe('math');
     });
+
+    // One of MathLive's shortcuts of formula mode, which add the line without a line break.
+    it('should start no new line on Ctrl+Enter in formula mode (#1696)', () => {
+      const multiline = createMultilineField('a+b');
+      pressEnter(multiline.mathFieldElement, 'math', { ctrlKey: true });
+      multiline.mathFieldElement.insert('c');
+      expect(multiline.mathFieldElement.getValue()).toBe('a+bc');
+    });
+
+    /* The Enter key of the formula keyboard fires no keydown: MathLive only runs its command (#1696). In a
+       field whose mode cannot be switched, the field is in text mode inside a stored \text{}. */
+    it.each([false, true])(
+      'should start a new line in text mode with the Enter key of the formula keyboard (mode switch: %s)',
+      enableModeSwitch => {
+        const multiline = createMultilineField('\\text{ab}');
+        multiline.enableModeSwitch = enableModeSwitch;
+        const field = multiline.mathFieldElement;
+        field.focus();
+        field.executeCommand('moveToMathfieldEnd');
+        field.mode = 'text';
+        field.executeCommand(ENTER_KEY.command as Selector);
+        expect(field.mode).toBe('text');
+        field.executeCommand(['typedText', 'c']);
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}\\\\ \\text{c}}');
+      }
+    );
 
     it('should not start a new line on Enter when single-line', () => {
       pressEnter(component.mathFieldElement);
       expect(component.mathFieldElement.getValue()).toBe('1+2');
+    });
+
+    /* MathLive adds a line inside \displaylines whatever the option says: in a value written in the LaTeX
+       editor, or in an answer given while every field was multi-line (#1648). */
+    it('should not start a new line on Enter when single-line, with a value of several lines (#1696)', () => {
+      const singleLineFixture = TestBed.createComponent(MathInputComponent);
+      singleLineFixture.componentInstance.value = '\\displaylines{\\text{a}\\\\ \\text{b}}';
+      singleLineFixture.detectChanges();
+      const field = singleLineFixture.componentInstance.mathFieldElement;
+      pressEnter(field, 'text');
+      expect(field.getValue()).toBe('\\displaylines{\\text{a}\\\\ \\text{b}}');
     });
 
     it('should hand on a value of one line as it was stored', () => {
@@ -364,22 +408,146 @@ describe('MathInputComponent', () => {
 
     it('should wrap a value that arrives later as well', () => {
       const multiline = createMultilineField('');
-      multiline.ngOnChanges({ value: new SimpleChange('', 'y', false) });
-      pressEnter(multiline.mathFieldElement);
-      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{y\\\\ }');
+      multiline.ngOnChanges({ value: new SimpleChange('', '\\text{y}', false) });
+      pressEnter(multiline.mathFieldElement, 'text');
+      expect(multiline.mathFieldElement.getValue()).toBe('\\displaylines{\\text{y}\\\\ }');
+    });
+
+    /* The editor switches the option on the field it shows (#1696). The cursor stands in text when it does,
+       and the value is set anew all the same as a formula with its text. */
+    it('should start a new line on Enter once made multi-line after the setup', () => {
+      component.value = '\\text{ab}';
+      component.ngOnChanges({ value: new SimpleChange('1+2', component.value, false) });
+      component.multiline = true;
+      component.ngOnChanges({ multiline: new SimpleChange(false, true, false) });
+      pressEnter(component.mathFieldElement, 'text');
+      component.mathFieldElement.executeCommand(['typedText', 'c']);
+      expect(component.mathFieldElement.getValue()).toBe('\\displaylines{\\text{ab}\\\\ \\text{c}}');
+    });
+
+    const makeSingleLine = (multiline: MathInputComponent): void => {
+      multiline.multiline = false;
+      multiline.ngOnChanges({ multiline: new SimpleChange(true, false, false) });
+    };
+
+    it('should no longer wrap once made single-line after the setup', async () => {
+      const multiline = createMultilineField(longText);
+      multiline.elementRef.nativeElement.style.cssText = 'display: block; width: 200px';
+      await vi.waitFor(() => {
+        expect(lineCount(multiline.mathFieldElement)).toBeGreaterThan(1);
+      }, layout);
+      makeSingleLine(multiline);
+      await vi.waitFor(() => {
+        expect(lineCount(multiline.mathFieldElement)).toBe(1);
+      }, layout);
+    });
+
+    // MathLive makes \displaylines the root of the field, which a value set later does not replace.
+    it.each(['', 'a+b'])(
+      'should no longer start a new line on Enter once made single-line, with the value "%s"',
+      value => {
+        const multiline = createMultilineField(value);
+        makeSingleLine(multiline);
+        pressEnter(multiline.mathFieldElement, 'text');
+        expect(multiline.mathFieldElement.getValue()).toBe(value);
+      }
+    );
+
+    /* In formula mode, the arrow keys keep the cursor in its line (#1696). The line of text below is one made
+       in text mode. MathLive gives the field the browser's focus, which the keyboard's commands go to, only
+       60 ms after focus(). */
+    describe('in formula mode, with a line below', () => {
+      const linesValue = '\\displaylines{x+1\\\\ \\text{ab}}';
+      const createFocusedField = (value: string): MathfieldElement => {
+        const field = createMultilineField(value).mathFieldElement;
+        field.focus();
+        tick(60);
+        return field;
+      };
+      // Behind the first n characters of the field.
+      const placeCursorAfter = (field: MathfieldElement, characters: number): void => {
+        field.executeCommand('moveToMathfieldStart');
+        Array.from({ length: characters }).forEach(() => field.executeCommand('moveToNextChar'));
+      };
+      const pressKey = (field: MathfieldElement, key: string, modifiers: KeyboardEventInit = {}): void => {
+        field.shadowRoot?.querySelector('[part=keyboard-sink]')?.dispatchEvent(new KeyboardEvent('keydown', {
+          ...modifiers, key, code: key, bubbles: true, composed: true
+        }));
+      };
+
+      it('should keep the cursor in its line on → at its end', fakeAsync(() => {
+        const field = createFocusedField(linesValue);
+        placeCursorAfter(field, 3);
+        pressKey(field, 'ArrowRight');
+        field.insert('2');
+        expect(field.getValue()).toBe('\\displaylines{x+12\\\\ \\text{ab}}');
+        flush();
+      }));
+
+      it('should keep the cursor in its line on the → of the formula keyboard at its end', fakeAsync(() => {
+        const field = createFocusedField(linesValue);
+        placeCursorAfter(field, 3);
+        window.mathVirtualKeyboard.executeCommand('performWithFeedback(moveToNextChar)');
+        field.insert('2');
+        expect(field.getValue()).toBe('\\displaylines{x+12\\\\ \\text{ab}}');
+        flush();
+      }));
+
+      // After text, MathLive would take the mode of the text left of the cursor, where the switch was set to Formel.
+      it('should keep the cursor in its line on ↓, and the field in formula mode', fakeAsync(() => {
+        const field = createFocusedField('\\displaylines{\\text{ab}\\\\ \\text{cd}}');
+        placeCursorAfter(field, 2);
+        field.mode = 'math';
+        pressKey(field, 'ArrowDown');
+        expect(field.mode).toBe('math');
+        field.insert('2');
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}2\\\\ \\text{cd}}');
+        flush();
+      }));
+
+      // As the cursor stays where it was, so does a selection, rather than shrinking to the cursor.
+      it('should keep a selection that Shift+→ would extend into the next line', fakeAsync(() => {
+        const field = createFocusedField(linesValue);
+        placeCursorAfter(field, 0);
+        [1, 2, 3].forEach(() => field.executeCommand('extendSelectionForward'));
+        expect(field.mode).toBe('math');
+        pressKey(field, 'ArrowRight', { shiftKey: true });
+        expect(field.selection.ranges).toEqual([[0, 3]]);
+        flush();
+      }));
+
+      // A fraction lies in one line.
+      it('should still move between the parts of a fraction on ↑', fakeAsync(() => {
+        const field = createFocusedField('\\displaylines{\\frac{1}{2}\\\\ \\text{ab}}');
+        placeCursorAfter(field, 4);
+        pressKey(field, 'ArrowUp');
+        field.insert('3');
+        expect(field.getValue()).toMatch(/^\\displaylines\{\\frac\{(13|31)\}\{2\}\\\\ \\text\{ab\}\}$/);
+        flush();
+      }));
+
+      it('should take the cursor on into the next line on → in text mode', fakeAsync(() => {
+        const field = createFocusedField('\\displaylines{\\text{ab}\\\\ \\text{cd}}');
+        placeCursorAfter(field, 2);
+        expect(field.mode).toBe('text');
+        pressKey(field, 'ArrowRight');
+        field.insert('2');
+        expect(field.getValue()).toBe('\\displaylines{\\text{ab}\\\\ 2\\text{cd}}');
+        flush();
+      }));
     });
 
     /* Moved in the page, as by a drag in the editor, MathLive builds the field anew from a value of one
-       line that it keeps without `\displaylines`. */
+       line that it keeps without `\displaylines`, with the cursor in its text. */
     it('should start a new line on Enter after the field was moved in the page', async () => {
-      const field = createMultilineField('a').mathFieldElement;
+      const field = createMultilineField('\\text{a}').mathFieldElement;
       const mounted = new Promise(resolve => {
         field.addEventListener('mount', resolve, { once: true });
       });
       field.parentElement?.appendChild(field);
       await mounted;
-      pressEnter(field);
-      expect(field.getValue()).toBe('\\displaylines{a\\\\ }');
+      pressEnter(field, 'text');
+      expect(field.getValue()).toBe('\\displaylines{\\text{a}\\\\ }');
     });
   });
 
@@ -417,6 +585,18 @@ describe('MathInputComponent', () => {
     component.mathKeyboardPresets = ['math', 'greek'];
     component.onFocusIn();
     expect(window.mathVirtualKeyboard.layouts.length).toBe(2);
+  });
+
+  it('should offer the Enter key on the letters of a multi-line field only (#1696)', () => {
+    const offersEnterKey = (): boolean => window.mathVirtualKeyboard.layouts
+      .some(layout => typeof layout !== 'string' && 'layers' in layout && layout.layers
+        .some(layer => typeof layer !== 'string' && !!layer.rows?.flat().includes(ENTER_KEY)));
+    component.mathKeyboardPresets = ['math', 'latin'];
+    component.onFocusIn();
+    expect(offersEnterKey()).toBe(false);
+    component.multiline = true;
+    component.onFocusIn();
+    expect(offersEnterKey()).toBe(true);
   });
 
   /* Every assignment rebuilds the keyboard and drops it back to its first layer; on the iPad the
@@ -709,12 +889,39 @@ describe('MathInputComponent', () => {
       flush();
     }));
 
+    /* Return in a single-line field adds no line, and so no selection ends its mark; a deletion that follows
+       before the next turn of the event loop is not marked all the same. */
+    it('should let a deletion right after Return take the field into a formula', fakeAsync(() => {
+      const field = component.mathFieldElement;
+      component.enableModeSwitch = true;
+      field.setValue('x\\text{a}');
+      focusField();
+      field.mode = 'text';
+      field.executeCommand('commit');
+      field.executeCommand('deleteBackward');
+      expect(field.mode).toBe('math');
+      flush();
+    }));
+
     it('should let a formula take the field out of text mode when the mode cannot be switched', fakeAsync(() => {
       focusField();
       component.mathFieldElement.mode = 'text';
       component.mathFieldElement.executeCommand(['typedText', 'a']);
       pressGreekAlpha();
       expect(component.mathFieldElement.mode).toBe('math');
+      flush();
+    }));
+
+    /* Return in a single-line field adds no line, and so no selection would end a mark: it is not marked in
+       a field whose mode cannot be switched, and a formula right after it is no text. */
+    it('should let a formula right after Return take the field out of text mode', fakeAsync(() => {
+      const field = component.mathFieldElement;
+      field.setValue('x\\text{a}');
+      focusField();
+      field.mode = 'text';
+      field.executeCommand('commit');
+      pressGreekAlpha();
+      expect(field.mode).toBe('math');
       flush();
     }));
   });

@@ -444,6 +444,13 @@ describe('ModelNormalizer', () => {
         .recomputedCountsAsChanged).toBe(false);
     });
 
+    /* Released units were single-line; only develop made every math field multi-line, with #1648. */
+    it('should fill multiline into a unit stored without it as single-line (#1696)', () => {
+      expect(ELEMENT_DEFAULTS['math-field'].multiline).toBe(false);
+      expect(ownProperties(ModelNormalizer.normalizeElement({ type: 'math-field', id: 'mf1' })).multiline)
+        .toBe(false);
+    });
+
     /* Units stored before 4.13.0 had no word count, so the default must leave the strip away. */
     it('should fill showWordCount into a unit stored without it as off (#989)', () => {
       expect(ELEMENT_DEFAULTS['text-area'].showWordCount).toBe(false);

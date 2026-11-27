@@ -401,6 +401,7 @@
     "deleteDroppedItemWithSameIDTooltip": "Elemente mit gleicher ID werden beim Zurücklegen gelöscht.",
     "setElementInteractionEnabled": "Elementinteraktion erlauben",
     "enableModeSwitch": "Eingabemodus änderbar",
+    "multiline": "Mehrzeilig",
     "isRelevantForPresentationComplete": "Relevant für \"Presentation Complete\"",
     "super": "Hochgestellt",
     "sub": "Tiefgestellt",

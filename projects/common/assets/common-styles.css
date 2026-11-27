@@ -194,6 +194,18 @@ blockquote > p:empty:last-child:after {
   }
 }
 
+/* The Enter key of the letters in a multi-line field is a key of text mode only (`ENTER_KEY` in
+   formula-keyboard-presets.config.ts). MathLive leaves such a key out in formula mode and centres the row
+   anew, so the keys of the bottom row moved by half a key at every change of mode. Hidden instead, the key
+   keeps its place, and no press reaches it. It is hidden in every mode but text: MathLive marks formula and
+   text mode on the keyboard, and no mode at all for LaTeX, where it shows the key. The selector outweighs
+   MathLive's `.is-math-mode .MLK__rows .if-text-mode`; `flex` is the display MathLive gives its keys
+   (#1696). */
+.ML__keyboard:not(.is-text-mode) .MLK__rows .if-text-mode {
+  display: flex;
+  visibility: hidden;
+}
+
 /* Labels that are taller than a key of 42px at MathLive's font size of 24px: the fraction with its two
    boxes and the integral with its bounds (`tall-label` in formula-keyboard-presets.config.ts). Their
    size follows the height of the keys, which MathLive sets per window size in its variable

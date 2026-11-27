@@ -12,7 +12,7 @@
                      [readonly]="elementModel.readOnly"
                      [mathKeyboardPresets]="elementModel.mathKeyboardPresets"
                      [enableModeSwitch]="elementModel.enableModeSwitch"
-                     [multiline]="true"
+                     [multiline]="elementModel.multiline"
                      (valueChange)="elementFormControl.setValue($event)"
                      (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
                      (focusOut)="elementFormControl.markAsTouched();

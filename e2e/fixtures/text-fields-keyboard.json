@@ -1,0 +1,24 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text-field",
+              "id": "text-field_first",
+              "alias": "text-field_first"
+            },
+            {
+              "type": "text-field",
+              "id": "text-field_second",
+              "alias": "text-field_second"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

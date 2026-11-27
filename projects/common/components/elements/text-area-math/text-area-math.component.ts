@@ -138,6 +138,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
     const elementFormControlValue = [...this.elementFormControl.value];
     elementFormControlValue[value.index].value = value.value;
     this.updateFormControl([...elementFormControlValue]);
+    this.segmentComponents.get(value.index)?.showValue(value.value);
   }
 
   setElementValue(value: string, remove?: boolean): void {

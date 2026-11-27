@@ -38,6 +38,11 @@ export class AreaSegmentComponent {
     this.inputComponent.setFocus(offset);
   }
 
+  /** Shows a value set from outside at once (`AreaTextInputComponent.showValue`). A formula renders its own. */
+  showValue(value: string): void {
+    if (this.inputComponent instanceof AreaTextInputComponent) this.inputComponent.showValue(value);
+  }
+
   onFocusIn(input: HTMLElement) {
     this.selectedFocus.next(this.index);
     this.focusIn.emit(input);

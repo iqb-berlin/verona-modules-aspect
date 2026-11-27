@@ -2,13 +2,15 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture, TestBed, fakeAsync, flushMicrotasks
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UIElement } from 'common/models/elements/element';
 import { ImageElement } from 'common/models/elements/image';
 import {
-  MathTableElement, MathTableRow
+  MathTableCell, MathTableElement, MathTableRow
 } from 'common/models/elements/math-table';
 import { MarkingPanelElement } from 'common/models/elements/marking-panel';
 import { MarkingPanelMarkingData } from 'common/models/marking-data';
@@ -17,6 +19,7 @@ import { createSpyObj, SpyObj } from 'common/utils/vitest-spy-object';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
+import { KeypadService } from 'player/src/app/services/keypad.service';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
@@ -271,6 +274,70 @@ describe('InteractiveGroupElementComponent', () => {
     expect(deviceService.hasHardwareKeyboard).toBe(false);
     expect(keyboardService.close).not.toHaveBeenCalled();
   });
+
+  /* The keypad stays open from one cell to the next and passed its keys to the cell before until it had opened
+     again after its pause, so a digit typed right after moving on replaced the one before (#1710). */
+  it('should hand a key of the keypad to the cell that has just taken the focus', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.inputAssistancePreset = 'numbers';
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    component.keypadService = {
+      enterKey,
+      deleteCharacters: new EventEmitter<boolean>(),
+      select: new EventEmitter<string>(),
+      isOpen: true,
+      toggleAsync: vi.fn().mockResolvedValue(true),
+      close: vi.fn()
+    } as unknown as KeypadService;
+    const row = { cells: [] } as unknown as MathTableRow;
+    const [first, second] = [{ value: '' }, { value: '' }] as unknown as MathTableCell[];
+    const mathTable = fixture.debugElement.query(By.directive(MathTableStubComponent))
+      .componentInstance as MathTableStubComponent;
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'), row, cell: first, focused: true
+    });
+    flushMicrotasks();
+
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'), row, cell: second, focused: true
+    });
+    enterKey.emit('2');
+    flushMicrotasks();
+
+    expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', second, row);
+  }));
+
+  it('should leave a key of the keypad to a field elsewhere that has taken the focus', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.inputAssistancePreset = 'numbers';
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    component.keypadService = {
+      enterKey,
+      deleteCharacters: new EventEmitter<boolean>(),
+      select: new EventEmitter<string>(),
+      isOpen: true,
+      toggleAsync: vi.fn().mockResolvedValue(true),
+      close: vi.fn()
+    } as unknown as KeypadService;
+    const mathTable = fixture.debugElement.query(By.directive(MathTableStubComponent))
+      .componentInstance as MathTableStubComponent;
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'),
+      row: { cells: [] } as unknown as MathTableRow,
+      cell: { value: '' } as unknown as MathTableCell,
+      focused: true
+    });
+    flushMicrotasks();
+
+    component.keypadService.keyTarget = document.createElement('input');
+    enterKey.emit('2');
+
+    expect(mathTable.setCellValue).not.toHaveBeenCalled();
+  }));
 
   it('should stop reacting on marking changes after destruction', () => {
     initComponent(createMarkingPanel());

@@ -47,6 +47,9 @@ class MockAreaSegmentComponent {
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   setFocus(_offset?: number): void { }
+
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  showValue(_value: string): void { }
 }
 
 @Pipe({ name: 'areaRowHeight', standalone: false })
@@ -204,6 +207,38 @@ describe('TextAreaMathComponent', () => {
       const mousedown = press(fixture.nativeElement.querySelector('aspect-text-area-math-segment'), 'touch');
 
       expect(mousedown.defaultPrevented).toBe(false);
+    }));
+  });
+
+  /* The player's keys set the value of the focused part and report the part's text right after, so the
+     part has to show the value at once (#1710). */
+  describe('value set by the keys of the player', () => {
+    let showValue: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      const value = [{ type: 'text', value: 'ab' }, { type: 'math', value: 'x' }, { type: 'text', value: 'cd' }];
+      component.elementFormControl.setValue(value.map(segment => ({ ...segment })));
+      component.segments = value.map(segment => ({ ...segment })) as typeof component.segments;
+      fixture.detectChanges();
+      component.selectedFocus.next(2);
+      showValue = vi.spyOn(MockAreaSegmentComponent.prototype, 'showValue');
+    });
+
+    it('should show it in the part it goes into (#1710)', () => {
+      component.setElementValue('cde');
+
+      expect(component.elementFormControl.value[2].value).toBe('cde');
+      expect(showValue).toHaveBeenCalledExactlyOnceWith('cde');
+      expect(showValue.mock.contexts[0]).toBe(component.segmentComponents.get(2));
+    });
+
+    it('should leave the parts to the rendering when Backspace removes a formula', fakeAsync(() => {
+      component.setElementValue('cd', true);
+      fixture.detectChanges();
+      tick();
+
+      expect(component.segments.map(segment => segment.value)).toEqual(['abcd']);
+      expect(showValue).not.toHaveBeenCalled();
     }));
   });
 

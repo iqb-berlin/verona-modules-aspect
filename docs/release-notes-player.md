@@ -22,10 +22,15 @@ Player
   - „= false“ am Kontrollkästchen ist erfüllt, solange es nicht angekreuzt ist, und „≠ false“, sobald es angekreuzt ist; am Bild entsprechend für die Lupe. Bisher war „= false“ nie und „≠ false“ immer erfüllt ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
   - An der Ablegeliste zählen „Minimale Länge“ und „Maximale Länge“ die abgelegten Elemente statt der Zeichen ihrer IDs ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
   - Bei Größenvergleichen gilt ein Komma als Dezimaltrenner, in der Antwort wie in der Bedingung: „2,5“ ist größer als 2 ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
+- **Bildschirmtastatur, Eingabehilfe**
+  - Eine Taste direkt nach dem Wechsel in ein anderes Feld oder Kästchen eines Rechenkästchens kommt dort an; bisher ging sie bis zu einer Zehntelsekunde lang noch an das vorige ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
 - **Formelbereich**
   - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
+  - Mit der Bildschirmtastatur und der Eingabehilfe wird die letzte Eingabe wieder in der Antwort gespeichert; seit 2.11.3 und 2.12.1 fehlte sie, und ein gelöschtes Zeichen konnte zurückkehren ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
+  - Die Rücktaste der Eingabehilfe löscht nach einer Eingabe über die Tastatur des Geräts sofort das Zeichen vor dem Cursor; bisher geschah beim ersten Druck nichts, und der zweite löschte das Zeichen davor ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
+  - Eine Taste direkt nach dem Entfernen einer Formel mit der Rücktaste ersetzt nicht mehr den ganzen Text, und eine Taste direkt nach dem Antippen eines anderen Textteils schreibt nicht mehr den Text des vorigen hinein ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
 - **Formelfeld**
   - Im Modus Text bleibt das Feld im Modus Text, auch nach einem Zeichen der Formeltastatur wie α, nach dem Punkt der Buchstabentastatur und wenn alles gelöscht wird. Bisher sprang es nach α und nach dem Punkt auf Formel, und weitere Buchstaben wurden zu Variablen ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
   - Ein Formelfeld mit Vorbelegung wird im Blättermodus „concat-scroll“ nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), solange nichts eingegeben wurde, sondern als angezeigt ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))

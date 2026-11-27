@@ -117,6 +117,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
       mode the value brings, which the switch and `onModeChange` go by (#1692). */
   private valueSetFromOutside?: string;
 
+  /** Whether `setFieldValue` is putting a value into the field just now. */
+  private settingValueFromOutside = false;
+
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
@@ -141,9 +144,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.mathFieldElement.placeholder = this.placeholder;
     this.updateWrapStyle();
     this.setFieldValue(this.toFieldValue(this.value));
-    // A value that ends in text, as an answer that is resumed, puts the field into text mode before the
-    // listener below hears of it.
-    this.modeShown = this.mathFieldElement.mode;
     this.mathFieldElement.addEventListener('pointerdown', this.onFramePointerDown);
     this.mathFieldElement.addEventListener('mode-change', this.onModeChange);
     this.mathFieldElement.addEventListener('selection-change', this.endTextInput);
@@ -176,7 +176,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   private readonly onModeChange = (event: Event): void => {
     const fallbackAtLineStart = this.enableModeSwitch && this.modeShown === 'text' &&
       this.mathFieldElement.mode === 'math' && this.isAtLineStart();
-    if (this.textInputUnderway || fallbackAtLineStart) {
+    if (!this.settingValueFromOutside && (this.textInputUnderway || fallbackAtLineStart)) {
       event.preventDefault();
     } else {
       this.modeShown = this.mathFieldElement.mode;
@@ -291,16 +291,30 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.mathFieldElement.keybindings = this.mathFieldElement.keybindings.filter(keybinding => (
       typeof keybinding.command !== 'string' || !MathInputComponent.ROW_COMMANDS.includes(keybinding.command)));
     if (this.multiline && this.mountedBefore) {
-      this.setFieldValue(this.toFieldValue(this.mathFieldElement.getValue()), 'math');
+      this.setFieldValue(this.toFieldValue(this.mathFieldElement.getValue()));
     }
     this.mountedBefore = true;
   };
 
   /** Puts a value into the field that does not come from the student: the element's own, an answer that is
-      resumed, the field's own after a move or after Mehrzeilig was switched. See `valueSetFromOutside`. */
-  private setFieldValue(value: string, mode?: ParseMode): void {
-    this.mathFieldElement.setValue(value, { format: 'latex', ...(mode && { mode }) });
+      resumed, the field's own after a move or after Mehrzeilig was switched. See `valueSetFromOutside`.
+
+      The value is LaTeX whatever mode the field stands in. MathLive reads what is set in the field's
+      current mode, and a cursor in text made text of all of it: the editor's preset field, which keeps its
+      input when the selection moves on, took the next preset in as text after one that ends in text, and
+      x^2 became \text{x\textasciicircum2} (#1736). For the same reason the mode the value brings is the
+      field's, not one the student chose: `onModeChange` lets its change of mode through, though
+      `onBeforeInput` took the setting for text typed in text mode, and the switch then shows the mode the
+      value leaves the field in -- text mode for one that ends in text, as an answer that is resumed. */
+  private setFieldValue(value: string): void {
+    this.settingValueFromOutside = true;
+    try {
+      this.mathFieldElement.setValue(value, { format: 'latex', mode: 'math' });
+    } finally {
+      this.settingValueFromOutside = false;
+    }
     this.valueSetFromOutside = this.mathFieldElement.getValue();
+    this.modeShown = this.mathFieldElement.mode;
   }
 
   /** A press on the field's own frame -- its padding and border -- or on MathLive's container around
@@ -333,8 +347,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (changes.multiline && !changes.multiline.firstChange) {
       this.updateWrapStyle();
       if (!this.multiline) this.rebuildField();
-      // As a formula, as in `onMount`.
-      this.setFieldValue(this.toFieldValue(this.value), 'math');
+      this.setFieldValue(this.toFieldValue(this.value));
     }
   }
 

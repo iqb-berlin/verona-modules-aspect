@@ -55,6 +55,20 @@ describe('MathInputComponent', () => {
     expect(component.mathFieldElement.getValue()).toBe('');
   });
 
+  /* The editor's preset field keeps its input when the selection moves on to another formula field. After
+     a preset that ends in text the field stood in text mode, took the next preset in as text and saved
+     it so: x^2 became \text{x\textasciicircum2} (#1736). */
+  it('should take a formula handed in later as a formula while the field is in text mode (#1736)', fakeAsync(() => {
+    component.enableModeSwitch = true;
+    component.ngOnChanges({ value: new SimpleChange('1+2', '\\text{abc}', false) });
+    tick();
+    expect(component.mathFieldElement.mode).toBe('text');
+    component.ngOnChanges({ value: new SimpleChange('\\text{abc}', 'x^2', false) });
+    tick();
+    expect(component.mathFieldElement.getValue()).toBe('x^2');
+    expect(component.mathFieldElement.mode).toBe('math');
+  }));
+
   /* A field in a test is on the page when it is set up, as in the paging mode concat-scroll. A value set
      there from outside went out as input, and the player reported an untouched field as changed (#1734).
      Not fakeAsync (§7) where the field is set up or moved in the test: MathLive's announcement is then

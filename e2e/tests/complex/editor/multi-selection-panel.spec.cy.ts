@@ -1,4 +1,6 @@
-import { addElement, setExpertMode, setPreferencesElement } from '../../util';
+import {
+  addElement, addElementHover, setExpertMode, setPreferencesElement
+} from '../../util';
 
 /**
  * Covers the properties panel with several elements selected — the one selection state that had no
@@ -141,6 +143,45 @@ describe('Properties panel with several elements selected', () => {
       // Both selected lists are filtered out, the third one stays connectable.
       cy.get('.cdk-overlay-container mat-option').should('have.length', 1)
         .and('contain.text', 'liste2');
+    });
+  });
+
+  /**
+   * Layouts that differ merge to null, and the formula preset handed that to its math input, which
+   * called `includes` on it as soon as it got the focus: an error box, and no keyboard (#1721).
+   */
+  describe('two math fields differing in their keyboard layouts', () => {
+    const layoutSelect = () => cy.get('aspect-math-keyboard-properties mat-select');
+
+    const selectMathField = (index: number, withShift: boolean = false) => cy
+      .get('aspect-editor-page-view aspect-math-field').eq(index)
+      .click({ force: true, shiftKey: withShift });
+
+    beforeEach(() => {
+      addElementHover('Formel', 'Feld');
+      addElementHover('Formel', 'Feld');
+      cy.get('aspect-editor-page-view aspect-math-field').should('have.length', 2);
+
+      // The second field, selected as it was added, gets the physics layout on top of the default ones.
+      layoutSelect().click();
+      cy.contains('.cdk-overlay-container mat-option', 'Physik').click();
+      cy.get('.cdk-overlay-backdrop').click({ force: true });
+      layoutSelect().should('contain.text', 'Physik');
+    });
+
+    it('should open the keyboard of the preset with every layout (#1721)', () => {
+      selectMathField(0);
+      cy.get('aspect-element-properties', { timeout: 10000 }).should('be.visible');
+      selectMathField(1, true);
+      cy.get('aspect-math-keyboard-properties aspect-merged-marker').should('exist');
+
+      cy.get('aspect-preset-value-properties math-field').shadow().find('.ML__content').click();
+
+      // Physics is labelled 123 like the numbers, and comes first.
+      cy.get('.MLK__layer.is-visible .MLK__toolbar .left > div').should($tabs => {
+        expect([...$tabs].map(tab => tab.textContent?.trim())).to.deep.equal(['123', '123', '∞π%', 'abc', 'αβγ']);
+      });
+      cy.get('mat-dialog-container').should('not.exist');
     });
   });
 });

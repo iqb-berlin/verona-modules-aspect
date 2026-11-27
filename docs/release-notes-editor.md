@@ -28,6 +28,7 @@ Editor
 - **Formelfeld**
   - Ein Formelfeld mit Vorbelegung auszuwählen ändert die Aufgabe nicht mehr. Bisher meldete der Editor sie dabei dem Studio als geändert, und kam man von einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, wurde die Formel als Text gespeichert ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
   - Nach einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, zeigt das Feld „Vorbelegung“ die Formel des nächsten gewählten Formelfelds wieder als Formel und im Modus Formel. Bisher stand sie dort als Text, und wer weiterschrieb, speicherte sie so ([#1736](https://github.com/iqb-berlin/verona-modules-aspect/issues/1736))
+  - Sind mehrere Formelfelder mit unterschiedlichen Formeleingabelayouts ausgewählt, öffnet ein Klick in die Vorbelegung die Formeltastatur mit allen Layouts. Bisher meldete der Editor dabei einen Fehler ([#1721](https://github.com/iqb-berlin/verona-modules-aspect/issues/1721))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1

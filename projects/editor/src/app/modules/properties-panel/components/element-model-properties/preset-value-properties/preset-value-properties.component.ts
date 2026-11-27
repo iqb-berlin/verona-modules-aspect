@@ -3,7 +3,9 @@ import {
 } from '@angular/core';
 import { DropdownProperties } from 'common/models/elements/dropdown';
 import { MathFieldProperties } from 'common/models/elements/math-field';
-import { InputElementProperties, MathKeyboardProperties } from 'common/models/input-element-interfaces';
+import {
+  InputElementProperties, MATH_KEYBOARD_PRESETS, MathKeyboardPreset, MathKeyboardProperties
+} from 'common/models/input-element-interfaces';
 import { UIElementProperties } from 'common/models/ui-element-interfaces';
 import {
   DivergingProperties, Merged
@@ -49,4 +51,12 @@ export class PresetValuePropertiesComponent {
     }>();
 
   showLatexEditor = false;
+
+  /**
+   * The keyboard of the formula preset for math fields whose layouts differ: the merge gives `null`
+   * then, and the preset is written to every one of them, so it offers every layout - whichever of
+   * them one of the fields has is among them (#1721). A field rather than a copy in the template,
+   * which would be a new array on every check.
+   */
+  readonly allMathKeyboardPresets: MathKeyboardPreset[] = [...MATH_KEYBOARD_PRESETS];
 }

@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { MathKeyboardPreset } from 'common/models/input-element-interfaces';
+import { MATH_KEYBOARD_PRESETS, MathKeyboardPreset } from 'common/models/input-element-interfaces';
 import { SafeResourceHTMLPipe } from 'common/pipes/safe-resource-html.pipe';
 import {
   MergedMarkerComponent
@@ -215,6 +215,26 @@ describe('PresetValuePropertiesComponent', () => {
     mathInput.valueChange.emit('2+2');
 
     expect(emitted).toEqual([{ property: 'value', value: '2+2' }]);
+  });
+
+  /* Math fields whose layouts differ merge them to null. The math input called `includes` on that as
+     soon as it got the focus, and opened no keyboard (#1721). */
+  it('should offer every layout in the formula preset of fields whose layouts differ (#1721)', () => {
+    component.combinedProperties = { type: 'math-field', value: null, mathKeyboardPresets: null };
+    fixture.detectChanges();
+
+    const mathInput = fixture.debugElement
+      .query(By.directive(MockMathInputComponent)).componentInstance as MockMathInputComponent;
+    expect(mathInput.mathKeyboardPresets).toEqual([...MATH_KEYBOARD_PRESETS]);
+  });
+
+  it('should offer the layouts the selected math fields agree on in the formula preset', () => {
+    component.combinedProperties = { type: 'math-field', value: null, mathKeyboardPresets: ['greek'] };
+    fixture.detectChanges();
+
+    const mathInput = fixture.debugElement
+      .query(By.directive(MockMathInputComponent)).componentInstance as MockMathInputComponent;
+    expect(mathInput.mathKeyboardPresets).toEqual(['greek']);
   });
 
   it('should switch between formula and latex editor', () => {

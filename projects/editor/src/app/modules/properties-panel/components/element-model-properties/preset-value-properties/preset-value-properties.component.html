@@ -68,17 +68,20 @@
     </div>
   </div>
 
-  <aspect-math-input *ngIf="!showLatexEditor"
-                     [value]="$any(combinedProperties.value)"
-                     [enableModeSwitch]="$any(combinedProperties.enableModeSwitch)"
-                     [mathKeyboardPresets]="$any(combinedProperties.mathKeyboardPresets)"
-                     [placeholder]="'propertiesPanel.formulaPlaceholder' | translate"
-                     (valueChange)="updateModel.emit({property: 'value', value: $event })">
-  </aspect-math-input>
-
-  <mat-form-field *ngIf="showLatexEditor" class="wide-form-field" appearance="fill">
-    <input #valueField3 matInput [value]="$any(combinedProperties.value)"
-           [placeholder]="'propertiesPanel.latexPlaceholder' | translate"
-           (input)="updateModel.emit({property: 'value', value: valueField3.value })">
-  </mat-form-field>
+  @if (!showLatexEditor) {
+    <!-- Math fields whose layouts differ merge them to null, which the math input cannot open a
+         keyboard with (#1721). -->
+    <aspect-math-input [value]="$any(combinedProperties.value)"
+                       [enableModeSwitch]="$any(combinedProperties.enableModeSwitch)"
+                       [mathKeyboardPresets]="combinedProperties.mathKeyboardPresets ?? allMathKeyboardPresets"
+                       [placeholder]="'propertiesPanel.formulaPlaceholder' | translate"
+                       (valueChange)="updateModel.emit({property: 'value', value: $event })">
+    </aspect-math-input>
+  } @else {
+    <mat-form-field class="wide-form-field" appearance="fill">
+      <input #valueField3 matInput [value]="$any(combinedProperties.value)"
+             [placeholder]="'propertiesPanel.latexPlaceholder' | translate"
+             (input)="updateModel.emit({property: 'value', value: valueField3.value })">
+    </mat-form-field>
+  }
 </ng-container>

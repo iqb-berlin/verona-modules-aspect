@@ -28,6 +28,7 @@ Player
   - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 - **Formelfeld**
   - Im Modus Text bleibt das Feld im Modus Text, auch nach einem Zeichen der Formeltastatur wie α, nach dem Punkt der Buchstabentastatur und wenn alles gelöscht wird. Bisher sprang es nach α und nach dem Punkt auf Formel, und weitere Buchstaben wurden zu Variablen ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
+  - Ein Formelfeld mit Vorbelegung wird im Blättermodus „concat-scroll“ nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), solange nichts eingegeben wurde, sondern als angezeigt ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
 - **Lückentext**
   - Ein Optionsfeld, in dem noch nichts gewählt wurde, wird nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), sondern wie jedes unberührte Feld als angezeigt; ein schreibgeschütztes ebenso. Bisher griff in der Kodierung dafür etwa ein Restcode, obwohl nichts beantwortet war ([#1732](https://github.com/iqb-berlin/verona-modules-aspect/issues/1732))
 - **Rechenkästchen**

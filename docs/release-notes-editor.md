@@ -25,6 +25,8 @@ Editor
 ### Fehlerbehebungen
 - **Ablegeliste**
   - In Aufgaben aus der Zeit vor Editor 2.6 behalten Optionen ohne eigenen Alias ihre ID als Alias. Bisher bekamen sie beim Laden fortlaufende neue Kennungen; waren früher Optionen gelöscht worden, verschoben sich diese gegenüber den IDs, und Kodierungen, die sich auf die alten IDs beziehen, passten nicht mehr. Aufgaben, die seit Editor 3.0 so gespeichert wurden, behalten die verschobenen Kennungen ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
+- **Formelfeld**
+  - Ein Formelfeld mit Vorbelegung auszuwählen ändert die Aufgabe nicht mehr. Bisher meldete der Editor sie dabei dem Studio als geändert, und kam man von einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, wurde die Formel als Text gespeichert ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1

@@ -200,6 +200,20 @@ describe('TextAreaMathComponent', () => {
       expect(setFocus).toHaveBeenCalledTimes(1);
     }));
 
+    /* The empty segment a press adds to an empty area is a value: it reported a read-only area as answered
+       after a mere click. */
+    it('leaves a read-only area as it is', fakeAsync(() => {
+      component.elementModel.readOnly = true;
+      const valueChanged = vi.fn();
+      component.elementFormControl.valueChanges.subscribe(valueChanged);
+
+      press(textArea(), 'mouse');
+      press(textArea(), 'touch');
+
+      expect(component.segments).toEqual([]);
+      expect(valueChanged).not.toHaveBeenCalled();
+    }));
+
     it('leaves a finger on a segment alone, even right after one beside the text', fakeAsync(() => {
       press(textArea(), 'touch');
       fixture.detectChanges();

@@ -615,6 +615,26 @@ describe('TextInputGroupDirective', () => {
       expect(writtenToFirst).toEqual([]);
     }));
 
+    it('should keep a key of the keypad from the gap before when the gap focused next has no keypad',
+       fakeAsync(() => {
+         directive.keypadService = {
+           ...keys, isOpen: true, toggleAsync: vi.fn().mockResolvedValue(true), close: vi.fn()
+         } as unknown as KeypadService;
+         const writtenToFirst: string[] = [];
+         const withKeypad = createTextFieldComponent(writtenToFirst);
+         (withKeypad.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+         (withKeypad.elementModel as TextFieldElement).inputAssistancePreset = 'numbers';
+         focus(directive, inputElement, withKeypad);
+         const withoutKeypad = createTextFieldComponent([]);
+         (withoutKeypad.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+         nextField.value = 'dd';
+         focus(directive, nextField, withoutKeypad);
+
+         keys.enterKey.emit('1');
+
+         expect(writtenToFirst).toEqual([]);
+       }));
+
     /* A unit or page taken down within the pause of a focus left a toggle behind, which subscribed the keys
        afterwards; nothing ended that subscription any more. */
     it('should not subscribe the keys once taken down during the pause of a focus', fakeAsync(() => {

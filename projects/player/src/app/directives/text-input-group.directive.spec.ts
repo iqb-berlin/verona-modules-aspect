@@ -98,7 +98,10 @@ describe('TextInputGroupDirective', () => {
   beforeEach(() => {
     deviceService = { hasHardwareKeyboard: false } as DeviceService;
     keyboardService = createSpyObj<KeyboardService>(['close']);
-    keyInputRestrictionService = createSpyObj<KeyInputRestrictionService>(['attach', 'detach', 'detachFrom']);
+    keyInputRestrictionService = createSpyObj<KeyInputRestrictionService>(
+      ['attach', 'detach', 'detachFrom', 'allows']
+    );
+    keyInputRestrictionService.allows.mockReturnValue(true);
     inputElement = document.createElement('input');
     document.body.appendChild(inputElement);
 
@@ -171,6 +174,31 @@ describe('TextInputGroupDirective', () => {
     expect(keyInputRestrictionService.attach).not.toHaveBeenCalled();
     expect(keyInputRestrictionService.detachFrom).toHaveBeenCalled();
   });
+
+  /* The keys of the keypad write through setElementValue, which the read-only input does not stop: a digit
+     of the keypad changed a read-only field and was reported as its answer. */
+  it('should open no keypad for a read-only field and take none of its keys', fakeAsync(() => {
+    const keys = { enterKey: new EventEmitter<string>(), deleteCharacters: new EventEmitter<boolean>() };
+    const keypad = {
+      ...keys, select: new EventEmitter<string>(), isOpen: true, toggleAsync: vi.fn(), close: vi.fn()
+    } as unknown as KeypadService;
+    directive.keypadService = keypad;
+    const elementModel = createTextField(5, false);
+    elementModel.inputAssistancePreset = 'numbers';
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.readOnly = true;
+    const setElementValue = vi.fn();
+    directive.elementModel = elementModel;
+
+    directive.toggleKeyInput({ inputElement, focused: true },
+                             { elementModel, setElementValue } as unknown as TextInputComponentType);
+    flushMicrotasks();
+    keys.enterKey.emit('1');
+    keys.deleteCharacters.emit(true);
+
+    expect(keypad.toggleAsync).not.toHaveBeenCalled();
+    expect(setElementValue).not.toHaveBeenCalled();
+  }));
 
   it('should allow a paste that fits into the maximum length', () => {
     inputElement.value = 'ab';
@@ -656,56 +684,92 @@ describe('TextInputGroupDirective', () => {
       expect(keys.enterKey.observed).toBe(false);
     }));
 
+    /* The keys of the player reach the field without a keydown, so the restriction of the field did not see
+       them: the on-screen keyboard wrote every letter into a field restricted to digits, and its Backspace
+       deleted the preset text the restriction protects. */
     describe('field restricted to the characters of its input assistance', () => {
-      /** Focuses a restricted field while the keypad is still open for the given element. */
-      const focusRestricted = (keypadOpenFor: TextInputComponentType | null, written: string[]): void => {
+      let keypadKeys: typeof keys;
+
+      /** A restricted field on the given device, whose keypad is open -- still for the element before it, as
+          its pause never ends. On a tablet the on-screen keyboard opens beside the keypad, or carries the input
+          assistance instead of it. */
+      const focusRestricted = (written: string[], options: { tablet: boolean; extendedKeyboard?: boolean }): void => {
+        Object.assign(deviceService, { isMobileWithoutHardwareKeyboard: options.tablet });
         const elementComponent = createTextFieldComponent(written);
         const elementModel = elementComponent.elementModel as TextFieldElement;
         elementModel.inputAssistancePreset = 'numbers';
         elementModel.restrictedToInputAssistanceChars = true;
-        elementModel.showSoftwareKeyboard = false;
+        elementModel.showSoftwareKeyboard = options.tablet;
+        elementModel.addInputAssistanceToKeyboard = !!options.extendedKeyboard;
         directive.keypadService = {
-          ...keys,
+          ...keypadKeys,
           isOpen: true,
-          elementComponent: keypadOpenFor ?? elementComponent,
           toggleAsync: () => new Promise<boolean>(() => {}),
           close: vi.fn()
         } as unknown as KeypadService;
         focus(directive, nextField, elementComponent);
       };
 
-      it('should not take a key of the keypad still open for another element', fakeAsync(() => {
+      beforeEach(() => {
+        keypadKeys = { enterKey: new EventEmitter(), deleteCharacters: new EventEmitter(), select: new EventEmitter() };
+        directive.keyInputRestrictionService = new KeyInputRestrictionService();
+      });
+
+      it('should take only its own characters from the keys still shown for the element before', fakeAsync(() => {
         const written: string[] = [];
-        focusRestricted(createTextFieldComponent([]), written);
+        focusRestricted(written, { tablet: false });
 
-        keys.enterKey.emit('x');
+        keypadKeys.enterKey.emit('x');
+        keypadKeys.enterKey.emit('1');
 
-        expect(written).toEqual([]);
+        expect(written).toEqual(['1']);
       }));
 
-      /* On a tablet whose keyboard carries the input assistance no keypad opens, and no restriction applies */
-      it('should take a key at once where the keyboard carries its input assistance', fakeAsync(() => {
-        Object.assign(deviceService, { isMobileWithoutHardwareKeyboard: true });
+      it('should take only its own characters from the on-screen keyboard of a tablet', fakeAsync(() => {
         const written: string[] = [];
-        const elementComponent = createTextFieldComponent(written);
-        const elementModel = elementComponent.elementModel as TextFieldElement;
-        elementModel.inputAssistancePreset = 'numbers';
-        elementModel.restrictedToInputAssistanceChars = true;
-        elementModel.addInputAssistanceToKeyboard = true;
-        focus(directive, nextField, elementComponent);
+        focusRestricted(written, { tablet: true });
 
-        keys.enterKey.emit('x');
-
-        expect(written).toEqual(['x']);
-      }));
-
-      it('should take a key of the keypad open for its own element at once', fakeAsync(() => {
-        const written: string[] = [];
-        focusRestricted(null, written);
-
+        keys.enterKey.emit('a');
         keys.enterKey.emit('1');
 
         expect(written).toEqual(['1']);
+      }));
+
+      it('should keep its preset text from the Backspace of the on-screen keyboard of a tablet', fakeAsync(() => {
+        const written: string[] = [];
+        nextField.value = 'ab';
+        focusRestricted(written, { tablet: true });
+        nextField.setSelectionRange(2, 2);
+
+        keys.deleteCharacters.emit(true);
+        nextField.value = 'ab1';
+        nextField.setSelectionRange(3, 3);
+        keys.deleteCharacters.emit(true);
+
+        expect(written).toEqual(['ab']);
+      }));
+
+      /* On a tablet whose keyboard carries the input assistance no keypad opens, and the restriction, bound to
+         the keypad, did not apply at all */
+      it('should take only its own characters where the on-screen keyboard carries its input assistance',
+         fakeAsync(() => {
+           const written: string[] = [];
+           focusRestricted(written, { tablet: true, extendedKeyboard: true });
+
+           keys.enterKey.emit('x');
+           keys.enterKey.emit('1');
+
+           expect(written).toEqual(['1']);
+         }));
+
+      it('should keep its caret from the arrow keys still shown for the element before', fakeAsync(() => {
+        nextField.value = '12';
+        focusRestricted([], { tablet: false });
+        nextField.setSelectionRange(2, 2);
+
+        keypadKeys.select.emit('ArrowLeft');
+
+        expect(nextField.selectionStart).toBe(2);
       }));
     });
   });

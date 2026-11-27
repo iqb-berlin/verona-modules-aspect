@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
-import { InputService } from 'player/src/app/services/input-service';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
 import { RangeSelectionService } from 'common/services/range-selection.service';
 import { MathfieldElement } from 'mathlive';
@@ -83,8 +82,15 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     return inputElement.value.length - selectedText.length + newText.length;
   }
 
+  /** Whether the field offers its input assistance, on the keypad or in the on-screen keyboard. Not a read-only
+      field, as little as it gets the on-screen keyboard: the keys write through `setElementValue`, which a
+      read-only field does not stop. */
+  private static hasInputAssistance(elementModel: InputElement): boolean {
+    return !!elementModel.inputAssistancePreset && !elementModel.readOnly;
+  }
+
   private shallOpenKeypad(elementModel: InputElement): boolean {
-    return !!elementModel.inputAssistancePreset &&
+    return TextInputGroupDirective.hasInputAssistance(elementModel) &&
       !(elementModel.showSoftwareKeyboard &&
         elementModel.addInputAssistanceToKeyboard &&
         this.deviceService.isMobileWithoutHardwareKeyboard);
@@ -150,37 +156,27 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   private takeKeys(inputElement: HTMLElement, elementComponent: TextInputComponentType,
                    usesKeyboard: boolean, usesKeypad: boolean): void {
     this.inputElement = this.getInputElement(inputElement);
-    // The restriction applies where the keypad would open, as in updateKeyInputRestriction
-    const takesAnyKey = !(elementComponent.elementModel.restrictedToInputAssistanceChars && usesKeypad);
-    if (usesKeyboard && TextInputGroupDirective.showsKeysFor(this.keyboardService, elementComponent, takesAnyKey)) {
+    /* Until the pause is over, the aid still shows the keys of the element before. A field restricted to its
+       input assistance takes only its own characters from them (enterKey, KeyInputRestrictionService.allows). */
+    if (usesKeyboard && this.keyboardService.isOpen) {
       this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
     }
-    if (usesKeypad && TextInputGroupDirective.showsKeysFor(this.keypadService, elementComponent, takesAnyKey)) {
+    if (usesKeypad && this.keypadService.isOpen) {
       this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
     }
-  }
-
-  /**
-   * Whether the aid is open with keys the field may take before the aid has opened for it: its own, or any
-   * keys for a field that takes any character. Until the pause is over the aid still shows the keys of the
-   * element before, and a field restricted to its own input assistance would get a character it refuses
-   * from them (#1143); it waits for its own aid.
-   */
-  private static showsKeysFor(inputService: InputService, elementComponent: TextInputComponentType,
-                              takesAnyKey: boolean): boolean {
-    return inputService.isOpen && (inputService.elementComponent === elementComponent || takesAnyKey);
   }
 
   /** Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,
      debouncing its animation) and used to register the keydown listener only once its view existed.
      Everything typed in between reached the field unchecked, so typing fast enough put forbidden
-     characters into a restricted field (#1143). The condition is the one the keypad had: the
-     restriction exists where the input assistance would. */
+     characters into a restricted field (#1143). The restriction follows the input assistance, not the
+     keypad: on a tablet the assistance sits in the on-screen keyboard (`addInputAssistanceToKeyboard`),
+     no keypad opens, and the letters of that keyboard went into the field unchecked (#1710). */
   private updateKeyInputRestriction(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                                     elementModel: TextInputElement): void {
     if (focusedTextInput.focused &&
       elementModel.restrictedToInputAssistanceChars &&
-      this.shallOpenKeypad(elementModel)) {
+      TextInputGroupDirective.hasInputAssistance(elementModel)) {
       /* The same rule the keypad uses to decide whether it offers a Return key, so it cannot offer
          one the restriction blocks. */
       const hasReturnKey = new HasReturnKeyPipe().transform(elementModel);
@@ -297,6 +293,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private select(direction: string): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, direction)) return;
     let lastBreak = 0;
     const inputValueKeys = this.getInputElementValue().split('');
     const lineBreaks = inputValueKeys
@@ -358,6 +355,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private enterKey(key: string, elementModel: UIElement, elementComponent: ElementComponent): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, key)) return;
     if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
       (this.inputElement instanceof HTMLInputElement) &&
@@ -387,6 +385,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private deleteCharacters(backspace: boolean, elementComponent: ElementComponent): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, backspace ? 'Backspace' : 'Delete')) return;
     let selectionStart = this.getSelection().start;
     let selectionEnd = this.getSelection().end;
     if (backspace) {

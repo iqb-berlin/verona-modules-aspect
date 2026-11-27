@@ -24,6 +24,8 @@ Player
   - Bei Größenvergleichen gilt ein Komma als Dezimaltrenner, in der Antwort wie in der Bedingung: „2,5“ ist größer als 2 ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
 - **Bildschirmtastatur, Eingabehilfe**
   - Eine Taste direkt nach dem Wechsel in ein anderes Feld oder Kästchen eines Rechenkästchens geht nicht mehr an das vorige, sondern an das neue, wenn es diese Tasten annimmt; bisher geschah das bis zu einer Zehntelsekunde lang, im Lückentext konnte dabei eine Lücke die Taste einer anderen bekommen ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
+  - Ein Feld, das auf die Zeichen seiner Eingabehilfe beschränkt ist, nimmt auf dem Tablet auch von der Bildschirmtastatur nur noch diese Zeichen an, ob sie mit der Eingabehilfe erweitert ist oder nicht, und ihre Rücktaste löscht keine Vorbelegung mehr. Bisher schrieb die Bildschirmtastatur jeden Buchstaben hinein ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
+  - Ein schreibgeschütztes Feld öffnet keine Eingabehilfe mehr, wie schon keine Bildschirmtastatur. Bisher ließ es sich mit ihr ändern, und die Änderung wurde als Antwort gemeldet ([#1710](https://github.com/iqb-berlin/verona-modules-aspect/issues/1710))
 - **Formelbereich**
   - Return auf der Bildschirmtastatur beginnt die neue Zeile sofort, und der Cursor steht darin; bisher erschien die Zeile erst mit der nächsten Taste ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
   - In Firefox steht der Cursor nach Enter in der neuen Zeile statt am Ende der vorigen ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))

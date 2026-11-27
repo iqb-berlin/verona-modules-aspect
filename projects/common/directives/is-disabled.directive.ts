@@ -16,7 +16,9 @@ export class IsDisabledDirective implements OnChanges {
     setTimeout(() => { // give time for form control to initialize
       if (changes.isDisabled && this.ngControl) {
         const action = changes.isDisabled.currentValue ? 'disable' : 'enable';
-        this.ngControl?.control?.[action]();
+        // Silent: announced as a value change, it reached the host as an answer, and an element nobody
+        // had touched was reported as VALUE_CHANGED (#1732). The view follows the state either way.
+        this.ngControl?.control?.[action]({ emitEvent: false });
       }
     });
   }

@@ -28,8 +28,12 @@ Player
   - Die Rücktaste am Anfang einer weiteren Zeile in einem Text hinter einer Formel löscht nicht mehr auch die Formel ([#1011](https://github.com/iqb-berlin/verona-modules-aspect/issues/1011))
 - **Formelfeld**
   - Im Modus Text bleibt das Feld im Modus Text, auch nach einem Zeichen der Formeltastatur wie α, nach dem Punkt der Buchstabentastatur und wenn alles gelöscht wird. Bisher sprang es nach α und nach dem Punkt auf Formel, und weitere Buchstaben wurden zu Variablen ([#1692](https://github.com/iqb-berlin/verona-modules-aspect/issues/1692))
+- **Lückentext**
+  - Ein Optionsfeld, in dem noch nichts gewählt wurde, wird nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), sondern wie jedes unberührte Feld als angezeigt; ein schreibgeschütztes ebenso. Bisher griff in der Kodierung dafür etwa ein Restcode, obwohl nichts beantwortet war ([#1732](https://github.com/iqb-berlin/verona-modules-aspect/issues/1732))
 - **Rechenkästchen**
   - Eine gelöschte Eingabe wird sofort an die Testumgebung gemeldet, auch beim Löschen über die Bildschirmtastatur; bisher erschien sie beim erneuten Öffnen der Aufgabe wieder, wenn danach nichts mehr eingegeben wurde ([#1712](https://github.com/iqb-berlin/verona-modules-aspect/pull/1712))
+- **Schieberegler**
+  - Ein Schieberegler, der noch nicht bewegt wurde, wird nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), sondern als angezeigt; ein schreibgeschützter ebenso ([#1732](https://github.com/iqb-berlin/verona-modules-aspect/issues/1732))
 
 ## 3.1.2
 ### Fehlerbehebungen

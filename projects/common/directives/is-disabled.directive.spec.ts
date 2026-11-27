@@ -34,6 +34,19 @@ describe('IsDisabledDirective', () => {
     expect(control.disabled).toBe(false);
   }));
 
+  /* The player reports every value change of an element's control to the host as an answer, so the
+     state set on loading made an element nobody had touched count as changed (#1732). */
+  it('should report no value change when it enables or disables the control (#1732)', fakeAsync(() => {
+    const values: unknown[] = [];
+    control.valueChanges.subscribe(value => values.push(value));
+    changeIsDisabled(false, true);
+    tick();
+    changeIsDisabled(true);
+    tick();
+    expect(control.disabled).toBe(true);
+    expect(values).toEqual([]);
+  }));
+
   it('should leave the control untouched when isDisabled did not change', fakeAsync(() => {
     directive.ngOnChanges({});
     tick();

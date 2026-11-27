@@ -254,6 +254,8 @@ export class InteractiveGroupElementComponent
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    // A toggle still in its pause would subscribe the keys after the teardown, for good
+    this.keyToggles += 1;
     this.unsubscribeFromKeypadEvents();
     this.unsubscribeFromKeyboardEvents();
   }

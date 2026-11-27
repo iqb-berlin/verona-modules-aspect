@@ -522,6 +522,8 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     /* A programmatic teardown -- a page navigation or a new unit -- gives no blur, so the field
        would stay restricted and the singleton would hold on to a detached input. */
     this.keyInputRestrictionService.detachFrom(this.restrictedInputElement);
+    // A toggle still in its pause would subscribe the keys after the teardown, for good
+    this.keyToggles += 1;
     this.unsubscribeFromKeypadEvents();
     this.unsubscribeFromKeyboardEvents();
     super.ngOnDestroy();

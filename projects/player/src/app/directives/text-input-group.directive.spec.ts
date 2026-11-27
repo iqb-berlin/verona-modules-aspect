@@ -600,6 +600,27 @@ describe('TextInputGroupDirective', () => {
       expect(writtenToLast).toEqual(['x']);
     }));
 
+    /* A unit or page taken down within the pause of a focus left a toggle behind, which subscribed the keys
+       afterwards; nothing ended that subscription any more. */
+    it('should not subscribe the keys once taken down during the pause of a focus', fakeAsync(() => {
+      const pauses: ((isOpen: boolean) => void)[] = [];
+      const keyboard = {
+        ...keys,
+        isOpen: false,
+        toggleAsync: () => new Promise<boolean>(resolve => { pauses.push(resolve); }),
+        close: vi.fn()
+      } as unknown as KeyboardService;
+      directive.keyboardService = keyboard;
+      focus(directive, inputElement, createTextFieldComponent([]));
+      directive.ngOnDestroy();
+
+      keyboard.isOpen = true;
+      pauses[0](true);
+      flushMicrotasks();
+
+      expect(keys.enterKey.observed).toBe(false);
+    }));
+
     describe('field restricted to the characters of its input assistance', () => {
       /** Focuses a restricted field while the keypad is still open for the given element. */
       const focusRestricted = (keypadOpenFor: TextInputComponentType | null, written: string[]): void => {

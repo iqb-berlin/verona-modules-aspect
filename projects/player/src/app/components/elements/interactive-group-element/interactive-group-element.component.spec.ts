@@ -359,6 +359,37 @@ describe('InteractiveGroupElementComponent', () => {
     expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', second, row);
   }));
 
+  it('should not subscribe the keys once destroyed during the pause of a focus', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.inputAssistancePreset = 'numbers';
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    const pauses: ((isOpen: boolean) => void)[] = [];
+    const keypad = {
+      enterKey,
+      deleteCharacters: new EventEmitter<boolean>(),
+      select: new EventEmitter<string>(),
+      isOpen: false,
+      toggleAsync: () => new Promise<boolean>(resolve => { pauses.push(resolve); }),
+      close: vi.fn()
+    } as unknown as KeypadService;
+    component.keypadService = keypad;
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'),
+      row: { cells: [] } as unknown as MathTableRow,
+      cell: { value: '' } as unknown as MathTableCell,
+      focused: true
+    });
+    fixture.destroy();
+
+    keypad.isOpen = true;
+    pauses[0](true);
+    flushMicrotasks();
+
+    expect(enterKey.observed).toBe(false);
+  }));
+
   it('should leave a key of the keypad to a field elsewhere that has taken the focus', fakeAsync(() => {
     const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
     elementModel.showSoftwareKeyboard = false;

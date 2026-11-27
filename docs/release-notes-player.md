@@ -31,10 +31,12 @@ Player
   - Ein Formelfeld mit Vorbelegung wird im Blättermodus „concat-scroll“ nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), solange nichts eingegeben wurde, sondern als angezeigt ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
 - **Lückentext**
   - Ein Optionsfeld, in dem noch nichts gewählt wurde, wird nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), sondern wie jedes unberührte Feld als angezeigt; ein schreibgeschütztes ebenso. Bisher griff in der Kodierung dafür etwa ein Restcode, obwohl nichts beantwortet war ([#1732](https://github.com/iqb-berlin/verona-modules-aspect/issues/1732))
+  - Ein schreibgeschütztes Optionsfeld, das zugleich Pflichtfeld ist, zählt beim Antwortfortschritt nicht mehr als unbeantwortet. Bisher meldete der Player die Aufgabe deshalb nie als vollständig beantwortet ([#1735](https://github.com/iqb-berlin/verona-modules-aspect/issues/1735))
 - **Rechenkästchen**
   - Eine gelöschte Eingabe wird sofort an die Testumgebung gemeldet, auch beim Löschen über die Bildschirmtastatur; bisher erschien sie beim erneuten Öffnen der Aufgabe wieder, wenn danach nichts mehr eingegeben wurde ([#1712](https://github.com/iqb-berlin/verona-modules-aspect/pull/1712))
 - **Schieberegler**
   - Ein Schieberegler, der noch nicht bewegt wurde, wird nicht mehr als bearbeitet gemeldet (`VALUE_CHANGED`), sondern als angezeigt; ein schreibgeschützter ebenso ([#1732](https://github.com/iqb-berlin/verona-modules-aspect/issues/1732))
+  - Ein schreibgeschützter Schieberegler, der zugleich Pflichtfeld ist, zählt beim Antwortfortschritt nicht mehr als unbeantwortet. Bisher meldete der Player die Aufgabe deshalb nie als vollständig beantwortet ([#1735](https://github.com/iqb-berlin/verona-modules-aspect/issues/1735))
 
 ## 3.1.2
 ### Fehlerbehebungen

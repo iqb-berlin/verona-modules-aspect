@@ -1,4 +1,6 @@
-import { addElement, setCheckbox, addPostMessageStub } from '../util';
+import {
+  addElement, setCheckbox, addPostMessageStub, setPreferencesElement
+} from '../util';
 
 /* The player told the host a unit was still complete after a required response had been taken back
    again (#1354). What the host is told matters twice over: it decides whether navigation is denied,
@@ -12,6 +14,12 @@ describe('responseProgress of a required response', { testIsolation: false }, ()
     it('adds a required text field', () => {
       addElement('Eingabefeld', 'Eingabe', 'field1');
       setCheckbox('Pflichtfeld', true);
+    });
+
+    // Beside the field in both player tests: complete is reached only with the slider left out (#1735).
+    it('adds a read-only required slider', () => {
+      addElement('Schieberegler');
+      setPreferencesElement('Schieberegler mit Schreibschutz', { readOnly: true, required: true });
     });
 
     after('saves unit definition', () => {
@@ -32,6 +40,17 @@ describe('responseProgress of a required response', { testIsolation: false }, ()
 
       cy.get('aspect-text-field input').clear();
       expectLastResponseProgress('none');
+    });
+
+    /* The read-only slider beside the field is required too, but nobody can answer it: its write
+       protection disables its control, which held the progress at some for good (#1735). A stub of its
+       own, as Cypress keeps the alias of the one made in `before` for the first test only; what counts
+       here is reported after the typing. */
+    it('reports complete with the read-only required slider unanswered (#1735)', () => {
+      addPostMessageStub();
+      cy.get('aspect-slider input[type="range"]').should('be.disabled');
+      cy.get('aspect-text-field input').type('abc');
+      expectLastResponseProgress('complete');
     });
   });
 });

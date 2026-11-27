@@ -40,6 +40,19 @@ describe('ValidationService', () => {
     expect(service.responseProgress).toEqual('complete');
   });
 
+  /* A read-only slider or toggle button has its control disabled, which Angular never counts as valid;
+     nobody can answer it, so it is neither missing nor given (#1735). */
+  it('should leave a disabled control out (#1735)', () => {
+    const readOnlyControl = requiredControl('');
+    readOnlyControl.disable();
+    const answerControl = requiredControl('');
+    service.registerFormControl(readOnlyControl);
+    service.registerFormControl(answerControl);
+    expect(service.responseProgress).toEqual('none');
+    answerControl.setValue('TEST');
+    expect(service.responseProgress).toEqual('complete');
+  });
+
   it('should come down again when a response is taken back', () => {
     const control = requiredControl('TEST');
     service.registerFormControl(control);

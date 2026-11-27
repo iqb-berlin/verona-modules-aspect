@@ -240,28 +240,26 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
 
   /**
    * Hands the keys of the keypad to the focused field (#1710):
-   * - only those meant for it (`InputService.keyTarget`). The field before stays subscribed until the keypad
-   *   has closed for it, and took the keys typed into the next field until then.
+   * - only those meant for the field it subscribes for (`InputService.keyTarget`). A subscription for the
+   *   field before stays until the keypad has closed for it, and took the keys typed into the next field
+   *   until then. In a cloze, whose gaps share this directive, it wrote the text of the next gap into the
+   *   one before, as the field is read from `inputElement` when the key comes.
    * - once. A subscription still standing is dropped first: a focus usually follows the blur of the field
    *   before, which drops it, but not when Backspace removes a formula and takes the focused text part along.
    *   Each key then ran twice, and wrote its character twice once a text part showed a key's text at once.
    */
   private subscribeForKeypadEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.unsubscribeFromKeypadEvents();
+    const field = this.inputElement;
     this.keypadEnterKeySubscription = this.keypadService.enterKey
-      .pipe(filter(() => this.isKeyTarget(this.keypadService)), takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
-      .pipe(filter(() => this.isKeyTarget(this.keypadService)), takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
     this.keypadSelectSubscription = this.keypadService.select
-      .pipe(filter(() => this.isKeyTarget(this.keypadService)), takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.select(key));
-  }
-
-  /** Whether the keys of the aid are meant for this field (`InputService.keyTarget`). */
-  private isKeyTarget(inputService: InputService): boolean {
-    return inputService.keyTarget === this.inputElement;
   }
 
   private unsubscribeFromKeypadEvents(): void {
@@ -273,11 +271,12 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   /** Hands the keys of the on-screen keyboard to the focused field, as `subscribeForKeypadEvents` does. */
   private subscribeForKeyboardEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.unsubscribeFromKeyboardEvents();
+    const field = this.inputElement;
     this.keyboardEnterKeySubscription = this.keyboardService.enterKey
-      .pipe(filter(() => this.isKeyTarget(this.keyboardService)), takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keyboardService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
-      .pipe(filter(() => this.isKeyTarget(this.keyboardService)), takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keyboardService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
   }
 

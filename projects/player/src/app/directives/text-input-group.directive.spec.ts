@@ -600,6 +600,21 @@ describe('TextInputGroupDirective', () => {
       expect(writtenToLast).toEqual(['x']);
     }));
 
+    /* The gaps of a cloze share one directive. A gap that takes no keys of the keyboard left the subscription
+       for the gap before standing, and a key wrote the text of the new gap into the one before. */
+    it('should keep a key from the gap before when the gap focused next takes none', fakeAsync(() => {
+      const writtenToFirst: string[] = [];
+      focus(directive, inputElement, createTextFieldComponent(writtenToFirst));
+      const withoutKeyboard = createTextFieldComponent([]);
+      (withoutKeyboard.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+      nextField.value = 'dd';
+      focus(directive, nextField, withoutKeyboard);
+
+      keys.enterKey.emit('x');
+
+      expect(writtenToFirst).toEqual([]);
+    }));
+
     /* A unit or page taken down within the pause of a focus left a toggle behind, which subscribed the keys
        afterwards; nothing ended that subscription any more. */
     it('should not subscribe the keys once taken down during the pause of a focus', fakeAsync(() => {

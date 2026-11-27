@@ -80,10 +80,19 @@ describe('Text area math element, keys of the player (#1710)', () => {
     cy.get(KEYBOARD_AREA).click('right');
     cy.get('aspect-keyboard').should('be.visible');
 
-    pressKey('aspect-keyboard', 'keyboard_backspace');
-    cy.get(`${KEYBOARD_AREA} aspect-text-area-math-segment`).should('have.length', 1);
-    pressKey('aspect-keyboard', 'c');
+    // Backspace and the next key within the keyboard's pause of 100 ms, whatever the pace of the test runner
+    cy.document().then(doc => new Cypress.Promise<void>(resolve => {
+      const key = (label: string): HTMLElement => [...doc.querySelectorAll<HTMLElement>('aspect-keyboard button')]
+        .find(button => button.textContent?.trim() === label) as HTMLElement;
+      key('keyboard_backspace').click();
+      // The merged part takes the focus in a timer of its own (TextAreaMathComponent.removeSegment)
+      (doc.defaultView as Window).setTimeout(() => {
+        key('c').click();
+        resolve();
+      }, 20);
+    }));
 
+    cy.get(`${KEYBOARD_AREA} aspect-text-area-math-segment`).should('have.length', 1);
     cy.get(`${KEYBOARD_AREA} .input`).should('have.text', 'xc');
     cy.wrap(reported).its('text').should('equal', 'xc');
   });

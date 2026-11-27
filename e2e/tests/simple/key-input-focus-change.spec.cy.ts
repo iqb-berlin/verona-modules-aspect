@@ -20,8 +20,12 @@ describe('On-screen keyboard, key right after moving to the next field (#1710)',
     cy.get('aspect-keyboard').should('be.visible');
     pressKey('a');
 
-    cy.get('[data-element-id="text-field_second"] input').click();
-    pressKey('b');
+    // The focus moves on and the next key follows at once, within the keyboard's pause of 100 ms
+    cy.get('[data-element-id="text-field_second"] input').then($second => {
+      $second[0].focus();
+      ([...$second[0].ownerDocument.querySelectorAll<HTMLElement>('aspect-keyboard button')]
+        .find(button => button.textContent?.trim() === 'b') as HTMLElement).click();
+    });
 
     cy.get('[data-element-id="text-field_first"] input').should('have.value', 'a');
     cy.get('[data-element-id="text-field_second"] input').should('have.value', 'b');

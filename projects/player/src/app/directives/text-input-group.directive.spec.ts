@@ -648,6 +648,22 @@ describe('TextInputGroupDirective', () => {
         expect(written).toEqual([]);
       }));
 
+      /* On a tablet whose keyboard carries the input assistance no keypad opens, and no restriction applies */
+      it('should take a key at once where the keyboard carries its input assistance', fakeAsync(() => {
+        Object.assign(deviceService, { isMobileWithoutHardwareKeyboard: true });
+        const written: string[] = [];
+        const elementComponent = createTextFieldComponent(written);
+        const elementModel = elementComponent.elementModel as TextFieldElement;
+        elementModel.inputAssistancePreset = 'numbers';
+        elementModel.restrictedToInputAssistanceChars = true;
+        elementModel.addInputAssistanceToKeyboard = true;
+        focus(directive, nextField, elementComponent);
+
+        keys.enterKey.emit('x');
+
+        expect(written).toEqual(['x']);
+      }));
+
       it('should take a key of the keypad open for its own element at once', fakeAsync(() => {
         const written: string[] = [];
         focusRestricted(null, written);

@@ -150,10 +150,12 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   private takeKeys(inputElement: HTMLElement, elementComponent: TextInputComponentType,
                    usesKeyboard: boolean, usesKeypad: boolean): void {
     this.inputElement = this.getInputElement(inputElement);
-    if (usesKeyboard && TextInputGroupDirective.showsKeysFor(this.keyboardService, elementComponent)) {
+    // The restriction applies where the keypad would open, as in updateKeyInputRestriction
+    const takesAnyKey = !(elementComponent.elementModel.restrictedToInputAssistanceChars && usesKeypad);
+    if (usesKeyboard && TextInputGroupDirective.showsKeysFor(this.keyboardService, elementComponent, takesAnyKey)) {
       this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
     }
-    if (usesKeypad && TextInputGroupDirective.showsKeysFor(this.keypadService, elementComponent)) {
+    if (usesKeypad && TextInputGroupDirective.showsKeysFor(this.keypadService, elementComponent, takesAnyKey)) {
       this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
     }
   }
@@ -164,9 +166,9 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
    * element before, and a field restricted to its own input assistance would get a character it refuses
    * from them (#1143); it waits for its own aid.
    */
-  private static showsKeysFor(inputService: InputService, elementComponent: TextInputComponentType): boolean {
-    return inputService.isOpen && (inputService.elementComponent === elementComponent ||
-      !elementComponent.elementModel.restrictedToInputAssistanceChars);
+  private static showsKeysFor(inputService: InputService, elementComponent: TextInputComponentType,
+                              takesAnyKey: boolean): boolean {
+    return inputService.isOpen && (inputService.elementComponent === elementComponent || takesAnyKey);
   }
 
   /** Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,

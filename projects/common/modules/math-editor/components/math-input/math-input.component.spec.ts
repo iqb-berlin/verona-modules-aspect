@@ -516,6 +516,44 @@ describe('MathInputComponent', () => {
         flush();
       }));
 
+      // An arrow collapses a selection first, also one across two lines, before it moves.
+      it('should collapse a selection over two lines to its start on ←', fakeAsync(() => {
+        const field = createFocusedField('\\displaylines{x+1\\\\ y+2}');
+        placeCursorAfter(field, 1);
+        field.selection = { ranges: [[1, 6]], direction: 'forward' };
+        pressKey(field, 'ArrowLeft');
+        expect(field.selection.ranges).toEqual([[1, 1]]);
+        flush();
+      }));
+
+      // ↓ collapses the selection to its end, at the end of the line, and only then moves.
+      it('should keep the cursor in its line on ↓ from a selection', fakeAsync(() => {
+        const field = createFocusedField('\\displaylines{x+1\\\\ y+2}');
+        placeCursorAfter(field, 1);
+        field.selection = { ranges: [[1, 3]], direction: 'forward' };
+        pressKey(field, 'ArrowDown');
+        field.insert('z');
+        expect(field.getValue()).toBe('\\displaylines{x+1z\\\\ y+2}');
+        flush();
+      }));
+
+      /* Cmd and an arrow are the Mac's Home and End, which MathLive takes to the start and the end of the
+         field; on an iPad with a keyboard as well. MathLive reads the platform from the browser. */
+      it('should leave Cmd+→ on a Mac to MathLive', fakeAsync(() => {
+        Object.defineProperty(navigator, 'platform', { value: 'MacIntel', configurable: true });
+        Object.defineProperty(navigator, 'userAgentData', { value: { platform: 'macOS' }, configurable: true });
+        try {
+          const field = createFocusedField(linesValue);
+          placeCursorAfter(field, 3);
+          pressKey(field, 'ArrowRight', { metaKey: true });
+          expect(field.position).toBe(field.lastOffset);
+        } finally {
+          Reflect.deleteProperty(navigator, 'platform');
+          Reflect.deleteProperty(navigator, 'userAgentData');
+        }
+        flush();
+      }));
+
       // A fraction lies in one line.
       it('should still move between the parts of a fraction on ↑', fakeAsync(() => {
         const field = createFocusedField('\\displaylines{\\frac{1}{2}\\\\ \\text{ab}}');

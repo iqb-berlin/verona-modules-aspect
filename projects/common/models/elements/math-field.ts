@@ -65,8 +65,8 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
 
 export interface MathFieldProperties extends InputElementProperties, MathKeyboardProperties {
   enableModeSwitch: boolean;
-  /** Lets Enter start a new line and long text wrap at the field's width (#1696). Off for units stored
-      without it. */
+  /** Lets Return and the Enter key of the formula keyboard start a new line in text mode, and long text
+      wrap at the field's width (#1696). Off for units stored without it. */
   multiline: boolean;
   position: PositionProperties;
   dimensions: DimensionProperties;

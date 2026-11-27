@@ -102,7 +102,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   /** Where an arrow key found the cursor in formula mode, and the selection with it, until the move is made,
       see `keepLine`. */
-  private moveStart?: { position: number; selection: MathfieldElement['selection'] };
+  private moveStart?: { position: number; selection: MathfieldElement['selection']; collapsed: boolean };
 
   /** Whether the change under way is a line break, whose line MathLive announces next, see `onBeforeInput`. */
   private lineBreakUnderway = false;
@@ -194,7 +194,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
       those of the formula keyboard. Lines are for text, and at the end or the start of one, ← and → went on
       into the next line, ↑ and ↓ into the line above or below. They still move between the parts of a
       fraction, which lie in one line. A click or a tap on another line takes the cursor there, and the
-      other keys that move it, as Home and End, do what MathLive has them do.
+      other keys that move it, as Home and End and their Mac form Cmd and an arrow, do what MathLive has
+      them do. An arrow first collapses a selection, to its start or its end, also across lines; only where
+      the cursor goes from there is checked.
       MathLive changes the mode for the new place before anything hears of the move, and has no event that
       lets it be called off. So the place is noted before the move -- on the keydown of an arrow, or on the
       command of the formula keyboard, which fires no keydown --, and the cursor is set back once the move is
@@ -204,6 +206,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   private readonly keepLine = (): void => {
     const start = this.moveStart;
     if (!start) return;
+    if (!start.collapsed && this.mathFieldElement.selectionIsCollapsed) {
+      this.noteMoveStart();
+      return;
+    }
     this.moveStart = undefined;
     if (!this.lineStartBetween(start.position, this.mathFieldElement.position)) return;
     // Before the cursor goes back: while the switch shows text, formula mode at the start of a line is called off.
@@ -214,7 +220,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   /** A keydown that something other than a keyboard dispatches may be a plain `Event`, without a key. */
   private readonly onMoveKey = (event: Event): void => {
-    if (event instanceof KeyboardEvent && event.key.startsWith('Arrow')) this.startMove();
+    if (event instanceof KeyboardEvent && event.key.startsWith('Arrow') && !event.metaKey) this.startMove();
   };
 
   /** Each command of the formula keyboard goes to the field that has the focus. */
@@ -229,10 +235,18 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
       event loop, as in `onBeforeInput`. */
   private startMove(): void {
     if (this.mathFieldElement.mode !== 'math') return;
-    this.moveStart = { position: this.mathFieldElement.position, selection: this.mathFieldElement.selection };
+    this.noteMoveStart();
     this.ngZone.runOutsideAngular(() => setTimeout(() => {
       this.moveStart = undefined;
     }));
+  }
+
+  private noteMoveStart(): void {
+    this.moveStart = {
+      position: this.mathFieldElement.position,
+      selection: this.mathFieldElement.selection,
+      collapsed: this.mathFieldElement.selectionIsCollapsed
+    };
   }
 
   /** Whether a line starts between two places of the cursor, the later one included: whether a move from one

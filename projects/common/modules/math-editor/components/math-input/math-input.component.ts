@@ -107,6 +107,19 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   /** Whether the change under way is a line break, whose line MathLive announces next, see `onBeforeInput`. */
   private lineBreakUnderway = false;
 
+  /** The value last put into the field from outside (`setFieldValue`), until an input changes it. MathLive
+      announces a value set while the field is on the page as input, one turn of the event loop later, and
+      `onInput` reported it as an answer nobody had given: in the paging mode `concat-scroll`, where a page
+      is part of the document already when its fields are set up, an untouched field went out as changed
+      (#1734). Every input that leaves the field at this value is passed over, however many announcements
+      come; one the student makes without changing the value has nothing new to report either.
+      `silenceNotifications` would keep the announcement back as well, but it also keeps back the change of
+      mode the value brings, which the switch and `onModeChange` go by (#1692). */
+  private valueSetFromOutside?: string;
+
+  /** Whether `setFieldValue` is putting a value into the field just now. */
+  private settingValueFromOutside = false;
+
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
@@ -130,10 +143,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.mathFieldElement.readOnly = this.readonly;
     this.mathFieldElement.placeholder = this.placeholder;
     this.updateWrapStyle();
-    this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex' });
-    // A value that ends in text, as an answer that is resumed, puts the field into text mode before the
-    // listener below hears of it.
-    this.modeShown = this.mathFieldElement.mode;
+    this.setFieldValue(this.toFieldValue(this.value));
     this.mathFieldElement.addEventListener('pointerdown', this.onFramePointerDown);
     this.mathFieldElement.addEventListener('mode-change', this.onModeChange);
     this.mathFieldElement.addEventListener('selection-change', this.endTextInput);
@@ -166,7 +176,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   private readonly onModeChange = (event: Event): void => {
     const fallbackAtLineStart = this.enableModeSwitch && this.modeShown === 'text' &&
       this.mathFieldElement.mode === 'math' && this.isAtLineStart();
-    if (this.textInputUnderway || fallbackAtLineStart) {
+    if (!this.settingValueFromOutside && (this.textInputUnderway || fallbackAtLineStart)) {
       event.preventDefault();
     } else {
       this.modeShown = this.mathFieldElement.mode;
@@ -281,11 +291,31 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.mathFieldElement.keybindings = this.mathFieldElement.keybindings.filter(keybinding => (
       typeof keybinding.command !== 'string' || !MathInputComponent.ROW_COMMANDS.includes(keybinding.command)));
     if (this.multiline && this.mountedBefore) {
-      const value = this.toFieldValue(this.mathFieldElement.getValue());
-      this.mathFieldElement.setValue(value, { format: 'latex', mode: 'math' });
+      this.setFieldValue(this.toFieldValue(this.mathFieldElement.getValue()));
     }
     this.mountedBefore = true;
   };
+
+  /** Puts a value into the field that does not come from the student: the element's own, an answer that is
+      resumed, the field's own after a move or after Mehrzeilig was switched. See `valueSetFromOutside`.
+
+      The value is LaTeX whatever mode the field stands in. MathLive reads what is set in the field's
+      current mode, and a cursor in text made text of all of it: the editor's preset field, which keeps its
+      input when the selection moves on, took the next preset in as text after one that ends in text, and
+      x^2 became \text{x\textasciicircum2} (#1736). For the same reason the mode the value brings is the
+      field's, not one the student chose: `onModeChange` lets its change of mode through, though
+      `onBeforeInput` took the setting for text typed in text mode, and the switch then shows the mode the
+      value leaves the field in -- text mode for one that ends in text, as an answer that is resumed. */
+  private setFieldValue(value: string): void {
+    this.settingValueFromOutside = true;
+    try {
+      this.mathFieldElement.setValue(value, { format: 'latex', mode: 'math' });
+    } finally {
+      this.settingValueFromOutside = false;
+    }
+    this.valueSetFromOutside = this.mathFieldElement.getValue();
+    this.modeShown = this.mathFieldElement.mode;
+  }
 
   /** A press on the field's own frame -- its padding and border -- or on MathLive's container around
       its content reaches MathLive, which counts the field as focused but leaves the browser's focus
@@ -306,7 +336,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange &&
       changes.value.currentValue !== this.mathFieldElement.getValue()) {
-      this.mathFieldElement.setValue(this.toFieldValue(changes.value.currentValue), { format: 'latex' });
+      this.setFieldValue(this.toFieldValue(changes.value.currentValue));
     }
     if (changes.placeholder && this.mathFieldElement) {
       this.mathFieldElement.placeholder = changes.placeholder.currentValue;
@@ -317,8 +347,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (changes.multiline && !changes.multiline.firstChange) {
       this.updateWrapStyle();
       if (!this.multiline) this.rebuildField();
-      // As a formula, as in `onMount`.
-      this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex', mode: 'math' });
+      this.setFieldValue(this.toFieldValue(this.value));
     }
   }
 
@@ -429,13 +458,17 @@ export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   /** After a deletion, a root or fraction that was emptied gets its box back before the value goes out
-      (#760), and a field left with nothing but empty lines is emptied (#1692). */
+      (#760), and a field left with nothing but empty lines is emptied (#1692). The input that only
+      announces a value set from outside does not go out (#1734). */
   onInput(event: Event) {
     if (MathInputComponent.isDeletion(event)) {
       EmptyBoxRestorer.restore(this.mathFieldElement, this.boxesBeforeInput);
       this.removeEmptyLines();
     }
-    this.valueChange.emit(this.mathFieldElement.getValue());
+    const value = this.mathFieldElement.getValue();
+    if (value === this.valueSetFromOutside) return;
+    this.valueSetFromOutside = undefined;
+    this.valueChange.emit(value);
   }
 
   /** Text deleted across several lines at once, as when all of it is selected, leaves the lines behind,

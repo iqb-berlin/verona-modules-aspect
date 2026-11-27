@@ -55,6 +55,103 @@ describe('MathInputComponent', () => {
     expect(component.mathFieldElement.getValue()).toBe('');
   });
 
+  /* The editor's preset field keeps its input when the selection moves on to another formula field. After
+     a preset that ends in text the field stood in text mode, took the next preset in as text and saved
+     it so: x^2 became \text{x\textasciicircum2} (#1736). */
+  it('should take a formula handed in later as a formula while the field is in text mode (#1736)', fakeAsync(() => {
+    component.enableModeSwitch = true;
+    component.ngOnChanges({ value: new SimpleChange('1+2', '\\text{abc}', false) });
+    tick();
+    expect(component.mathFieldElement.mode).toBe('text');
+    component.ngOnChanges({ value: new SimpleChange('\\text{abc}', 'x^2', false) });
+    tick();
+    expect(component.mathFieldElement.getValue()).toBe('x^2');
+    expect(component.mathFieldElement.mode).toBe('math');
+  }));
+
+  /* A field in a test is on the page when it is set up, as in the paging mode concat-scroll. A value set
+     there from outside went out as input, and the player reported an untouched field as changed (#1734).
+     Not fakeAsync (§7) where the field is set up or moved in the test: MathLive's announcement is then
+     scheduled from the fixture's NgZone or from its own mount, which tick() does not reach. */
+  describe('given a value from outside (#1734)', () => {
+    const nextTurn = (): Promise<unknown> => new Promise(resolve => {
+      setTimeout(resolve);
+    });
+    let typedField: MathfieldElement | undefined;
+
+    afterEach(() => {
+      typedField?.blur();
+      typedField = undefined;
+      window.mathVirtualKeyboard.hide();
+    });
+
+    it('should not emit a value handed in twice before MathLive announces it', fakeAsync(() => {
+      const emitSpy = vi.spyOn(component.valueChange, 'emit');
+      component.ngOnChanges({ value: new SimpleChange('1+2', 'x^2', false) });
+      component.ngOnChanges({ value: new SimpleChange('x^2', 'x^3', false) });
+      tick();
+      expect(emitSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should not emit the value it is set up with', async () => {
+      const presetFixture = TestBed.createComponent(MathInputComponent);
+      presetFixture.componentInstance.value = 'x^2';
+      const emitSpy = vi.spyOn(presetFixture.componentInstance.valueChange, 'emit');
+      presetFixture.detectChanges();
+      await nextTurn();
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not emit a value handed in later', fakeAsync(() => {
+      const emitSpy = vi.spyOn(component.valueChange, 'emit');
+      component.ngOnChanges({ value: new SimpleChange('1+2', 'x^2', false) });
+      tick();
+      expect(emitSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should not emit the value a multi-line field gets back after a move in the page', async () => {
+      const multilineFixture = TestBed.createComponent(MathInputComponent);
+      multilineFixture.componentInstance.value = 'x';
+      multilineFixture.componentInstance.multiline = true;
+      multilineFixture.detectChanges();
+      await nextTurn();
+      const field = multilineFixture.componentInstance.mathFieldElement;
+      const emitSpy = vi.spyOn(multilineFixture.componentInstance.valueChange, 'emit');
+      const mounted = new Promise(resolve => {
+        field.addEventListener('mount', resolve, { once: true });
+      });
+      field.parentElement?.appendChild(field);
+      await mounted;
+      await nextTurn();
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+
+    /* A field set up before its page joins the document, as in the paging mode separate, hears nothing
+       of its value: the first input is the student's own and goes out, even with the value not passed
+       over yet. */
+    it('should emit the first input after a value that was not announced', async () => {
+      const lateFixture = TestBed.createComponent(MathInputComponent);
+      const host = lateFixture.nativeElement as HTMLElement;
+      const page = host.parentElement as HTMLElement;
+      host.remove();
+      lateFixture.componentInstance.value = 'x';
+      lateFixture.detectChanges();
+      const field = lateFixture.componentInstance.mathFieldElement;
+      const mounted = new Promise(resolve => {
+        field.addEventListener('mount', resolve, { once: true });
+      });
+      page.appendChild(host);
+      await mounted;
+      await nextTurn();
+      const emitSpy = vi.spyOn(lateFixture.componentInstance.valueChange, 'emit');
+      typedField = field;
+      field.focus();
+      field.executeCommand(['typedText', '2']);
+      await nextTurn();
+      expect(emitSpy).toHaveBeenCalledWith('x2');
+    });
+  });
+
   describe('on a press on the field\'s frame (#1648)', () => {
     /* Inside the padding, so that MathLive takes the press as one on the field and counts it as
        focused -- the state in which only the browser's focus is missing. */

@@ -1,5 +1,5 @@
 import {
-  addElementHover, addNewSection, keycapWith, pressKeycap, setPreferencesElement, setCheckbox,
+  addElementHover, addNewSection, addPostMessageStub, keycapWith, pressKeycap, setPreferencesElement, setCheckbox,
   VISIBLE_KEYBOARD_LAYER
 } from '../util';
 
@@ -237,6 +237,30 @@ describe('Math-field element', { testIsolation: false }, () => {
         expect(glyph('1').getBoundingClientRect().width, '1').to.be.closeTo(advance('1', '400'), 0.1);
       });
       cy.clickOutside();
+    });
+  });
+
+  /* In the paging mode concat-scroll a page is part of the document already when its fields are set up,
+     and MathLive announced the preset as input: the player reported the untouched field as changed
+     (#1734). VALUE_CHANGED is final, so the first assertion fails on its own, the second names the cause. */
+  context('player in the paging mode concat-scroll', () => {
+    before('opens a player, and loads the saved unit scrolled together', () => {
+      cy.openPlayer();
+      addPostMessageStub();
+      cy.loadUnitWithOptions('../downloads/math-field.json', { pagingMode: 'concat-scroll' });
+    });
+
+    it('reports the untouched math-field with a preset as displayed, not as changed (#1734)', () => {
+      const presetCode = (status: string) => Cypress.sinon.match.has(
+        'unitState',
+        Cypress.sinon.match.has(
+          'dataParts',
+          Cypress.sinon.match.has('elementCodes', Cypress.sinon.match(`"status":"${status}","value":"abc"`))
+        )
+      );
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').scrollIntoView();
+      cy.get('@postMessage').should('be.calledWithMatch', presetCode('DISPLAYED'));
+      cy.get('@postMessage').should('not.be.calledWithMatch', presetCode('VALUE_CHANGED'));
     });
   });
 });

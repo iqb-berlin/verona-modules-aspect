@@ -19,10 +19,14 @@ export class ValidationService {
      before it shows any "input required" message.
 
      A unit whose elements need no validation has no controls here and counts as complete: there is
-     nothing left to answer. */
+     nothing left to answer. A disabled control is left out the same way: the write protection of a
+     slider or a toggle button disables it (`IsDisabledDirective`), nobody can answer it, and Angular
+     never counts a disabled control as valid, so a read-only required element held the progress below
+     complete for good (#1735). */
   get responseProgress(): Progress {
-    const validControls = this.formControls.filter(control => control.valid);
-    if (validControls.length === this.formControls.length) return 'complete';
+    const answerableControls = this.formControls.filter(control => !control.disabled);
+    const validControls = answerableControls.filter(control => control.valid);
+    if (validControls.length === answerableControls.length) return 'complete';
     return validControls.length ? 'some' : 'none';
   }
 

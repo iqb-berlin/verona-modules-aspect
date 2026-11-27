@@ -16,7 +16,7 @@ import {
   SUBLIST_CLOZE_TEXT
 } from '../helpers/cloze-util';
 import { connectLists, dragTo } from '../helpers/droplist-util';
-import { checkboxInput, setCheckbox } from '../util';
+import { addPostMessageStub, checkboxInput, setCheckbox } from '../util';
 
 describe('Cloze element', { testIsolation: false }, () => {
   context('editor', () => {
@@ -117,7 +117,27 @@ describe('Cloze element', { testIsolation: false }, () => {
   context('player', () => {
     before('opens player and loads unit', () => {
       cy.openPlayer();
+      addPostMessageStub();
       cy.loadUnit('../downloads/cloze.json');
+    });
+
+    /* Setting the write protection on loading reached the host as an answer (#1732). VALUE_CHANGED is
+       final, so an untouched toggle button that is ever reported as changed is never reported as
+       displayed either: the first assertion fails on its own, the second names the cause. First in the
+       context, as Cypress keeps the alias of the stub made in `before` for the first test only. */
+    it('reports the untouched toggle-button as displayed, not as changed (#1732)', () => {
+      const toggleButtonCode = (status: string) => Cypress.sinon.match.has(
+        'unitState',
+        Cypress.sinon.match.has(
+          'dataParts',
+          Cypress.sinon.match.has('elementCodes', Cypress.sinon.match(
+            new RegExp(`\\{"id":"toggle-button_\\d+","status":"${status}"`)
+          ))
+        )
+      );
+      cy.get('aspect-cloze').eq(3).scrollIntoView();
+      cy.get('@postMessage').should('be.calledWithMatch', toggleButtonCode('DISPLAYED'));
+      cy.get('@postMessage').should('not.be.calledWithMatch', toggleButtonCode('VALUE_CHANGED'));
     });
 
     it('renders all cloze elements', () => {

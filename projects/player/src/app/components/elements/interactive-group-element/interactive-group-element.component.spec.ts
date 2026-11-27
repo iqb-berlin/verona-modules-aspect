@@ -309,6 +309,56 @@ describe('InteractiveGroupElementComponent', () => {
     expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', second, row);
   }));
 
+  /* Tapping a cell and right away the cell that had the focus before ends four pauses in a row; each decided
+     on the keys for the cell of its own focus or blur, and the cell tapped again lost them (#1710). */
+  it('should leave the keys with the cell tapped last while the pauses of the taps before end', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.inputAssistancePreset = 'numbers';
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    const pauses: (() => void)[] = [];
+    const keypad = {
+      enterKey,
+      deleteCharacters: new EventEmitter<boolean>(),
+      select: new EventEmitter<string>(),
+      isOpen: true,
+      close: vi.fn()
+    } as unknown as KeypadService;
+    keypad.toggleAsync = ({ focused }) => new Promise<boolean>(resolve => {
+      pauses.push(() => {
+        keypad.isOpen = focused;
+        resolve(focused);
+      });
+    });
+    component.keypadService = keypad;
+    const row = { cells: [] } as unknown as MathTableRow;
+    const [first, second] = [{ value: '' }, { value: '' }] as unknown as MathTableCell[];
+    const [firstInput, secondInput] = [document.createElement('td'), document.createElement('td')];
+    const mathTable = fixture.debugElement.query(By.directive(MathTableStubComponent))
+      .componentInstance as MathTableStubComponent;
+    component.toggleKeyInput({
+      inputElement: secondInput, row, cell: second, focused: false
+    });
+    component.toggleKeyInput({
+      inputElement: firstInput, row, cell: first, focused: true
+    });
+    component.toggleKeyInput({
+      inputElement: firstInput, row, cell: first, focused: false
+    });
+    component.toggleKeyInput({
+      inputElement: secondInput, row, cell: second, focused: true
+    });
+
+    pauses[0]();
+    flushMicrotasks();
+    pauses[1]();
+    flushMicrotasks();
+    enterKey.emit('2');
+
+    expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', second, row);
+  }));
+
   it('should leave a key of the keypad to a field elsewhere that has taken the focus', fakeAsync(() => {
     const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
     elementModel.showSoftwareKeyboard = false;

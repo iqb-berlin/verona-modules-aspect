@@ -47,6 +47,9 @@ export class InteractiveGroupElementComponent
 
   keyboardEnterKeySubscription!: Subscription;
   keyboardDeleteCharactersSubscription!: Subscription;
+  /** Counts the toggles of keyboard and keypad; only the latest one decides on the subscriptions, as in
+      `TextInputGroupDirective.keyToggles` (#1710). */
+  private keyToggles: number = 0;
 
   selectedColor: string | undefined;
   markingMode: 'selection' | 'word' | 'range' = 'selection';
@@ -157,16 +160,19 @@ export class InteractiveGroupElementComponent
         .toggleAsync(focusedTextInput, this.elementComponent as MathTableComponent));
     }
     if (promises.length) {
+      this.keyToggles += 1;
+      const toggle = this.keyToggles;
       await Promise.all(promises).then(() => {
-        if (this.keyboardService.isOpen) {
-          this.subscribeForKeyboardEvents(focusedTextInput);
-        } else {
+        if (toggle !== this.keyToggles) return;
+        if (!this.keyboardService.isOpen) {
           this.unsubscribeFromKeyboardEvents();
+        } else if (focusedTextInput.focused) {
+          this.subscribeForKeyboardEvents(focusedTextInput);
         }
-        if (this.keypadService.isOpen) {
-          this.subscribeForKeypadEvents(focusedTextInput);
-        } else {
+        if (!this.keypadService.isOpen) {
           this.unsubscribeFromKeypadEvents();
+        } else if (focusedTextInput.focused) {
+          this.subscribeForKeypadEvents(focusedTextInput);
         }
         this.isKeypadOpen = this.keypadService.isOpen;
       });

@@ -560,11 +560,82 @@ describe('TextInputGroupDirective', () => {
       focus(other, nextField, createTextFieldComponent(writtenByOther));
       keys.enterKey.emit('b');
       flushMicrotasks();
+      other.ngOnDestroy();
 
       expect(written).toEqual([]);
       expect(writtenByOther).toEqual(['b']);
-      other.ngOnDestroy();
     }));
+
+    /* Two gaps of a cloze belong to one directive. Tapping one gap and right away the gap that had the focus
+       before ends four pauses in a row. Each decided on the keys for the gap of its own focus or blur: the
+       blur of the gap tapped again dropped the keys it had taken back, or the focus of the other one took
+       them and got the text of the gap tapped again written into it. */
+    it('should leave the keys with the gap tapped last while the pauses of the taps before end', fakeAsync(() => {
+      const pauses: (() => void)[] = [];
+      const keyboard = { ...keys, isOpen: true, close: vi.fn() } as unknown as KeyboardService;
+      keyboard.toggleAsync = ({ focused }) => new Promise<boolean>(resolve => {
+        pauses.push(() => {
+          keyboard.isOpen = focused;
+          resolve(focused);
+        });
+      });
+      directive.keyboardService = keyboard;
+      const writtenToFirst: string[] = [];
+      const writtenToLast: string[] = [];
+      const first = createTextFieldComponent(writtenToFirst);
+      const last = createTextFieldComponent(writtenToLast);
+      directive.toggleKeyInput({ inputElement: nextField, focused: false }, last);
+      focus(directive, inputElement, first);
+      directive.toggleKeyInput({ inputElement, focused: false }, first);
+      focus(directive, nextField, last);
+
+      // The blur of the gap tapped again closes the keyboard, the focus of the other gap opens it again
+      pauses[0]();
+      flushMicrotasks();
+      pauses[1]();
+      flushMicrotasks();
+      keys.enterKey.emit('x');
+
+      expect(writtenToFirst).toEqual([]);
+      expect(writtenToLast).toEqual(['x']);
+    }));
+
+    describe('field restricted to the characters of its input assistance', () => {
+      /** Focuses a restricted field while the keypad is still open for the given element. */
+      const focusRestricted = (keypadOpenFor: TextInputComponentType | null, written: string[]): void => {
+        const elementComponent = createTextFieldComponent(written);
+        const elementModel = elementComponent.elementModel as TextFieldElement;
+        elementModel.inputAssistancePreset = 'numbers';
+        elementModel.restrictedToInputAssistanceChars = true;
+        elementModel.showSoftwareKeyboard = false;
+        directive.keypadService = {
+          ...keys,
+          isOpen: true,
+          elementComponent: keypadOpenFor ?? elementComponent,
+          toggleAsync: () => new Promise<boolean>(() => {}),
+          close: vi.fn()
+        } as unknown as KeypadService;
+        focus(directive, nextField, elementComponent);
+      };
+
+      it('should not take a key of the keypad still open for another element', fakeAsync(() => {
+        const written: string[] = [];
+        focusRestricted(createTextFieldComponent([]), written);
+
+        keys.enterKey.emit('x');
+
+        expect(written).toEqual([]);
+      }));
+
+      it('should take a key of the keypad open for its own element at once', fakeAsync(() => {
+        const written: string[] = [];
+        focusRestricted(null, written);
+
+        keys.enterKey.emit('1');
+
+        expect(written).toEqual(['1']);
+      }));
+    });
   });
 
   describe('word count', () => {

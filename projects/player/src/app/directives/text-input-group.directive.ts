@@ -30,6 +30,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
   /** The field this component put under key restriction, kept to release exactly that one again. */
   private restrictedInputElement?: HTMLElement;
+  /**
+   * Counts the toggles of keyboard and keypad, one for each focus and blur of a field that uses them. Only the
+   * toggle of the latest one subscribes or drops the keys when its pause is over. One before it acted on the
+   * state of a field the focus has left since: in a cloze, a gap tapped right before the next one subscribed
+   * the keys again and got the text of the next gap written into it, and the blur of a gap tapped again
+   * dropped the keys it had taken back (#1710).
+   */
+  private keyToggles: number = 0;
 
   keypadEnterKeySubscription!: Subscription;
   keypadDeleteCharactersSubscription!: Subscription;
@@ -110,17 +118,20 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
       }
       if (promises.length) {
+        this.keyToggles += 1;
+        const toggle = this.keyToggles;
         await Promise.all(promises)
           .then(() => {
-            if (this.keyboardService.isOpen) {
-              this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
-            } else {
+            if (toggle !== this.keyToggles) return;
+            if (!this.keyboardService.isOpen) {
               this.unsubscribeFromKeyboardEvents();
+            } else if (focusedTextInput.focused) {
+              this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
             }
-            if (this.keypadService.isOpen) {
-              this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
-            } else {
+            if (!this.keypadService.isOpen) {
               this.unsubscribeFromKeypadEvents();
+            } else if (focusedTextInput.focused) {
+              this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
             }
             this.isKeypadOpen = this.keypadService.isOpen;
             if (this.keyboardService.isOpen || this.keypadService.isOpen) {
@@ -139,12 +150,23 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   private takeKeys(inputElement: HTMLElement, elementComponent: TextInputComponentType,
                    usesKeyboard: boolean, usesKeypad: boolean): void {
     this.inputElement = this.getInputElement(inputElement);
-    if (usesKeyboard && this.keyboardService.isOpen) {
+    if (usesKeyboard && TextInputGroupDirective.showsKeysFor(this.keyboardService, elementComponent)) {
       this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
     }
-    if (usesKeypad && this.keypadService.isOpen) {
+    if (usesKeypad && TextInputGroupDirective.showsKeysFor(this.keypadService, elementComponent)) {
       this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
     }
+  }
+
+  /**
+   * Whether the aid is open with keys the field may take before the aid has opened for it: its own, or any
+   * keys for a field that takes any character. Until the pause is over the aid still shows the keys of the
+   * element before, and a field restricted to its own input assistance would get a character it refuses
+   * from them (#1143); it waits for its own aid.
+   */
+  private static showsKeysFor(inputService: InputService, elementComponent: TextInputComponentType): boolean {
+    return inputService.isOpen && (inputService.elementComponent === elementComponent ||
+      !elementComponent.elementModel.restrictedToInputAssistanceChars);
   }
 
   /** Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,

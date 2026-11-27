@@ -450,7 +450,7 @@ describe('InteractiveGroupElementComponent', () => {
     expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', cell, row);
   }));
 
-  it('should leave a key of the on-screen keyboard to a field elsewhere that has taken the focus', fakeAsync(() => {
+  it('should leave a keyboard key to a field elsewhere that has taken the focus (#1710)', fakeAsync(() => {
     const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
     elementModel.showSoftwareKeyboard = true;
     initComponent(elementModel);

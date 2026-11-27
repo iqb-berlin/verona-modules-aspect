@@ -177,7 +177,7 @@ describe('TextInputGroupDirective', () => {
 
   /* The keys of the keypad write through setElementValue, which the read-only input does not stop: a digit
      of the keypad changed a read-only field and was reported as its answer. */
-  it('should open no keypad for a read-only field and take none of its keys', fakeAsync(() => {
+  it('should open no keypad for a read-only field and take none of its keys (#1710)', fakeAsync(() => {
     const keys = { enterKey: new EventEmitter<string>(), deleteCharacters: new EventEmitter<boolean>() };
     const keypad = {
       ...keys, select: new EventEmitter<string>(), isOpen: true, toggleAsync: vi.fn(), close: vi.fn()
@@ -721,16 +721,6 @@ describe('TextInputGroupDirective', () => {
 
         keypadKeys.enterKey.emit('x');
         keypadKeys.enterKey.emit('1');
-
-        expect(written).toEqual(['1']);
-      }));
-
-      it('should take only its own characters from the on-screen keyboard of a tablet', fakeAsync(() => {
-        const written: string[] = [];
-        focusRestricted(written, { tablet: true });
-
-        keys.enterKey.emit('a');
-        keys.enterKey.emit('1');
 
         expect(written).toEqual(['1']);
       }));

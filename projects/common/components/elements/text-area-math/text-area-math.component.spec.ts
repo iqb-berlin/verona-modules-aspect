@@ -200,9 +200,9 @@ describe('TextAreaMathComponent', () => {
       expect(setFocus).toHaveBeenCalledTimes(1);
     }));
 
-    /* The empty segment a press adds to an empty area is a value: it reported a read-only area as answered
-       after a mere click. */
-    it('leaves a read-only area as it is', fakeAsync(() => {
+    /* Not part of #1218: the empty segment a press adds to an empty area is a value, and it reported a
+       read-only area as answered after a mere click (#1710). */
+    it('leaves a read-only area as it is (#1710)', fakeAsync(() => {
       component.elementModel.readOnly = true;
       const valueChanged = vi.fn();
       component.elementFormControl.valueChanges.subscribe(valueChanged);

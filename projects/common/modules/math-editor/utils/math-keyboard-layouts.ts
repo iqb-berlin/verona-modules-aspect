@@ -1,8 +1,17 @@
-import { VirtualKeyboardLayout } from 'mathlive';
+import { VirtualKeyboardKeycap, VirtualKeyboardLayout } from 'mathlive';
 import { MathKeyboardPreset, TEXT_MATH_KEYBOARD_PRESETS } from 'common/models/input-element-interfaces';
-import { FORMULA_KEYBOARD_PRESETS } from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
+import {
+  ENTER_KEY, FORMULA_KEYBOARD_PRESETS
+} from 'common/modules/math-editor/configs/formula-keyboard-presets.config';
 
-type PresetLayout = { preset: MathKeyboardPreset; layout: VirtualKeyboardLayout };
+/** `multilineLayout` takes the place of `layout` in a multi-line field. */
+type PresetLayout = {
+  preset: MathKeyboardPreset;
+  layout: VirtualKeyboardLayout;
+  multilineLayout?: VirtualKeyboardLayout;
+};
+
+type KeyboardRows = (string | Partial<VirtualKeyboardKeycap>)[][];
 
 /**
  * Which layouts the formula keyboard offers a field, and on which of them it opens.
@@ -13,8 +22,12 @@ type PresetLayout = { preset: MathKeyboardPreset; layout: VirtualKeyboardLayout 
  * tabs stay at hand, so that `2x+3` can take its x from the letters. Without a preset of the mode's group
  * the keyboard opens on its first tab.
  *
- * The layouts handed out are the constants of `FORMULA_KEYBOARD_PRESETS` themselves, never copies: the
- * math input assigns them only when they are not the keyboard's already (#1600).
+ * A multi-line field gets the Latin letters with the Enter key, which starts a new line in text mode
+ * (#1696); a single-line field, the Formelbereich among them, gets them as they are.
+ *
+ * The layouts handed out are always the same objects -- those of `FORMULA_KEYBOARD_PRESETS`, and the
+ * variant with the Enter key, made once here -- never fresh copies: the math input assigns them only when
+ * they are not the keyboard's already (#1600).
  */
 export class MathKeyboardLayouts {
   /** The presets in the order of their tabs, each with its layout. */
@@ -22,13 +35,18 @@ export class MathKeyboardLayouts {
     { preset: 'physics', layout: FORMULA_KEYBOARD_PRESETS.iqbPhysics },
     { preset: 'math', layout: FORMULA_KEYBOARD_PRESETS.iqbNumeric },
     { preset: 'symbols', layout: FORMULA_KEYBOARD_PRESETS.iqbSymbols },
-    { preset: 'latin', layout: FORMULA_KEYBOARD_PRESETS.iqbText },
+    {
+      preset: 'latin',
+      layout: FORMULA_KEYBOARD_PRESETS.iqbText,
+      multilineLayout: MathKeyboardLayouts.withEnterKey(FORMULA_KEYBOARD_PRESETS.iqbText)
+    },
     { preset: 'greek', layout: FORMULA_KEYBOARD_PRESETS.iqbGreek }
   ];
 
   /** The layouts of the selected presets, in the order of their tabs. */
-  static select(presets: MathKeyboardPreset[]): VirtualKeyboardLayout[] {
-    return MathKeyboardLayouts.selected(presets).map(entry => entry.layout);
+  static select(presets: MathKeyboardPreset[], multiline: boolean): VirtualKeyboardLayout[] {
+    return MathKeyboardLayouts.selected(presets)
+      .map(entry => (multiline && entry.multilineLayout) || entry.layout);
   }
 
   /** The position, among the layouts of `select`, of the one the keyboard opens on in `mode`. */
@@ -40,5 +58,21 @@ export class MathKeyboardLayouts {
 
   private static selected(presets: MathKeyboardPreset[]): PresetLayout[] {
     return MathKeyboardLayouts.ORDER.filter(entry => presets.includes(entry.preset));
+  }
+
+  /** A copy of `layout` with `ENTER_KEY` at the end of the bottom row of each of its layers. */
+  private static withEnterKey(layout: VirtualKeyboardLayout): VirtualKeyboardLayout {
+    const withEnterKeyInRows = (rows: KeyboardRows): KeyboardRows => [
+      ...rows.slice(0, -1),
+      [...rows[rows.length - 1], ENTER_KEY]
+    ];
+    if ('rows' in layout) return { ...layout, rows: withEnterKeyInRows(layout.rows) };
+    if (!('layers' in layout)) return layout;
+    return {
+      ...layout,
+      layers: layout.layers.map(layer => (typeof layer === 'string' || !layer.rows ?
+        layer :
+        { ...layer, rows: withEnterKeyInRows(layer.rows) }))
+    };
   }
 }

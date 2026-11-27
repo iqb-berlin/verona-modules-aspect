@@ -289,3 +289,5 @@ iqb-aspect-definition@1.0.0
 4.14.0
 - Section:
   - visibilityRules[].operator: new values 'answered', 'notAnswered', 'changed', 'notChanged' (#1718)
+- MathFieldElement:
+  - new property: multiline: boolean (default false) (#1696)

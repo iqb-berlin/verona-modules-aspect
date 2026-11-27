@@ -1,6 +1,6 @@
 {
   "type": "aspect-unit-definition",
-  "version": "4.13.0",
+  "version": "4.14.0",
   "pages": [
     {
       "sections": [
@@ -22,6 +22,31 @@
               "id": "math-field_fixed",
               "alias": "math-field_fixed",
               "mathKeyboardPresets": ["latin", "greek"]
+            }
+          ]
+        },
+        {
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math-field_multiline",
+              "alias": "math-field_multiline",
+              "enableModeSwitch": true,
+              "multiline": true,
+              "mathKeyboardPresets": ["math", "latin"]
+            }
+          ]
+        },
+        {
+          "elements": [
+            {
+              "type": "math-field",
+              "id": "math-field_lines",
+              "alias": "math-field_lines",
+              "enableModeSwitch": true,
+              "multiline": true,
+              "mathKeyboardPresets": ["math", "latin"],
+              "value": "\\displaylines{x+1\\\\ \\text{ab}}"
             }
           ]
         }

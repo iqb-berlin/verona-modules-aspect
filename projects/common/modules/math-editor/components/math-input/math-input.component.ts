@@ -6,6 +6,7 @@ import {
   Input,
   NgZone,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -23,17 +24,20 @@ import { EmptyBoxRestorer } from 'common/modules/math-editor/utils/empty-box-res
   styleUrls: ['./math-input.component.scss'],
   standalone: false
 })
-export class MathInputComponent implements AfterViewInit, OnChanges {
+export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
   @Input() mathKeyboardPresets: MathKeyboardPreset[] = [];
   @Input() placeholder: string = '';
-  /** Lets Enter start a new line and wraps text that is too long for one; a formula stays on one line.
+  /** Lets Enter start a new line in text mode (`onBeforeInput`) and wraps text that is too long for one; a
+      formula stays on one line.
       MathLive adds a row only inside a multi-line environment, so the field gets its value wrapped in
       `\displaylines{}`; MathLive drops the wrapper again from a value of one line, which is therefore
-      stored as before. Wrapping is display only: it changes nothing in the value. */
+      stored as before. Wrapping is display only: it changes nothing in the value. The letters of the
+      formula keyboard get an Enter key for text mode (#1696). Can change after the setup: the editor
+      switches it on the field it shows. */
   @Input() multiline: boolean = false;
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
@@ -68,13 +72,17 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       The one shortcut kept gives `*` the multiplication sign of the formula keyboard's × key. */
   private static readonly INLINE_SHORTCUTS = { '*': '\\cdot' };
 
+  /** The commands of MathLive's keyboard shortcuts that add a line in formula mode, Ctrl+Enter and Alt+Enter
+      among them. They add it directly, without the line break that `onBeforeInput` lets through only in text
+      mode, and are taken out of the field's shortcuts (#1696). */
+  private static readonly ROW_COMMANDS: readonly string[] = ['addRowAfter', 'addRowBefore'];
+
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
   });
 
-  /** The mode the field was in when Enter was pressed. MathLive starts every new line in math mode,
-      where a space is not typed at all; a line of text is to be followed by another one. */
-  private modeBeforeEnter?: ParseMode;
+  /** The rules of `WRAP_STYLE` in MathLive's shadow root, while the field is multi-line. */
+  private wrapStyle?: HTMLStyleElement;
 
   /** Whether MathLive has built the field before, see `onMount`. */
   private mountedBefore = false;
@@ -92,6 +100,13 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   /** Whether the deletion under way removes a selection, see `removeEmptyLines`. */
   private selectionDeleted = false;
 
+  /** Where an arrow key found the cursor in formula mode, and the selection with it, until the move is made,
+      see `keepLine`. */
+  private moveStart?: { position: number; selection: MathfieldElement['selection']; collapsed: boolean };
+
+  /** Whether the change under way is a line break, whose line MathLive announces next, see `onBeforeInput`. */
+  private lineBreakUnderway = false;
+
   /** Held so that the two focusout events of one blur -- the browser's and mathlive's own -- are acted on once. */
   private focusOutTimeout?: ReturnType<typeof setTimeout>;
 
@@ -100,6 +115,12 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.setupMathField();
     MathKeyboardAdapter.listen();
+    MathKeyboardAdapter.keyboard.addEventListener('math-virtual-keyboard-command', this.onKeyboardCommand);
+  }
+
+  /** The keyboard is the page's, and outlives the field. */
+  ngOnDestroy(): void {
+    MathKeyboardAdapter.keyboard.removeEventListener('math-virtual-keyboard-command', this.onKeyboardCommand);
   }
 
   private setupMathField(): void {
@@ -108,17 +129,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.readOnly = this.readonly;
     this.mathFieldElement.placeholder = this.placeholder;
-    if (this.multiline) {
-      this.addShadowStyle(MathInputComponent.WRAP_STYLE);
-      // Captured before MathLive adds the line, and back here after it, in the same keydown: the
-      // next character may follow at once.
-      this.mathFieldElement.addEventListener('keydown', event => {
-        if (event.key === 'Enter') this.modeBeforeEnter = this.mathFieldElement.mode;
-      }, { capture: true });
-      this.mathFieldElement.addEventListener('keydown', event => {
-        if (event.key === 'Enter' && this.modeBeforeEnter === 'text') this.mathFieldElement.mode = 'text';
-      });
-    }
+    this.updateWrapStyle();
     this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex' });
     // A value that ends in text, as an answer that is resumed, puts the field into text mode before the
     // listener below hears of it.
@@ -126,6 +137,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.mathFieldElement.addEventListener('pointerdown', this.onFramePointerDown);
     this.mathFieldElement.addEventListener('mode-change', this.onModeChange);
     this.mathFieldElement.addEventListener('selection-change', this.endTextInput);
+    // Before MathLive, which listens on its own input element in the shadow root.
+    this.mathFieldElement.addEventListener('keydown', this.onMoveKey, { capture: true });
+    this.mathFieldElement.addEventListener('selection-change', this.keepLine);
   }
 
   /** In a field whose input mode can be switched, what is typed or inserted in text mode leaves the field in
@@ -142,7 +156,13 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       that is resumed. Only the change from text is called off: a LaTeX command closed at the start of a line
       goes into formula mode, as MathLive has it. A deletion that ends in a formula still takes the field into
       formula mode, and the box an emptied root or fraction gets back is a formula's (`onInput`). During the
-      event, `mode` is the mode MathLive changes to. */
+      event, `mode` is the mode MathLive changes to.
+
+      In a multi-line field, whether its mode can be switched or not, a new line started in text mode stays in
+      text mode: MathLive starts each line in formula mode, where a space is not typed at all, and a line of
+      text is to be followed by another.
+      This holds for Return and the Enter key of the formula keyboard alike, which fires no keydown
+      (#1696). */
   private readonly onModeChange = (event: Event): void => {
     const fallbackAtLineStart = this.enableModeSwitch && this.modeShown === 'text' &&
       this.mathFieldElement.mode === 'math' && this.isAtLineStart();
@@ -157,7 +177,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       MathLive names a place by the atom left of it; at the start of a line, that is the line's own empty
       first atom, at the top of the tree. The start of a numerator or of a radicand lies deeper. */
   private isAtLineStart(): boolean {
-    const atom = this.mathFieldElement.getElementInfo(this.mathFieldElement.position);
+    return this.isLineStartAt(this.mathFieldElement.position);
+  }
+
+  private isLineStartAt(offset: number): boolean {
+    const atom = this.mathFieldElement.getElementInfo(offset);
     return atom?.depth === 0 && atom.latex === '';
   }
 
@@ -166,19 +190,99 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.textInputUnderway = false;
   };
 
+  /** In formula mode, the arrow keys keep the cursor in its line (#1696): those of a physical keyboard and
+      those of the formula keyboard. Lines are for text, and at the end or the start of one, ← and → went on
+      into the next line, ↑ and ↓ into the line above or below. They still move between the parts of a
+      fraction, which lie in one line. A click or a tap on another line takes the cursor there, and the
+      other keys that move it, as Home and End and their Mac form Cmd and an arrow, do what MathLive has
+      them do. An arrow first collapses a selection, to its start or its end, also across lines; only where
+      the cursor goes from there is checked.
+      MathLive changes the mode for the new place before anything hears of the move, and has no event that
+      lets it be called off. So the place is noted before the move -- on the keydown of an arrow, or on the
+      command of the formula keyboard, which fires no keydown --, and the cursor is set back once the move is
+      made, when MathLive announces the selection, still within the same call. A selection is set back as it
+      was, as one that Shift and an arrow would extend into another line. Back there, the field stays in
+      formula mode, also where MathLive would take the mode of the text left of the cursor. */
+  private readonly keepLine = (): void => {
+    const start = this.moveStart;
+    if (!start) return;
+    if (!start.collapsed && this.mathFieldElement.selectionIsCollapsed) {
+      this.noteMoveStart();
+      return;
+    }
+    this.moveStart = undefined;
+    if (!this.lineStartBetween(start.position, this.mathFieldElement.position)) return;
+    // Before the cursor goes back: while the switch shows text, formula mode at the start of a line is called off.
+    this.modeShown = 'math';
+    this.mathFieldElement.selection = start.selection;
+    this.mathFieldElement.mode = 'math';
+  };
+
+  /** A keydown that something other than a keyboard dispatches may be a plain `Event`, without a key. */
+  private readonly onMoveKey = (event: Event): void => {
+    if (event instanceof KeyboardEvent && event.key.startsWith('Arrow') && !event.metaKey) this.startMove();
+  };
+
+  /** Each command of the formula keyboard goes to the field that has the focus. */
+  private readonly onKeyboardCommand = (event: Event): void => {
+    if (event instanceof CustomEvent && MathInputComponent.isMoveCommand(event.detail) &&
+      this.mathFieldElement.hasFocus()) {
+      this.startMove();
+    }
+  };
+
+  /** A move that MathLive does not make, as at the end of the field, is unmarked on the next turn of the
+      event loop, as in `onBeforeInput`. */
+  private startMove(): void {
+    if (this.mathFieldElement.mode !== 'math') return;
+    this.noteMoveStart();
+    this.ngZone.runOutsideAngular(() => setTimeout(() => {
+      this.moveStart = undefined;
+    }));
+  }
+
+  private noteMoveStart(): void {
+    this.moveStart = {
+      position: this.mathFieldElement.position,
+      selection: this.mathFieldElement.selection,
+      collapsed: this.mathFieldElement.selectionIsCollapsed
+    };
+  }
+
+  /** Whether a line starts between two places of the cursor, the later one included: whether a move from one
+      to the other leaves its line. */
+  private lineStartBetween(from: number, to: number): boolean {
+    for (let offset = Math.min(from, to) + 1; offset <= Math.max(from, to); offset += 1) {
+      if (this.isLineStartAt(offset)) return true;
+    }
+    return false;
+  }
+
+  /** Whether a command of the formula keyboard moves the cursor. Its arrows run `moveToPreviousChar` and
+      `moveToNextChar`, wrapped in `performWithFeedback`, which MathLive hands on as text or as a list. */
+  private static isMoveCommand(command: unknown): boolean {
+    const selectors: unknown[] = Array.isArray(command) ? command : [command];
+    return selectors.some(selector => typeof selector === 'string' && /(^|\()move/.test(selector));
+  }
+
   /** MathLive builds the field each time it joins the page: the first time, possibly later than the
       setup, and anew after every move in the page, as in a drag in the editor. Its context menu is
-      switched off then and its input shortcuts are replaced, as both exist only while the field is on
-      the page and setting them before throws; MathLive keeps neither across a move, and takes the
-      shortcuts as a constructor option only with a warning. A field built anew comes from what
+      switched off then, its input shortcuts are replaced and the keyboard shortcuts of `ROW_COMMANDS` are
+      taken out, as all three exist only while the field is on the page and setting them before throws;
+      MathLive keeps none of them across a move, and takes the input shortcuts as a constructor option only
+      with a warning. A field built anew comes from what
       MathLive kept of the old one, which is the value as text, and the text of one line has no
       `\displaylines`: a multi-line field gets it back, or Enter starts no new line. The first build
-      keeps the value the setup gave it. */
+      keeps the value the setup gave it. The value goes in as a formula: told no mode, MathLive would
+      take the mode at the cursor, and a cursor in text would make text of all of it. */
   private readonly onMount = (): void => {
     this.mathFieldElement.menuItems = [];
     this.mathFieldElement.inlineShortcuts = MathInputComponent.INLINE_SHORTCUTS;
+    this.mathFieldElement.keybindings = this.mathFieldElement.keybindings.filter(keybinding => (
+      typeof keybinding.command !== 'string' || !MathInputComponent.ROW_COMMANDS.includes(keybinding.command)));
     if (this.multiline && this.mountedBefore) {
-      this.mathFieldElement.setValue(this.toFieldValue(this.mathFieldElement.getValue()), { format: 'latex' });
+      const value = this.toFieldValue(this.mathFieldElement.getValue());
+      this.mathFieldElement.setValue(value, { format: 'latex', mode: 'math' });
     }
     this.mountedBefore = true;
   };
@@ -210,6 +314,31 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     if (changes.readonly && this.mathFieldElement) {
       this.mathFieldElement.readOnly = changes.readonly.currentValue;
     }
+    if (changes.multiline && !changes.multiline.firstChange) {
+      this.updateWrapStyle();
+      if (!this.multiline) this.rebuildField();
+      // As a formula, as in `onMount`.
+      this.mathFieldElement.setValue(this.toFieldValue(this.value), { format: 'latex', mode: 'math' });
+    }
+  }
+
+  /** MathLive makes a value in `\displaylines` the root of the field itself, and a value set later only
+      replaces what is inside it: the field stays multi-line. Moved in the page, the field is built anew
+      from its value as text (see `onMount`), and the text of one line has no `\displaylines`. A value of
+      several lines stays as it is. */
+  private rebuildField(): void {
+    this.inputRef.nativeElement.appendChild(this.mathFieldElement);
+  }
+
+  /** Puts the rules of `WRAP_STYLE` into MathLive's shadow root while the field is multi-line, and takes
+      them out again when it is made single-line. */
+  private updateWrapStyle(): void {
+    if (!this.multiline) {
+      this.wrapStyle?.remove();
+      this.wrapStyle = undefined;
+    } else if (!this.wrapStyle) {
+      this.wrapStyle = this.addShadowStyle(MathInputComponent.WRAP_STYLE);
+    }
   }
 
   private static createWrapStyle(): string {
@@ -232,10 +361,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   /** Rules for MathLive's shadow root, which no stylesheet outside reaches. A `<style>` of its own per field
       rather than one shared constructed sheet: `new CSSStyleSheet()` throws in Safari before 16.4, and
       would take every math input down with it. */
-  private addShadowStyle(rules: string): void {
+  private addShadowStyle(rules: string): HTMLStyleElement {
     const style = this.mathFieldElement.ownerDocument.createElement('style');
     style.textContent = rules;
     this.mathFieldElement.shadowRoot?.appendChild(style);
+    return style;
   }
 
   private toFieldValue(value: string | undefined): string {
@@ -262,16 +392,37 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     MathKeyboardAdapter.showLayout(this.openingIndex());
   }
 
-  /** Also marks something typed or inserted in text mode for `onModeChange`, until MathLive announces its
-      selection (`endTextInput`). A change that ends without one is unmarked on the next turn of the event
-      loop; not on the next microtask, which zone.js runs as soon as this listener returns, before the change
-      is made. A deletion is not marked: it takes the field into formula mode where it ends in a formula, as
-      before, and the box a root or fraction gets back after it is a formula's (`onInput`). */
+  /** Also marks something typed or inserted in text mode for `onModeChange` -- in a field whose mode can be
+      switched, and a new line in a multi-line field --, until MathLive announces its selection
+      (`endTextInput`). A change that ends without one is unmarked on the next turn of the event loop; not on
+      the next microtask, which zone.js runs as soon as this listener returns, before the change is made. A
+      deletion is not marked: it takes the field into formula mode where it ends in a formula, as before, and
+      the box a root or fraction gets back after it is a formula's (`onInput`). A new line is announced
+      twice, as the line break and as the line MathLive then adds (`isNewRow`), and stays marked until its
+      selection.
+      Only a multi-line field in text mode gets the new line (#1696). Everywhere else the line is called off,
+      not the line break, so that Return and the Enter key of the formula keyboard do what they do in a
+      single-line field. That covers a field without „Mehrzeilig“ whose value has several lines, where
+      MathLive would add the line all the same. The line is told by coming right after the line break:
+      announced on its own, it looks like an empty value set from outside. MathLive's shortcuts that add a
+      line without a line break are taken out in `onMount` (`ROW_COMMANDS`). */
   onBeforeInput(event: Event) {
+    const newRow = this.lineBreakUnderway && MathInputComponent.isNewRow(event);
+    this.lineBreakUnderway = MathInputComponent.isLineBreak(event);
+    if (this.lineBreakUnderway) {
+      this.ngZone.runOutsideAngular(() => setTimeout(() => {
+        this.lineBreakUnderway = false;
+      }));
+    }
+    if (newRow && !(this.multiline && this.mathFieldElement.mode === 'text')) {
+      event.preventDefault();
+      return;
+    }
     this.boxesBeforeInput = EmptyBoxRestorer.countBoxes(this.mathFieldElement);
     this.selectionDeleted = MathInputComponent.isDeletion(event) && !this.mathFieldElement.selectionIsCollapsed;
-    this.textInputUnderway = this.enableModeSwitch && this.mathFieldElement.mode === 'text' &&
-      !MathInputComponent.isDeletion(event);
+    this.textInputUnderway = !MathInputComponent.isDeletion(event) && (this.textInputUnderway ||
+      (this.mathFieldElement.mode === 'text' &&
+        (this.enableModeSwitch || (this.multiline && MathInputComponent.isLineBreak(event)))));
     if (this.textInputUnderway) {
       this.ngZone.runOutsideAngular(() => setTimeout(this.endTextInput));
     }
@@ -305,6 +456,19 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     return event instanceof InputEvent && (event.inputType || event.data || '').startsWith('delete');
   }
 
+  /** Whether MathLive's `beforeinput` is of Return or of the Enter key, read as `isDeletion` reads its own. */
+  private static isLineBreak(event: Event): boolean {
+    return event instanceof InputEvent && (event.inputType || event.data) === 'insertLineBreak';
+  }
+
+  /** Whether MathLive's `beforeinput` could be of the line it adds after a line break inside
+      `\displaylines`. MathLive announces the line as `insertText` without the text, and so hands on the type
+      as `data`, as for `isDeletion`. It does the same for an empty value, which is why `onBeforeInput` asks
+      only right after a line break. Text typed, inserted or pasted carries itself. */
+  private static isNewRow(event: Event): boolean {
+    return event instanceof InputEvent && event.data === 'insertText';
+  }
+
   /** A keyboard that was closed opens on the tab of `openingIndex`; one that is open keeps its tab, see
       `MathKeyboardAdapter.open`. */
   onFocusIn() {
@@ -327,7 +491,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
       bounces back into the field after every key tap, and the layout jumped back to the first one
       after each character (#1600). */
   private updateKeyboardLayout(): void {
-    const layouts = MathKeyboardLayouts.select(this.mathKeyboardPresets);
+    const layouts = MathKeyboardLayouts.select(this.mathKeyboardPresets, this.multiline);
     const currentLayouts = MathKeyboardAdapter.keyboard.layouts;
     if (currentLayouts.length === layouts.length &&
       layouts.every((layout, index) => currentLayouts[index] === layout)) return;

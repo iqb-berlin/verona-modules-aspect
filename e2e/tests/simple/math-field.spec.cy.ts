@@ -25,6 +25,8 @@ describe('Math-field element', { testIsolation: false }, () => {
 
     it('creates a math-field with a preset', () => {
       addElementHover('Formel', 'Feld');
+      setCheckbox('Eingabemodus änderbar', true);
+      setCheckbox('Mehrzeilig', true);
       cy.get('aspect-preset-value-properties').contains('mat-label', 'Vorbelegung')
         .closest('aspect-preset-value-properties').find('math-field')
         .shadow()
@@ -129,14 +131,36 @@ describe('Math-field element', { testIsolation: false }, () => {
       cy.clickOutside();
     });
 
-    it('checks that Enter starts a new line in the math-field (#1648)', () => {
-      cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').find('math-field')
+    /* „Mehrzeilig“ is for text: Return starts a new line in text mode, and none in formula mode (#1696).
+       The key goes to MathLive's own input element in the shadow root, which has the focus once the switch
+       has handed it back; typed into the content, Cypress would click it first and move the cursor. */
+    it('checks that Return starts a new line in text mode only in a math-field with „Mehrzeilig“ (#1696)', () => {
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Vorbelegung').within(() => {
+        cy.get('math-field').shadow().find('.ML__content').click()
+          .type('{end}{enter}d');
+        cy.get('math-field').should($el => {
+          const field = $el[0] as HTMLElement & { getValue(): string };
+          expect(field.getValue()).to.equal('abcd');
+        });
+        cy.contains('mat-button-toggle', 'Text').find('button').click({ force: true });
+        cy.get('math-field').shadow().find('[part=keyboard-sink]').type('{enter}e', { force: true });
+        cy.get('math-field').should($el => {
+          const field = $el[0] as HTMLElement & { getValue(): string };
+          expect(field.getValue()).to.equal('\\displaylines{abcd\\\\ \\text{e}}');
+        });
+      });
+      cy.clickOutside();
+    });
+
+    // Every math field was multi-line with #1648; only those with the option are (#1696).
+    it('checks that Enter starts no new line in a math-field without „Mehrzeilig“ (#1696)', () => {
+      cy.contains('aspect-element-group-selection', 'Formel Feld mit Pflichtfeld').find('math-field')
         .then($mathField => {
           cy.wrap($mathField).shadow().find('.ML__content').click()
-            .type('{end}{enter}d');
+            .type('a{enter}b');
           cy.wrap($mathField).should($el => {
             const field = $el[0] as HTMLElement & { getValue(): string };
-            expect(field.getValue()).to.equal('\\displaylines{abc\\\\ d}');
+            expect(field.getValue()).to.equal('ab');
           });
         });
       cy.clickOutside();

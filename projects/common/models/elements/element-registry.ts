@@ -605,6 +605,7 @@ export const ELEMENT_DEFAULTS = {
   },
   'math-field': {
     enableModeSwitch: false,
+    multiline: false,
     mathKeyboardPresets: ['math', 'symbols', 'latin', 'greek'],
     required: false,
     requiredWarnMessage: 'Eingabe erforderlich',

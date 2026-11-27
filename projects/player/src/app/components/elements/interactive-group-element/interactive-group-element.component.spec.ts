@@ -420,6 +420,59 @@ describe('InteractiveGroupElementComponent', () => {
     expect(mathTable.setCellValue).not.toHaveBeenCalled();
   }));
 
+  /* A cell focused while the keypad is open takes its keys at once and again when the pause is over; taken
+     twice, each key would run twice and a digit go into the cell twice (#1710). */
+  it('should run a key of the keypad once for a cell focused while it was open', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.inputAssistancePreset = 'numbers';
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    component.keypadService = {
+      enterKey,
+      deleteCharacters: new EventEmitter<boolean>(),
+      select: new EventEmitter<string>(),
+      isOpen: true,
+      toggleAsync: vi.fn().mockResolvedValue(true),
+      close: vi.fn()
+    } as unknown as KeypadService;
+    const row = { cells: [] } as unknown as MathTableRow;
+    const cell = { value: '' } as unknown as MathTableCell;
+    const mathTable = fixture.debugElement.query(By.directive(MathTableStubComponent))
+      .componentInstance as MathTableStubComponent;
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'), row, cell, focused: true
+    });
+    flushMicrotasks();
+
+    enterKey.emit('2');
+
+    expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('2', cell, row);
+  }));
+
+  it('should leave a key of the on-screen keyboard to a field elsewhere that has taken the focus', fakeAsync(() => {
+    const elementModel = new MathTableElement({ id: 'math-table_1', alias: 'math-table_1' });
+    elementModel.showSoftwareKeyboard = true;
+    initComponent(elementModel);
+    const enterKey = new EventEmitter<string>();
+    Object.assign(keyboardService, { enterKey, deleteCharacters: new EventEmitter<boolean>(), isOpen: true });
+    keyboardService.toggleAsync.mockResolvedValue(true);
+    const row = { cells: [] } as unknown as MathTableRow;
+    const cell = { value: '' } as unknown as MathTableCell;
+    const mathTable = fixture.debugElement.query(By.directive(MathTableStubComponent))
+      .componentInstance as MathTableStubComponent;
+    component.toggleKeyInput({
+      inputElement: document.createElement('td'), row, cell, focused: true
+    });
+    flushMicrotasks();
+
+    enterKey.emit('1');
+    keyboardService.keyTarget = document.createElement('input');
+    enterKey.emit('2');
+
+    expect(mathTable.setCellValue).toHaveBeenCalledExactlyOnceWith('1', cell, row);
+  }));
+
   it('should stop reacting on marking changes after destruction', () => {
     initComponent(createMarkingPanel());
 

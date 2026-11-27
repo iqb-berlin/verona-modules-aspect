@@ -364,5 +364,16 @@ describe('GeometryPropsComponent', () => {
     it('should stay away where the selection agrees', () => {
       expect(markers().length).toBe(0);
     });
+
+    /* There is no list to add to, and adding spread null into one: an error box (#1739). */
+    it('should lock adding an expected variable while those differ (#1739)', () => {
+      const input = (): HTMLInputElement => fixture.nativeElement.querySelector('input.mat-mdc-chip-input');
+      expect(input().disabled).toBe(false);
+
+      component.combinedProperties = { ...component.combinedProperties, trackedExpectedVariables: null };
+      fixture.detectChanges();
+
+      expect(input().disabled).toBe(true);
+    });
   });
 });

@@ -13,28 +13,33 @@
     }
   </mat-form-field>
 
-  {{ 'termRows' | translate }}
-  <div *ngFor="let term of combinedProperties.terms; let i = index; trackBy: trackTerm"
-       class="term-list">
-    <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
-      <mat-form-field [style.flex-grow]="1">
-        <mat-label>{{ 'propertiesPanel.term' | translate }}</mat-label>
-        <input matInput [value]="term" #termInput (input)="changeTerm(termInput.value, i)">
-      </mat-form-field>
-      <button mat-icon-button
-              (click)="removeTerm(i)">
-        <mat-icon>clear</mat-icon>
-      </button>
-    </ng-container>
-  </div>
+  <!--`!= null`: math tables whose terms differ merge them to null, and then there is nothing to add to
+      - the add button pushed into null, and one added row would replace every list of terms (#1739).-->
+  @if (combinedProperties.terms != null) {
+    {{ 'termRows' | translate }}
+    @for (term of combinedProperties.terms; track $index; let i = $index) {
+      <div class="term-list">
+        @if (combinedProperties.operation !== 'multiplication' || i < 2) {
+          <mat-form-field [style.flex-grow]="1">
+            <mat-label>{{ 'propertiesPanel.term' | translate }}</mat-label>
+            <input matInput [value]="term" #termInput (input)="changeTerm(termInput.value, i)">
+          </mat-form-field>
+          <button mat-icon-button
+                  (click)="removeTerm(i)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </div>
+    }
 
-  <button mat-button class="add-button"
-          [disabled]="combinedProperties.operation === 'multiplication' &&
-                      (combinedProperties.terms ?? []).length >= 2"
-          (click)="addTerm()">
-    <mat-icon>add</mat-icon>
-    {{ 'addTermRow' | translate }}
-  </button>
+    <button mat-button class="add-button"
+            [disabled]="combinedProperties.operation === 'multiplication' &&
+                        combinedProperties.terms.length >= 2"
+            (click)="addTerm()">
+      <mat-icon>add</mat-icon>
+      {{ 'addTermRow' | translate }}
+    </button>
+  }
 
   <mat-form-field>
     <mat-label>{{ 'resultHelperRow' | translate }}</mat-label>

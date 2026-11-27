@@ -25,10 +25,16 @@ Editor
 ### Fehlerbehebungen
 - **Ablegeliste**
   - In Aufgaben aus der Zeit vor Editor 2.6 behalten Optionen ohne eigenen Alias ihre ID als Alias. Bisher bekamen sie beim Laden fortlaufende neue Kennungen; waren früher Optionen gelöscht worden, verschoben sich diese gegenüber den IDs, und Kodierungen, die sich auf die alten IDs beziehen, passten nicht mehr. Aufgaben, die seit Editor 3.0 so gespeichert wurden, behalten die verschobenen Kennungen ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
+- **Bildbereiche**
+  - Sind mehrere Bildbereiche-Elemente mit unterschiedlichen Bereichen ausgewählt, werden die Bereiche nicht mehr angeboten. Bisher meldete der Editor beim Hinzufügen eines Bereichs einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
 - **Formelfeld**
   - Ein Formelfeld mit Vorbelegung auszuwählen ändert die Aufgabe nicht mehr. Bisher meldete der Editor sie dabei dem Studio als geändert, und kam man von einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, wurde die Formel als Text gespeichert ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
   - Nach einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, zeigt das Feld „Vorbelegung“ die Formel des nächsten gewählten Formelfelds wieder als Formel und im Modus Formel. Bisher stand sie dort als Text, und wer weiterschrieb, speicherte sie so ([#1736](https://github.com/iqb-berlin/verona-modules-aspect/issues/1736))
   - Sind mehrere Formelfelder mit unterschiedlichen Formeleingabelayouts ausgewählt, öffnet ein Klick in die Vorbelegung die Formeltastatur mit allen Layouts. Bisher meldete der Editor dabei einen Fehler ([#1721](https://github.com/iqb-berlin/verona-modules-aspect/issues/1721))
+- **GeoGebra**
+  - Sind mehrere GeoGebra-Elemente mit unterschiedlichen erwarteten Variablen ausgewählt, ist das Feld zum Eintragen gesperrt. Bisher meldete der Editor beim Eintragen einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
+- **Rechenkästchen**
+  - Sind mehrere Rechenkästchen mit unterschiedlichen Termzeilen ausgewählt, werden die Termzeilen nicht mehr angeboten. Bisher meldete der Editor bei „Termzeile hinzufügen“ einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1

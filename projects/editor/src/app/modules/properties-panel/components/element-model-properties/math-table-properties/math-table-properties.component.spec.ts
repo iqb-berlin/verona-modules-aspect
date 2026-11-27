@@ -75,6 +75,14 @@ describe('MathTablePropertiesComponent', () => {
     expect(termInputs.map(input => input.value)).toEqual(['12', '34']);
   });
 
+  /* Math tables whose terms differ merge them to null; adding a row pushed into it (#1739). */
+  it('should offer no term rows to add to when the selected math tables differ in theirs (#1739)', () => {
+    component.combinedProperties = { ...component.combinedProperties, terms: null };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.add-button')).toBeNull();
+  });
+
   it('should append an empty term', () => {
     component.addTerm();
 

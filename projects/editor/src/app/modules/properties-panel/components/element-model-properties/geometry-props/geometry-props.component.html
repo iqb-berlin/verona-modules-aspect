@@ -128,8 +128,11 @@
       }
     </mat-chip-grid>
 
+    <!-- Locked while the selected elements' variables differ: they merge to null then, with nothing to
+         add to, and one added name would replace every list (#1739). The marker below says why. -->
     <input
       [placeholder]="'propertiesPanel.addTrackedExpectedVariable' | translate"
+      [disabled]="combinedProperties.trackedExpectedVariables === null"
       [matChipInputSeparatorKeyCodes]="[ENTER, COMMA]"
       [matChipInputFor]="trackedExpectedVariables"
       (matChipInputTokenEnd)="addTrackedExpectedVariable($event)"

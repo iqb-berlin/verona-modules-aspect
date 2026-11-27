@@ -13,6 +13,8 @@ Player
   - Das Werkzeug „Bild“ wird nicht mehr angeboten, auch nicht in der Standard-Werkzeugleiste, und ein Bild lässt sich nicht mehr in die Zeichnung ziehen oder einfügen. So gelangen keine Dateien vom Gerät und keine Kamerafotos in die Aufgabe ([#1700](https://github.com/iqb-berlin/verona-modules-aspect/issues/1700))
 
 ### Fehlerbehebungen
+- **Ablegeliste**
+  - In Aufgaben aus der Zeit vor Editor 2.6, deren Optionen noch keinen eigenen Alias haben, meldet der Player für eine Option wieder ihre ID statt `null`. Beim Fortsetzen einer solchen Aufgabe bleibt die Seite nicht mehr leer ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
 - **Bedingungen zur Sichtbarkeit**
   - Am Formelbereich prüft eine Bedingung den Text und die Formeln, wie sie dastehen, statt des gespeicherten Formats. „Minimale Länge 1“ ist erst nach einer Eingabe erfüllt statt sofort, „Enthält“ findet nur, was eingegeben ist, und steht nur eine Zahl da, greifen auch Größenvergleiche; „< 3“ ist wie beim Eingabefeld schon erfüllt, solange nichts eingegeben ist. Eine Bedingung, deren Wert `"value":` enthält (die Umgehung aus [#1716](https://github.com/iqb-berlin/verona-modules-aspect/issues/1716)), prüft weiter das gespeicherte Format ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))
   - Am Rechenkästchen prüft eine Bedingung die Ergebniszeile, wie sie dasteht, statt des gespeicherten Formats; auch hier bleibt eine Bedingung mit `"value":` beim gespeicherten Format ([#1718](https://github.com/iqb-berlin/verona-modules-aspect/issues/1718))

@@ -22,6 +22,10 @@ Editor
   - Der Texteditor läuft auf Tiptap 3. Gespeicherte Texte und Lückentexte liest und schreibt er wie bisher ([#1624](https://github.com/iqb-berlin/verona-modules-aspect/issues/1624))
   - Am Anfang eines Absatzes eingefügt, hinterlässt eine kurze Linie oder ein Bild (in eigenem Absatz, links, rechts) davor keinen leeren Absatz mehr ([#1624](https://github.com/iqb-berlin/verona-modules-aspect/issues/1624))
 
+### Fehlerbehebungen
+- **Ablegeliste**
+  - In Aufgaben aus der Zeit vor Editor 2.6 behalten Optionen ohne eigenen Alias ihre ID als Alias. Bisher bekamen sie beim Laden fortlaufende neue Kennungen; waren früher Optionen gelöscht worden, verschoben sich diese gegenüber den IDs, und Kodierungen, die sich auf die alten IDs beziehen, passten nicht mehr. Aufgaben, die seit Editor 3.0 so gespeichert wurden, behalten die verschobenen Kennungen ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
+
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1
 

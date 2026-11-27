@@ -71,7 +71,7 @@ describe('ElementFactory', () => {
     expect(dropList.dimensions?.width).toBe(240);
   });
 
-  it('should keep option identifiers stable when a normalized drop-list is loaded again', () => {
+  it('should keep option identifiers stable when a normalized drop-list is loaded again (#1729)', () => {
     const list = ElementFactory.createElement({
       type: 'drop-list',
       id: 'source',

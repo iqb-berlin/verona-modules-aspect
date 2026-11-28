@@ -41,8 +41,10 @@
   </aspect-option-list-panel>
 }
 
-<!--likert. Same reason for `!= null` as above.-->
-@if (combinedProperties.rows != null) {
+<!--likert. Same reason for `!= null` as above. For a single likert only: every row is an element with an id
+    of its own, and the rows of several likerts agree only when none of them has any - a row added then
+    went into all of them as one and the same row, with one id (#1740).-->
+@if (combinedProperties.rows != null && combinedProperties.idList?.length === 1) {
   <aspect-option-list-panel
     [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
     [itemList]="combinedProperties.rows | LikertRowLabel"

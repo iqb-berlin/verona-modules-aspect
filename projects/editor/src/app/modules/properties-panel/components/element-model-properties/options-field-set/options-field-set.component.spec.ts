@@ -121,6 +121,19 @@ describe('OptionsFieldSetComponent', () => {
     });
   });
 
+  /* The rows of several likerts agree only when none of them has any, and a row added then went into all of them as
+     one and the same row, with one id (#1740). The options stay: they carry no ids. */
+  it('should offer no row list for several likerts (#1740)', () => {
+    component.combinedProperties = {
+      type: 'likert', idList: ['likert1', 'likert2'], rows: [], options: []
+    };
+    fixture.detectChanges();
+
+    const titles = fixture.debugElement.queryAll(By.directive(MockOptionListPanelComponent))
+      .map(panel => (panel.componentInstance as MockOptionListPanelComponent).title);
+    expect(titles).toEqual(['propertiesPanel.options']);
+  });
+
   /* The two captions came from the grab bag. They belong to the likert - `label` is the caption of
      the options table, `label2` the caption of its first column - and this component already read
      Merged<LikertProperties>, so they came home rather than into another catch-all. The dropdown and

@@ -126,6 +126,17 @@ describe('DropListPropertiesComponent', () => {
     expect(fixture.nativeElement.querySelector('aspect-option-list-panel')).toBeNull();
   });
 
+  /* The items of several lists agree only when none of them has any, and an item added then went into all of them
+     with one id and one name (#1740). */
+  it('should offer no preset list for several drop lists (#1740)', () => {
+    component.combinedProperties = {
+      ...component.combinedProperties, idList: ['droplist1', 'droplist2'], value: []
+    };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('aspect-option-list-panel')).toBeNull();
+  });
+
   it('should force onlyOneItem when replacement is allowed', () => {
     component.updateAllowReplacement(true);
 

@@ -138,6 +138,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
     const elementFormControlValue = [...this.elementFormControl.value];
     elementFormControlValue[value.index].value = value.value;
     this.updateFormControl([...elementFormControlValue]);
+    this.segmentComponents.get(value.index)?.showValue(value.value);
   }
 
   setElementValue(value: string, remove?: boolean): void {
@@ -159,8 +160,11 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
    * focuses after a timer: behind its own mousedown, which would otherwise take the focus away again
    * (see `keepFocusAfterTouch` for the mousedown that follows a finger), and after the change detection
    * that renders a segment just added.
+   * Not in a read-only area: the segment it adds to an empty one is a value, and reported the area as
+   * answered after a mere click.
    */
   selectLastSegment(event: PointerEvent) {
+    if (this.elementModel.readOnly) return;
     this.pressedWithoutMouse = event.pointerType !== 'mouse';
     if (this.segments.length === 0) {
       this.addStartSegment();

@@ -47,6 +47,32 @@ describe('AreaTextInputComponent', () => {
     expect(span.style.display).toBe('inline-block');
   });
 
+  /* The player's keys set the text through the form value and report what the part shows right after. A
+     part that still showed the text from before the key reported that one (#1710). */
+  describe('value set from outside', () => {
+    let span: HTMLSpanElement;
+
+    beforeEach(() => {
+      span = fixture.nativeElement.querySelector('span');
+    });
+
+    it('should show it at once, also where the binding holds it already beside text typed on the device (#1710)',
+       () => {
+         span.textContent = 'testd';
+
+         component.showValue('test');
+
+         expect(span.textContent).toBe('test');
+       });
+
+    it('should mark the part as empty when the value empties it', () => {
+      component.showValue('');
+      fixture.detectChanges();
+
+      expect(span.style.display).toBe('inline-block');
+    });
+  });
+
   it('should emit remove event on keyup if removePressed was set', () => {
     vi.spyOn(component.remove, 'emit');
     component.removePressed = true;

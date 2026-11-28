@@ -81,26 +81,31 @@ describe('TextInputGroupDirective', () => {
     return keyboardEvent;
   };
 
+  const createDirective = (): TestTextInputGroupDirective => new TestTextInputGroupDirective(
+    createSpyObj<UnitStateService>(['getElementCodeById', 'changeElementCodeValue']),
+    createSpyObj<ElementModelElementCodeMappingService>(['mapToElementModelValue']),
+    {
+      vopNavigationDeniedNotification: new Subject<VopNavigationDeniedNotification>().asObservable()
+    } as VeronaSubscriptionService,
+    createSpyObj<ValidationService>(['registerFormControl']),
+    deviceService,
+    createSpyObj<KeypadService>(['toggleAsync', 'close']),
+    keyboardService,
+    createSpyObj<MathKeyboardService>(['toggle', 'close']),
+    keyInputRestrictionService
+  );
+
   beforeEach(() => {
     deviceService = { hasHardwareKeyboard: false } as DeviceService;
     keyboardService = createSpyObj<KeyboardService>(['close']);
-    keyInputRestrictionService = createSpyObj<KeyInputRestrictionService>(['attach', 'detach', 'detachFrom']);
+    keyInputRestrictionService = createSpyObj<KeyInputRestrictionService>(
+      ['attach', 'detach', 'detachFrom', 'allows']
+    );
+    keyInputRestrictionService.allows.mockReturnValue(true);
     inputElement = document.createElement('input');
     document.body.appendChild(inputElement);
 
-    directive = new TestTextInputGroupDirective(
-      createSpyObj<UnitStateService>(['getElementCodeById', 'changeElementCodeValue']),
-      createSpyObj<ElementModelElementCodeMappingService>(['mapToElementModelValue']),
-      {
-        vopNavigationDeniedNotification: new Subject<VopNavigationDeniedNotification>().asObservable()
-      } as VeronaSubscriptionService,
-      createSpyObj<ValidationService>(['registerFormControl']),
-      deviceService,
-      createSpyObj<KeypadService>(['toggleAsync', 'close']),
-      keyboardService,
-      createSpyObj<MathKeyboardService>(['toggle', 'close']),
-      keyInputRestrictionService
-    );
+    directive = createDirective();
   });
 
   afterEach(() => {
@@ -169,6 +174,31 @@ describe('TextInputGroupDirective', () => {
     expect(keyInputRestrictionService.attach).not.toHaveBeenCalled();
     expect(keyInputRestrictionService.detachFrom).toHaveBeenCalled();
   });
+
+  /* The keys of the keypad write through setElementValue, which the read-only input does not stop: a digit
+     of the keypad changed a read-only field and was reported as its answer. */
+  it('should open no keypad for a read-only field and take none of its keys (#1710)', fakeAsync(() => {
+    const keys = { enterKey: new EventEmitter<string>(), deleteCharacters: new EventEmitter<boolean>() };
+    const keypad = {
+      ...keys, select: new EventEmitter<string>(), isOpen: true, toggleAsync: vi.fn(), close: vi.fn()
+    } as unknown as KeypadService;
+    directive.keypadService = keypad;
+    const elementModel = createTextField(5, false);
+    elementModel.inputAssistancePreset = 'numbers';
+    elementModel.showSoftwareKeyboard = false;
+    elementModel.readOnly = true;
+    const setElementValue = vi.fn();
+    directive.elementModel = elementModel;
+
+    directive.toggleKeyInput({ inputElement, focused: true },
+                             { elementModel, setElementValue } as unknown as TextInputComponentType);
+    flushMicrotasks();
+    keys.enterKey.emit('1');
+    keys.deleteCharacters.emit(true);
+
+    expect(keypad.toggleAsync).not.toHaveBeenCalled();
+    expect(setElementValue).not.toHaveBeenCalled();
+  }));
 
   it('should allow a paste that fits into the maximum length', () => {
     inputElement.value = 'ab';
@@ -450,6 +480,288 @@ describe('TextInputGroupDirective', () => {
 
       expect(caretOffset(area.firstPart)).toBe(4);
     }));
+  });
+
+  /* Backspace that removes a formula takes the focused text part away, and the merged part is focused without
+     a blur of the one before. That focus subscribed the keys a second time, so each key ran twice; a field that
+     shows a key's text at once -- a text part of a formula area since #1710 -- got every character twice. */
+  describe('key after a focus that followed no blur (#1710)', () => {
+    let keys: { enterKey: EventEmitter<string>; deleteCharacters: EventEmitter<boolean>; select: EventEmitter<string> };
+
+    const keyService = (): unknown => ({
+      ...keys, isOpen: true, toggleAsync: vi.fn().mockResolvedValue(true), close: vi.fn()
+    });
+
+    /** Focuses the text field twice, as the merged text part is, and types one key. */
+    const focusTwiceAndType = (elementModel: TextFieldElement): void => {
+      const elementComponent = {
+        elementModel,
+        setElementValue: (value: string) => { inputElement.value = value; }
+      } as unknown as TextInputComponentType;
+      directive.elementModel = elementModel;
+      directive.toggleKeyInput({ inputElement, focused: true }, elementComponent);
+      flushMicrotasks();
+      directive.toggleKeyInput({ inputElement, focused: true }, elementComponent);
+      flushMicrotasks();
+      keys.enterKey.emit('x');
+    };
+
+    beforeEach(() => {
+      keys = { enterKey: new EventEmitter(), deleteCharacters: new EventEmitter(), select: new EventEmitter() };
+    });
+
+    it('should run a key of the on-screen keyboard once', fakeAsync(() => {
+      directive.keyboardService = keyService() as KeyboardService;
+
+      focusTwiceAndType(createTextField(5, false));
+
+      expect(inputElement.value).toBe('x');
+    }));
+
+    it('should run a key of the keypad once', fakeAsync(() => {
+      directive.keypadService = keyService() as KeypadService;
+      const elementModel = createTextField(5, false);
+      elementModel.inputAssistancePreset = 'numbers';
+      elementModel.showSoftwareKeyboard = false;
+
+      focusTwiceAndType(elementModel);
+
+      expect(inputElement.value).toBe('x');
+    }));
+  });
+
+  /* The keyboard and the keypad stay open from one field to the next, and pass a key on to the field that
+     subscribed to them. That changed over only once they had opened again after their pause, so a key in
+     between went to the field before -- the text of the next part of a formula area was written into the
+     part the focus had moved to, and a removed formula's text part replaced the whole text (#1710). */
+  describe('key right after a field has taken the focus (#1710)', () => {
+    let keys: { enterKey: EventEmitter<string>; deleteCharacters: EventEmitter<boolean>; select: EventEmitter<string> };
+    let nextField: HTMLInputElement;
+
+    /** A text field element whose value writes only record what the keys would write. */
+    const createTextFieldComponent = (written: string[]): TextInputComponentType => ({
+      elementModel: createTextField(5, false),
+      setElementValue: (value: string) => { written.push(value); }
+    } as unknown as TextInputComponentType);
+
+    const focus = (focusing: TestTextInputGroupDirective, field: HTMLElement,
+                   elementComponent: TextInputComponentType): void => {
+      focusing.elementModel = elementComponent.elementModel;
+      focusing.toggleKeyInput({ inputElement: field, focused: true }, elementComponent);
+    };
+
+    beforeEach(() => {
+      keys = { enterKey: new EventEmitter(), deleteCharacters: new EventEmitter(), select: new EventEmitter() };
+      directive.keyboardService = {
+        ...keys, isOpen: true, toggleAsync: vi.fn().mockResolvedValue(true), close: vi.fn()
+      } as unknown as KeyboardService;
+      inputElement.value = 'a';
+      nextField = document.createElement('input');
+      document.body.appendChild(nextField);
+    });
+
+    afterEach(() => {
+      nextField.remove();
+    });
+
+    it('should hand a key to the next field of the element before the keyboard has opened again', fakeAsync(() => {
+      const written: string[] = [];
+      const elementComponent = createTextFieldComponent(written);
+      focus(directive, inputElement, elementComponent);
+      flushMicrotasks();
+
+      focus(directive, nextField, elementComponent);
+      keys.enterKey.emit('b');
+      flushMicrotasks();
+
+      expect(written).toEqual(['b']);
+    }));
+
+    it('should leave a key to the field of another element that has taken the focus', fakeAsync(() => {
+      const other = createDirective();
+      other.keyboardService = directive.keyboardService;
+      const written: string[] = [];
+      const writtenByOther: string[] = [];
+      focus(directive, inputElement, createTextFieldComponent(written));
+      flushMicrotasks();
+
+      focus(other, nextField, createTextFieldComponent(writtenByOther));
+      keys.enterKey.emit('b');
+      flushMicrotasks();
+      other.ngOnDestroy();
+
+      expect(written).toEqual([]);
+      expect(writtenByOther).toEqual(['b']);
+    }));
+
+    /* Two gaps of a cloze belong to one directive. Tapping one gap and right away the gap that had the focus
+       before ends four pauses in a row. Each decided on the keys for the gap of its own focus or blur: the
+       blur of the gap tapped again dropped the keys it had taken back, or the focus of the other one took
+       them and got the text of the gap tapped again written into it. */
+    it('should leave the keys with the gap tapped last while the pauses of the taps before end', fakeAsync(() => {
+      const pauses: (() => void)[] = [];
+      const keyboard = { ...keys, isOpen: true, close: vi.fn() } as unknown as KeyboardService;
+      keyboard.toggleAsync = ({ focused }) => new Promise<boolean>(resolve => {
+        pauses.push(() => {
+          keyboard.isOpen = focused;
+          resolve(focused);
+        });
+      });
+      directive.keyboardService = keyboard;
+      const writtenToFirst: string[] = [];
+      const writtenToLast: string[] = [];
+      const first = createTextFieldComponent(writtenToFirst);
+      const last = createTextFieldComponent(writtenToLast);
+      directive.toggleKeyInput({ inputElement: nextField, focused: false }, last);
+      focus(directive, inputElement, first);
+      directive.toggleKeyInput({ inputElement, focused: false }, first);
+      focus(directive, nextField, last);
+
+      // The blur of the gap tapped again closes the keyboard, the focus of the other gap opens it again
+      pauses[0]();
+      flushMicrotasks();
+      pauses[1]();
+      flushMicrotasks();
+      keys.enterKey.emit('x');
+
+      expect(writtenToFirst).toEqual([]);
+      expect(writtenToLast).toEqual(['x']);
+    }));
+
+    /* The gaps of a cloze share one directive. A gap that takes no keys of the keyboard left the subscription
+       for the gap before standing, and a key wrote the text of the new gap into the one before. */
+    it('should keep a key from the gap before when the gap focused next takes none', fakeAsync(() => {
+      const writtenToFirst: string[] = [];
+      focus(directive, inputElement, createTextFieldComponent(writtenToFirst));
+      const withoutKeyboard = createTextFieldComponent([]);
+      (withoutKeyboard.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+      nextField.value = 'dd';
+      focus(directive, nextField, withoutKeyboard);
+
+      keys.enterKey.emit('x');
+
+      expect(writtenToFirst).toEqual([]);
+    }));
+
+    it('should keep a key of the keypad from the gap before when the gap focused next has no keypad',
+       fakeAsync(() => {
+         directive.keypadService = {
+           ...keys, isOpen: true, toggleAsync: vi.fn().mockResolvedValue(true), close: vi.fn()
+         } as unknown as KeypadService;
+         const writtenToFirst: string[] = [];
+         const withKeypad = createTextFieldComponent(writtenToFirst);
+         (withKeypad.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+         (withKeypad.elementModel as TextFieldElement).inputAssistancePreset = 'numbers';
+         focus(directive, inputElement, withKeypad);
+         const withoutKeypad = createTextFieldComponent([]);
+         (withoutKeypad.elementModel as TextFieldElement).showSoftwareKeyboard = false;
+         nextField.value = 'dd';
+         focus(directive, nextField, withoutKeypad);
+
+         keys.enterKey.emit('1');
+
+         expect(writtenToFirst).toEqual([]);
+       }));
+
+    /* A unit or page taken down within the pause of a focus left a toggle behind, which subscribed the keys
+       afterwards; nothing ended that subscription any more. */
+    it('should not subscribe the keys once taken down during the pause of a focus', fakeAsync(() => {
+      const pauses: ((isOpen: boolean) => void)[] = [];
+      const keyboard = {
+        ...keys,
+        isOpen: false,
+        toggleAsync: () => new Promise<boolean>(resolve => { pauses.push(resolve); }),
+        close: vi.fn()
+      } as unknown as KeyboardService;
+      directive.keyboardService = keyboard;
+      focus(directive, inputElement, createTextFieldComponent([]));
+      directive.ngOnDestroy();
+
+      keyboard.isOpen = true;
+      pauses[0](true);
+      flushMicrotasks();
+
+      expect(keys.enterKey.observed).toBe(false);
+    }));
+
+    /* The keys of the player reach the field without a keydown, so the restriction of the field did not see
+       them: the on-screen keyboard wrote every letter into a field restricted to digits, and its Backspace
+       deleted the preset text the restriction protects. */
+    describe('field restricted to the characters of its input assistance', () => {
+      let keypadKeys: typeof keys;
+
+      /** A restricted field on the given device, whose keypad is open -- still for the element before it, as
+          its pause never ends. On a tablet the on-screen keyboard opens beside the keypad, or carries the input
+          assistance instead of it. */
+      const focusRestricted = (written: string[], options: { tablet: boolean; extendedKeyboard?: boolean }): void => {
+        Object.assign(deviceService, { isMobileWithoutHardwareKeyboard: options.tablet });
+        const elementComponent = createTextFieldComponent(written);
+        const elementModel = elementComponent.elementModel as TextFieldElement;
+        elementModel.inputAssistancePreset = 'numbers';
+        elementModel.restrictedToInputAssistanceChars = true;
+        elementModel.showSoftwareKeyboard = options.tablet;
+        elementModel.addInputAssistanceToKeyboard = !!options.extendedKeyboard;
+        directive.keypadService = {
+          ...keypadKeys,
+          isOpen: true,
+          toggleAsync: () => new Promise<boolean>(() => {}),
+          close: vi.fn()
+        } as unknown as KeypadService;
+        focus(directive, nextField, elementComponent);
+      };
+
+      beforeEach(() => {
+        keypadKeys = { enterKey: new EventEmitter(), deleteCharacters: new EventEmitter(), select: new EventEmitter() };
+        directive.keyInputRestrictionService = new KeyInputRestrictionService();
+      });
+
+      it('should take only its own characters from the keys still shown for the element before', fakeAsync(() => {
+        const written: string[] = [];
+        focusRestricted(written, { tablet: false });
+
+        keypadKeys.enterKey.emit('x');
+        keypadKeys.enterKey.emit('1');
+
+        expect(written).toEqual(['1']);
+      }));
+
+      it('should keep its preset text from the Backspace of the on-screen keyboard of a tablet', fakeAsync(() => {
+        const written: string[] = [];
+        nextField.value = 'ab';
+        focusRestricted(written, { tablet: true });
+        nextField.setSelectionRange(2, 2);
+
+        keys.deleteCharacters.emit(true);
+        nextField.value = 'ab1';
+        nextField.setSelectionRange(3, 3);
+        keys.deleteCharacters.emit(true);
+
+        expect(written).toEqual(['ab']);
+      }));
+
+      /* On a tablet whose keyboard carries the input assistance no keypad opens, and the restriction, bound to
+         the keypad, did not apply at all */
+      it('should take only its own characters where the on-screen keyboard carries its input assistance',
+         fakeAsync(() => {
+           const written: string[] = [];
+           focusRestricted(written, { tablet: true, extendedKeyboard: true });
+
+           keys.enterKey.emit('x');
+           keys.enterKey.emit('1');
+
+           expect(written).toEqual(['1']);
+         }));
+
+      it('should keep its caret from the arrow keys still shown for the element before', fakeAsync(() => {
+        nextField.value = '12';
+        focusRestricted([], { tablet: false });
+        nextField.setSelectionRange(2, 2);
+
+        keypadKeys.select.emit('ArrowLeft');
+
+        expect(nextField.selectionStart).toBe(2);
+      }));
+    });
   });
 
   describe('word count', () => {

@@ -1,0 +1,24 @@
+{
+  "type": "aspect-unit-definition",
+  "version": "4.13.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "type": "text-area-math",
+              "id": "text-area-math_keypad",
+              "alias": "text-area-math_keypad",
+              "rowCount": 2,
+              "showSoftwareKeyboard": false,
+              "inputAssistancePreset": "custom",
+              "inputAssistanceCustomKeys": "abc",
+              "hasBackspaceKey": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -39,6 +39,17 @@ export class AreaTextInputComponent implements OnInit, OnChanges {
     if (changes.value) this.setDisplayType(this.value);
   }
 
+  /**
+   * Shows a value set from outside at once, as an input shows the value of its form control. The binding
+   * renders it only with the next change detection, and not at all while the value equals the one it
+   * rendered last -- after text typed on the device's own keyboard it does. The player's keyboard reports
+   * the text right after setting it, and reported what the part showed before the key (#1710).
+   */
+  showValue(value: string): void {
+    this.inputRef.nativeElement.textContent = value;
+    this.setDisplayType(value);
+  }
+
   setFocus(offset?: number) {
     if (offset) {
       const range = new Range();

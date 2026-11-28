@@ -180,4 +180,50 @@ describe('KeyInputRestrictionService', () => {
 
     expect(service.canEdit(null)).toBe(true);
   });
+
+  /* The keys of the player's own keyboard and keypad reach the field without a keydown, so the directive asks
+     before it writes them (#1710). */
+  describe('allows', () => {
+    it('should refuse a key of the player that is not allowed', () => {
+      attach();
+
+      expect(service.allows(inputElement, 'x')).toBe(false);
+      expect(service.allows(inputElement, 'a')).toBe(true);
+    });
+
+    it('should refuse deleting a character that is not allowed', () => {
+      attach();
+      inputElement.value = 'xa';
+      inputElement.setSelectionRange(1, 1);
+
+      expect(service.allows(inputElement, 'Backspace')).toBe(false);
+      expect(service.allows(inputElement, 'Delete')).toBe(true);
+    });
+
+    it('should refuse a key that would overwrite a selection with a character that is not allowed', () => {
+      attach();
+      inputElement.value = 'xa';
+      inputElement.setSelectionRange(0, 2);
+
+      expect(service.allows(inputElement, 'a')).toBe(false);
+    });
+
+    it('should refuse an arrow key without arrow key support', () => {
+      attach();
+
+      expect(service.allows(inputElement, 'ArrowLeft')).toBe(false);
+    });
+
+    it('should allow an arrow key with arrow key support', () => {
+      attach({ hasArrowKeys: true });
+
+      expect(service.allows(inputElement, 'ArrowLeft')).toBe(true);
+    });
+
+    it('should allow any key to a field it is not attached to', () => {
+      attach();
+
+      expect(service.allows(document.createElement('input'), 'x')).toBe(true);
+    });
+  });
 });

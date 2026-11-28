@@ -21,7 +21,7 @@ import { TextAreaComponent } from 'common/components/elements/text-area/text-are
 import { WordCounter } from 'player/src/app/classes/word-counter';
 import { CaretScroller } from 'player/src/app/classes/caret-scroller';
 import { EditableLineBreak } from 'common/utils/editable-line-break';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
@@ -29,6 +29,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
   /** The field this component put under key restriction, kept to release exactly that one again. */
   private restrictedInputElement?: HTMLElement;
+  /**
+   * Counts the toggles of keyboard and keypad, one for each focus and blur of a field that uses them. Only the
+   * toggle of the latest one subscribes or drops the keys when its pause is over. One before it acted on the
+   * state of a field the focus has left since: in a cloze, a gap tapped right before the next one subscribed
+   * the keys again and got the text of the next gap written into it, and the blur of a gap tapped again
+   * dropped the keys it had taken back (#1710).
+   */
+  private keyToggles: number = 0;
 
   keypadEnterKeySubscription!: Subscription;
   keypadDeleteCharactersSubscription!: Subscription;
@@ -74,8 +82,15 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     return inputElement.value.length - selectedText.length + newText.length;
   }
 
+  /** Whether the field offers its input assistance, on the keypad or in the on-screen keyboard. Not a read-only
+      field, as little as it gets the on-screen keyboard: the keys write through `setElementValue`, which a
+      read-only field does not stop. */
+  private static hasInputAssistance(elementModel: InputElement): boolean {
+    return !!elementModel.inputAssistancePreset && !elementModel.readOnly;
+  }
+
   private shallOpenKeypad(elementModel: InputElement): boolean {
-    return !!elementModel.inputAssistancePreset &&
+    return TextInputGroupDirective.hasInputAssistance(elementModel) &&
       !(elementModel.showSoftwareKeyboard &&
         elementModel.addInputAssistanceToKeyboard &&
         this.deviceService.isMobileWithoutHardwareKeyboard);
@@ -85,35 +100,47 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
                        elementComponent: TextInputComponentType | MathFieldComponent): Promise<void> {
     const isMathInput = focusedTextInput.inputElement instanceof MathfieldElement;
     const promises: Promise<boolean>[] = [];
+    if (focusedTextInput.focused) {
+      this.keyboardService.keyTarget = focusedTextInput.inputElement;
+      this.keypadService.keyTarget = focusedTextInput.inputElement;
+    }
     if (isMathInput) {
       this.mathKeyboardService
         .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean }, elementComponent);
       this.forceCloseKeyboard();
     } else if (!(elementComponent instanceof MathFieldComponent)) {
       this.updateKeyInputRestriction(focusedTextInput, elementComponent.elementModel);
-      if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
+      const { elementModel } = elementComponent;
+      const usesKeyboard = elementModel.showSoftwareKeyboard && !elementModel.readOnly;
+      const usesKeypad = this.shallOpenKeypad(elementModel);
+      if (focusedTextInput.focused) {
+        this.takeKeys(focusedTextInput.inputElement, elementComponent, usesKeyboard, usesKeypad);
+      }
+      if (usesKeyboard) {
         promises.push(this.keyboardService
           .toggleAsync(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard));
       }
-      if (this.shallOpenKeypad(elementComponent.elementModel)) {
+      if (usesKeypad) {
         promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
       }
       if (promises.length) {
+        this.keyToggles += 1;
+        const toggle = this.keyToggles;
         await Promise.all(promises)
           .then(() => {
-            if (this.keyboardService.isOpen) {
-              this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
-            } else {
+            if (toggle !== this.keyToggles) return;
+            if (!this.keyboardService.isOpen) {
               this.unsubscribeFromKeyboardEvents();
+            } else if (focusedTextInput.focused) {
+              this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
             }
-            if (this.keypadService.isOpen) {
-              this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
-            } else {
+            if (!this.keypadService.isOpen) {
               this.unsubscribeFromKeypadEvents();
+            } else if (focusedTextInput.focused) {
+              this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
             }
             this.isKeypadOpen = this.keypadService.isOpen;
             if (this.keyboardService.isOpen || this.keypadService.isOpen) {
-              this.inputElement = this.getInputElement(focusedTextInput.inputElement);
               this.forceCloseMathKeyboard();
             }
           });
@@ -121,16 +148,35 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
+  /**
+   * Hands the keys to a field the moment it takes the focus, rather than once the keyboard or keypad has
+   * opened for it after the pause of `toggleAsync`. An aid that is open already -- it stays open from one
+   * field to the next -- passes its keys on at once (#1710).
+   */
+  private takeKeys(inputElement: HTMLElement, elementComponent: TextInputComponentType,
+                   usesKeyboard: boolean, usesKeypad: boolean): void {
+    this.inputElement = this.getInputElement(inputElement);
+    /* Until the pause is over, the aid still shows the keys of the element before. A field restricted to its
+       input assistance takes only its own characters from them (enterKey, KeyInputRestrictionService.allows). */
+    if (usesKeyboard && this.keyboardService.isOpen) {
+      this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
+    }
+    if (usesKeypad && this.keypadService.isOpen) {
+      this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
+    }
+  }
+
   /** Bound to the focus, not to the keypad: the keypad opens 100 ms later (KeypadService.toggleAsync,
      debouncing its animation) and used to register the keydown listener only once its view existed.
      Everything typed in between reached the field unchecked, so typing fast enough put forbidden
-     characters into a restricted field (#1143). The condition is the one the keypad had: the
-     restriction exists where the input assistance would. */
+     characters into a restricted field (#1143). The restriction follows the input assistance, not the
+     keypad: on a tablet the assistance sits in the on-screen keyboard (`addInputAssistanceToKeyboard`),
+     no keypad opens, and the letters of that keyboard went into the field unchecked (#1710). */
   private updateKeyInputRestriction(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                                     elementModel: TextInputElement): void {
     if (focusedTextInput.focused &&
       elementModel.restrictedToInputAssistanceChars &&
-      this.shallOpenKeypad(elementModel)) {
+      TextInputGroupDirective.hasInputAssistance(elementModel)) {
       /* The same rule the keypad uses to decide whether it offers a Return key, so it cannot offer
          one the restriction blocks. */
       const hasReturnKey = new HasReturnKeyPipe().transform(elementModel);
@@ -188,15 +234,27 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
+  /**
+   * Hands the keys of the keypad to the focused field (#1710):
+   * - only those meant for the field it subscribes for (`InputService.keyTarget`). A subscription for the
+   *   field before stays until the keypad has closed for it, and took the keys typed into the next field
+   *   until then. In a cloze, whose gaps share this directive, it wrote the text of the next gap into the
+   *   one before, as the field is read from `inputElement` when the key comes.
+   * - once. A subscription still standing is dropped first: a focus usually follows the blur of the field
+   *   before, which drops it, but not when Backspace removes a formula and takes the focused text part along.
+   *   Each key then ran twice, and wrote its character twice once a text part showed a key's text at once.
+   */
   private subscribeForKeypadEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
+    this.unsubscribeFromKeypadEvents();
+    const field = this.inputElement;
     this.keypadEnterKeySubscription = this.keypadService.enterKey
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
     this.keypadSelectSubscription = this.keypadService.select
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keypadService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.select(key));
   }
 
@@ -206,12 +264,15 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     if (this.keypadDeleteCharactersSubscription) this.keypadDeleteCharactersSubscription.unsubscribe();
   }
 
+  /** Hands the keys of the on-screen keyboard to the focused field, as `subscribeForKeypadEvents` does. */
   private subscribeForKeyboardEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
+    this.unsubscribeFromKeyboardEvents();
+    const field = this.inputElement;
     this.keyboardEnterKeySubscription = this.keyboardService.enterKey
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keyboardService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(filter(() => this.keyboardService.keyTarget === field), takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
   }
 
@@ -232,6 +293,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private select(direction: string): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, direction)) return;
     let lastBreak = 0;
     const inputValueKeys = this.getInputElementValue().split('');
     const lineBreaks = inputValueKeys
@@ -293,6 +355,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private enterKey(key: string, elementModel: UIElement, elementComponent: ElementComponent): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, key)) return;
     if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
       (this.inputElement instanceof HTMLInputElement) &&
@@ -322,6 +385,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private deleteCharacters(backspace: boolean, elementComponent: ElementComponent): void {
+    if (!this.keyInputRestrictionService.allows(this.inputElement, backspace ? 'Backspace' : 'Delete')) return;
     let selectionStart = this.getSelection().start;
     let selectionEnd = this.getSelection().end;
     if (backspace) {
@@ -458,6 +522,8 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     /* A programmatic teardown -- a page navigation or a new unit -- gives no blur, so the field
        would stay restricted and the singleton would hold on to a detached input. */
     this.keyInputRestrictionService.detachFrom(this.restrictedInputElement);
+    // A toggle still in its pause would subscribe the keys after the teardown, for good
+    this.keyToggles += 1;
     this.unsubscribeFromKeypadEvents();
     this.unsubscribeFromKeyboardEvents();
     super.ngOnDestroy();

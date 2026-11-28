@@ -74,6 +74,21 @@ export class KeyInputRestrictionService {
     return selectedKeys.every(key => restriction.allowedKeys.includes(key));
   }
 
+  /**
+   * Whether a key of the player's own keyboard or keypad may act on the field, by the rule a key of the
+   * device keyboard is held to in `restrict`. The keypad only offers allowed keys, but the on-screen
+   * keyboard offers every letter, and right after a focus change the aid still shows the keys of the
+   * element before: both put characters into a restricted field that it refuses (#1710). Only the field the
+   * restriction is attached to is held to it.
+   */
+  allows(field: HTMLElement, key: string): boolean {
+    const { restriction } = this;
+    if (!restriction || field !== this.inputElement) return true;
+    if (ARROW_KEYS.includes(key)) return restriction.hasArrowKeys;
+    if (key === 'Backspace' || key === 'Delete') return this.canEdit(key);
+    return restriction.allowedKeys.includes(key) && this.canEdit(null);
+  }
+
   private static preventPaste = (event: Event): void => {
     event.preventDefault();
   };

@@ -24,6 +24,15 @@ export abstract class InputService {
   inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
   isOpen: boolean = false;
 
+  /**
+   * The field the keys are meant for, from the moment it takes the focus. `inputElement` follows only once
+   * the aid has opened for the field, after the pause of `toggleAsync`, and the fields subscribed to the keys
+   * changed over at the same time: a key in between went to the field before -- a text part that a removed
+   * formula had taken along, which then replaced the whole text, or the previous field (#1710). A field that
+   * subscribes to the keys acts only on those meant for it.
+   */
+  keyTarget: HTMLElement | null = null;
+
   @Output() enterKey = new EventEmitter<string>();
   @Output() deleteCharacters = new EventEmitter<boolean>();
   @Output() select = new EventEmitter<string>();

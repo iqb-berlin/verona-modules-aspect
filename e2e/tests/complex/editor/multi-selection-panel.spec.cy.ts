@@ -175,6 +175,10 @@ describe('Properties panel with several elements selected', () => {
       selectMathField(1, true);
       cy.get('aspect-math-keyboard-properties aspect-merged-marker').should('exist');
 
+      /* The opening keyboard pads the body, the page gets a scrollbar, and the browser Cypress drives
+         crashes while the widths are worked out anew -- a real browser does not (#1744). With the
+         scrollbar's place reserved no width changes; the keyboard's tabs do not depend on it. */
+      cy.document().then(doc => doc.documentElement.style.setProperty('scrollbar-gutter', 'stable'));
       cy.get('aspect-preset-value-properties math-field').shadow().find('.ML__content').click();
 
       // Physics is labelled 123 like the numbers, and comes first.

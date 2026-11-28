@@ -24,7 +24,8 @@ import { Merged } from 'editor/src/app/modules/properties-panel/models/merged-pr
   standalone: false
 })
 export class OptionsFieldSetComponent {
-  @Input() combinedProperties!: Merged<LikertProperties>;
+  /** `idList` holds the ids of the whole selection; the rows are offered for a single likert only. */
+  @Input() combinedProperties!: Merged<LikertProperties> & { idList?: string[] };
   @Output() updateModel = new EventEmitter<{
     property: keyof LikertProperties;
     value: string | number | boolean | string[] | Label[] | LikertRowElement[]

@@ -67,6 +67,14 @@ describe('HotspotPropsComponent', () => {
     expect(rows[1].textContent).toContain('hotspot.ellipse');
   });
 
+  /* Images whose hotspots differ merge them to null; the add button pushed into it (#1739). */
+  it('should offer no hotspots to add to when the selected images differ in theirs (#1739)', () => {
+    component.combinedProperties = { type: 'hotspot-image', value: null };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
   it('should append a default hotspot', () => {
     component.addHotspot();
 

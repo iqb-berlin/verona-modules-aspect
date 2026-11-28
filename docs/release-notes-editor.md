@@ -25,9 +25,19 @@ Editor
 ### Fehlerbehebungen
 - **Ablegeliste**
   - In Aufgaben aus der Zeit vor Editor 2.6 behalten Optionen ohne eigenen Alias ihre ID als Alias. Bisher bekamen sie beim Laden fortlaufende neue Kennungen; waren früher Optionen gelöscht worden, verschoben sich diese gegenüber den IDs, und Kodierungen, die sich auf die alten IDs beziehen, passten nicht mehr. Aufgaben, die seit Editor 3.0 so gespeichert wurden, behalten die verschobenen Kennungen ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
+  - Sind mehrere Ablegelisten ausgewählt, wird die Vorbelegung nicht mehr angeboten, denn jeder Eintrag hat eine eigene ID und einen eigenen Namen. Bisher bekamen alle ausgewählten Listen denselben Eintrag mit derselben ID und demselben Namen. Wurde er in einer Liste gelöscht, konnte ein neuer Eintrag denselben Namen bekommen, und eine verbundene Zielliste führte dann zwei Einträge unter einem Wert ([#1740](https://github.com/iqb-berlin/verona-modules-aspect/issues/1740))
+- **Bildbereiche**
+  - Sind mehrere Bildbereiche-Elemente mit unterschiedlichen Bereichen ausgewählt, werden die Bereiche nicht mehr angeboten. Bisher meldete der Editor beim Hinzufügen eines Bereichs einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
 - **Formelfeld**
   - Ein Formelfeld mit Vorbelegung auszuwählen ändert die Aufgabe nicht mehr. Bisher meldete der Editor sie dabei dem Studio als geändert, und kam man von einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, wurde die Formel als Text gespeichert ([#1734](https://github.com/iqb-berlin/verona-modules-aspect/issues/1734))
   - Nach einem Formelfeld mit Moduswechsel, dessen Vorbelegung auf Text endet, zeigt das Feld „Vorbelegung“ die Formel des nächsten gewählten Formelfelds wieder als Formel und im Modus Formel. Bisher stand sie dort als Text, und wer weiterschrieb, speicherte sie so ([#1736](https://github.com/iqb-berlin/verona-modules-aspect/issues/1736))
+  - Sind mehrere Formelfelder mit unterschiedlichen Formeleingabelayouts ausgewählt, öffnet ein Klick in die Vorbelegung die Formeltastatur mit allen Layouts. Bisher meldete der Editor dabei einen Fehler ([#1721](https://github.com/iqb-berlin/verona-modules-aspect/issues/1721))
+- **GeoGebra**
+  - Sind mehrere GeoGebra-Elemente mit unterschiedlichen erwarteten Variablen ausgewählt, ist das Feld zum Eintragen gesperrt. Bisher meldete der Editor beim Eintragen einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
+- **Optionentabelle**
+  - Sind mehrere Optionentabellen ausgewählt, werden die Zeilen nicht mehr angeboten, denn jede Zeile hat eine eigene ID. Bisher kam eine neue Zeile als dieselbe Zeile mit derselben ID in alle ausgewählten Tabellen, und bei verschiedenen Spalten meldete der Editor einen Fehler. Aufgaben, in denen das schon geschehen ist, zeigt der Editor unter „Hinweise zur Aufgabe“ ([#1740](https://github.com/iqb-berlin/verona-modules-aspect/issues/1740))
+- **Rechenkästchen**
+  - Sind mehrere Rechenkästchen mit unterschiedlichen Termzeilen ausgewählt, werden die Termzeilen nicht mehr angeboten. Bisher meldete der Editor bei „Termzeile hinzufügen“ einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1

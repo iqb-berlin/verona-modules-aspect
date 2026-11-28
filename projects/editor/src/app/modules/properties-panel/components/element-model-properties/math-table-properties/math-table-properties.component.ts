@@ -54,9 +54,4 @@ export class MathTablePropertiesComponent {
     (this.combinedProperties.terms as string[]).splice(index, 1);
     this.updateModel.emit({ property: 'terms', value: this.combinedProperties.terms as string[] });
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  trackTerm(index: number) {
-    return index;
-  }
 }

@@ -475,8 +475,6 @@ input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 checkbox "propertiesPanel.readOnly" = indeterminate
 checkbox "propertiesPanel.requiredField" = indeterminate
 input[text] "propertiesPanel.requiredWarnMessage" =  (disabled) [merged]
-[preset]
-textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.isSortList" = indeterminate
@@ -524,8 +522,6 @@ button "propertiesPanel.deleteElement"`,
 input[text] "propertiesPanel.id" = propertiesPanel.mustBeUnique (disabled)
 [propertiesPanel.inputElement]
 checkbox "propertiesPanel.readOnly" = indeterminate
-[preset]
-textarea "newOption" = 
 select "propertiesPanel.connectedDropLists" = []
 select "propertiesPanel.alignment" = <null> [merged]
 checkbox "propertiesPanel.isWidthFixed" = indeterminate
@@ -1179,8 +1175,6 @@ textarea "propertiesPanel.label" =  [merged]
 textarea "propertiesPanel.label2" =  [merged]
 [propertiesPanel.options]
 textarea "newOption" = 
-[rows]
-textarea "newRow" = 
 checkbox "propertiesPanel.stickyHeader" = indeterminate
 input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.isRelevantForPresentationComplete" = indeterminate
@@ -1224,8 +1218,6 @@ textarea "propertiesPanel.label" =  [merged]
 textarea "propertiesPanel.label2" =  [merged]
 [propertiesPanel.options]
 textarea "newOption" = 
-[rows]
-textarea "newRow" = 
 input[number] "propertiesPanel.firstColumnSizeRatio" =  [merged]
 checkbox "propertiesPanel.maxWidthEnabled" = false
 input[number] "propertiesPanel.maxWidth" =  (disabled)

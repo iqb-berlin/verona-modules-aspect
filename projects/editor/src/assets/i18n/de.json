@@ -627,6 +627,7 @@
     "pastePrompt": "Kopierten Abschnitt einfügen:",
     "readError": "Fehler beim Lesen des Abschnitts.",
     "duplicateIds": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",
+    "duplicateItemNames": "Einträge von Ablegelisten tragen Namen, die die Aufgabe schon vergibt. Weiter mit neuen Namen für diese Einträge?",
     "readSuccess": "Abschnitt wurde erfolgreich gelesen.",
     "savedFound": "Gespeicherter Abschnitt gefunden.",
     "savedMissing": "Kein gespeicherter Abschnitt gefunden."
@@ -768,6 +769,11 @@
     "none": "Zur Aufgabe gibt es keine Hinweise.",
     "goToElement": "Zum Element",
     "goToSection": "Zum Abschnitt",
+    "duplicateItemNames": {
+      "title": "Doppelte Namen von Einträgen",
+      "explanation": "Diese Einträge von Ablegelisten tragen denselben Namen. Antworten speichern den Namen eines Eintrags; kommt er mehrfach vor, lässt sich eine Antwort keinem Eintrag sicher zuordnen, und der Player kann die Einträge beim Wiederherstellen vertauschen. Der Name lässt sich in der Vorbelegung der Ablegeliste über das Bearbeiten des Eintrags ändern. Das Studio findet die Kodierung eines Eintrags über seinen Namen; nach dem Umbenennen muss sie dort angepasst werden.",
+      "item": "Eintrag"
+    },
     "rulesIntoNothing": {
       "title": "Sichtbarkeitsbedingungen ohne Ziel",
       "explanation": "Diese Abschnitte haben Sichtbarkeitsbedingungen, die nach einem Element oder einer Zustandsvariable fragen, die es in der Aufgabe nicht gibt. Eine solche Bedingung ist nie erfüllt. Beim Laden werden sie nicht verändert, weil sich sonst ändern würde, wann der Abschnitt erscheint.",

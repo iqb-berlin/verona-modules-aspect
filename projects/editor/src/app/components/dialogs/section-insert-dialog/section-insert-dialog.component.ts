@@ -5,6 +5,8 @@ import { Section } from 'common/models/section';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
+import { DropListElement } from 'common/models/elements/drop-list';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
@@ -67,14 +69,26 @@ export class SectionInsertDialogComponent implements OnInit, OnDestroy {
     if (this.newSection && this.findElementsWithDuplicateID(this.newSection.getAllElements()).length > 0) {
       this.operationStatusKey = 'sectionInsert.duplicateIds';
       this.operationStatus = 'warning';
+    } else if (this.newSection && SectionInsertDialogComponent.itemsOf(this.newSection)
+      .some(({ item }) => this.isItemNameTaken(item))) {
+      this.operationStatusKey = 'sectionInsert.duplicateItemNames';
+      this.operationStatus = 'warning';
     } else {
       this.operationStatusKey = 'sectionInsert.readSuccess';
       this.operationStatus = 'success';
     }
   }
 
+  /**
+   * Elements the unit holds already all become blueprints, which get new ids and names, their drop-list items as well.
+   * Where only items carry names the unit holds, those items get new ones and nothing else changes: a blueprint would
+   * also replace the names of the elements, which the author chose (#1741).
+   */
   confirm(): void {
-    const sectionToReturn = (this.newSection && this.operationStatus === 'warning') ?
+    if (this.newSection && this.operationStatusKey === 'sectionInsert.duplicateItemNames') {
+      this.renameTakenItems(this.newSection);
+    }
+    const sectionToReturn = (this.newSection && this.operationStatusKey === 'sectionInsert.duplicateIds') ?
       { ...this.newSection, elements: this.newSection.elements.map(el => el.getBlueprint()) } :
       this.newSection;
     this.dialogRef.close({ newSection: sectionToReturn, replaceSection: this.replaceSection });
@@ -84,6 +98,30 @@ export class SectionInsertDialogComponent implements OnInit, OnDestroy {
     return elements.filter(element => !this.idService.isIDAvailable(element.id) ||
       (element.alias && !this.idService.isAliasAvailable(element.alias))
     );
+  }
+
+  /**
+   * Gives the items whose id or name the unit holds new ones, as adding an item in the properties panel does. Not by
+   * emptying them: the drop list would then make the name from the id, `value_<timestamp>_1` rather than `value_3`.
+   */
+  private renameTakenItems(section: Section): void {
+    SectionInsertDialogComponent.itemsOf(section)
+      .filter(({ item }) => this.isItemNameTaken(item))
+      .forEach(({ dropList, index }) => {
+        dropList.value[index] = { ...dropList.value[index], ...this.idService.getAndRegisterNewIDs('value') };
+      });
+  }
+
+  /** An item read without an id or a name gets both from the drop list once the section is inserted. */
+  private isItemNameTaken(item: DragNDropValueObject): boolean {
+    return (!!item.id && !this.idService.isIDAvailable(item.id)) ||
+      (!!item.alias && !this.idService.isAliasAvailable(item.alias));
+  }
+
+  /** The drop-list items of the section, cloze gaps included, each with its list and its place there. */
+  private static itemsOf(section: Section): { dropList: DropListElement, item: DragNDropValueObject, index: number }[] {
+    return (section.getAllElements('drop-list') as DropListElement[])
+      .flatMap(dropList => dropList.value.map((item, index) => ({ dropList, item, index })));
   }
 
   ngOnDestroy(): void {

@@ -27,7 +27,8 @@ describe('SectionInsertDialogComponent', () => {
 
   const mockIDService = {
     isIDAvailable: vi.fn().mockReturnValue(true),
-    isAliasAvailable: vi.fn().mockReturnValue(true)
+    isAliasAvailable: vi.fn().mockReturnValue(true),
+    getAndRegisterNewIDs: vi.fn().mockReturnValue({ id: 'value_new', alias: 'value_3' })
   };
 
   beforeEach(async () => {
@@ -118,6 +119,79 @@ describe('SectionInsertDialogComponent', () => {
     const duplicates = component['findElementsWithDuplicateID'](mockElements as unknown as UIElement[]);
     expect(duplicates.length).toBe(1);
     expect(mockIDService.isIDAvailable).toHaveBeenCalledWith('text_1');
+  });
+
+  /* The dialog checked the names of the elements only. A section whose drop-list item carries a name the unit holds
+     went in as it was, and the unit had two items under one name, which no response can tell apart (#1741). */
+  describe('drop-list items whose name the unit holds', () => {
+    type InsertedList = { id: string, alias: string, value: { id: string, alias: string, text: string }[] };
+    const pasteList = (): void => {
+      const list = {
+        type: 'drop-list',
+        id: 'drop-list_1',
+        alias: 'liste',
+        value: [{ text: 'Apfel', id: 'value_9', alias: 'value_1' }]
+      };
+      component.pasteSectionFromClipboard({
+        preventDefault: () => {},
+        clipboardData: { getData: () => JSON.stringify({ elements: [list] }) }
+      } as unknown as ClipboardEvent);
+      component.confirm();
+    };
+    const insertedList = (): InsertedList => mockDialogRef.close.mock.lastCall?.[0].newSection.elements[0];
+
+    beforeEach(() => {
+      mockIDService.isIDAvailable.mockReturnValue(true);
+      mockIDService.getAndRegisterNewIDs.mockClear();
+    });
+
+    afterEach(() => {
+      mockIDService.isAliasAvailable.mockReturnValue(true);
+    });
+
+    it('should give such an item a new name and leave the list its own (#1741)', () => {
+      mockIDService.isAliasAvailable.mockImplementation((alias: string) => alias !== 'value_1');
+
+      pasteList();
+
+      expect(component.operationStatusKey).toBe('sectionInsert.duplicateItemNames');
+      expect(insertedList().alias).toBe('liste');
+      expect(insertedList().id).toBe('drop-list_1');
+      expect(insertedList().value[0])
+        .toEqual(expect.objectContaining({ text: 'Apfel', id: 'value_new', alias: 'value_3' }));
+    });
+
+    /* Read without an id service, such an item has neither id nor name, and asking the registry about them threw.
+       With the real registry, which the mock above does not imitate there. */
+    it('should read a section whose items carry no id yet', () => {
+      const dialog = new SectionInsertDialogComponent(
+        { isSelectedSectionEmpty: true },
+        mockUnitService as unknown as UnitService,
+        new IDService(),
+        mockDialogRef as unknown as MatDialogRef<SectionInsertDialogComponent>
+      );
+      dialog.pasteSectionFromClipboard({
+        preventDefault: () => {},
+        clipboardData: {
+          getData: () => JSON.stringify({
+            elements: [{
+              type: 'drop-list', id: 'drop-list_1', alias: 'liste', value: [{ text: 'Apfel' }]
+            }]
+          })
+        }
+      } as unknown as ClipboardEvent);
+
+      expect(dialog.operationStatusKey).toBe('sectionInsert.readSuccess');
+    });
+
+    it('should keep the names of items the unit does not hold', () => {
+      mockIDService.isAliasAvailable.mockReturnValue(true);
+
+      pasteList();
+
+      expect(insertedList().value[0]).toEqual(expect.objectContaining({ id: 'value_9', alias: 'value_1' }));
+      expect(mockIDService.getAndRegisterNewIDs).not.toHaveBeenCalled();
+    });
   });
 
   it('should detect duplicate Aliases correctly', () => {

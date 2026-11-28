@@ -361,6 +361,38 @@ describe('UnitService - registering the options of a drop-list (#1506)', () => {
   });
 });
 
+/* Releasing a name does not ask whether another element still holds it. Of two text fields sharing one, renaming the
+   first freed it while the second kept it, and the next new element got it a second time -- as the next drop-list
+   item got the name of an item it shared with another list (#1741). */
+describe('UnitService - a name a twin still holds (#1741)', () => {
+  it('should keep the name taken after one of two elements holding it was renamed', () => {
+    const idService = new IDService();
+    const service = new UnitService(
+      new SelectionService(),
+      createSpyObj<VeronaAPIService>(['sendChanged']),
+      createSpyObj<DialogService>(['showUnitDefErrorDialog', 'showVariableInfoFindingsDialog']),
+      idService,
+      createSpyObj<TranslateService>(['instant']),
+      new LoadErrorService()
+    );
+    const unit = createUnitBlueprint('state_1');
+    unit.pages[0].sections[0].elements.push(...['text-field_1', 'text-field_2'].map((id, index) => ({
+      type: 'text-field',
+      id,
+      alias: 'zwilling',
+      position: {
+        gridColumn: 1, gridColumnRange: 1, gridRow: index + 1, gridRowRange: 1
+      }
+    })) as unknown as PositionedUIElement[]);
+    service.loadUnitDefinition(JSON.stringify(unit));
+
+    service.unit.getAllElements('text-field')[0].setProperty('alias', 'umbenannt');
+    service.updateUnitDefinition();
+
+    expect(idService.isAliasAvailable('zwilling')).toBe(false);
+  });
+});
+
 describe('UnitService - references to what is deleted (#1509)', () => {
   let service: UnitService;
   let selectionService: SelectionService;

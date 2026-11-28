@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="message-title">
   <!-- A warning only while something is still to be fixed; what loading repaired is a plain note (#1520). -->
-  @if (rows.length > 0 || rulesIntoNothing.length > 0 || loadErrors.length > 0) {
+  @if (rows.length > 0 || duplicateItemNames.length > 0 || rulesIntoNothing.length > 0 || loadErrors.length > 0) {
     <mat-icon class="message-icon-warning">warning</mat-icon>
   }
   <span>{{ 'unitHints.title' | translate }}</span>
@@ -24,8 +24,8 @@
     </div>
   }
 
-  @if (rows.length === 0 && rulesIntoNothing.length === 0 && loadErrors.length === 0 &&
-       repairedElements.length === 0) {
+  @if (rows.length === 0 && duplicateItemNames.length === 0 && rulesIntoNothing.length === 0 &&
+       loadErrors.length === 0 && repairedElements.length === 0) {
     <p class="findings-explanation">{{ 'unitHints.none' | translate }}</p>
   }
 
@@ -93,6 +93,44 @@
                       {{ 'variableInfoFindings.replaceId' | translate }}
                     </button>
                   }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (duplicateItemNames.length > 0) {
+    <section class="hint-section duplicate-item-names-section">
+      <h3 class="hint-section-title">{{ 'unitHints.duplicateItemNames.title' | translate }}</h3>
+      <p class="findings-explanation">{{ 'unitHints.duplicateItemNames.explanation' | translate }}</p>
+      <table class="findings-table">
+        <thead>
+          <tr>
+            <th class="findings-cell">{{ 'variableInfoFindings.column.location' | translate }}</th>
+            <th class="findings-cell">{{ 'variableInfoFindings.column.element' | translate }}</th>
+            <th class="findings-cell">{{ 'unitHints.duplicateItemNames.item' | translate }}</th>
+            <th class="findings-cell">{{ 'variableInfoFindings.column.value' | translate }}</th>
+            <th class="findings-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (duplicate of duplicateItemNames; track duplicate.item) {
+            <tr class="duplicate-item-name-row">
+              <td class="findings-cell">{{ 'variableInfoFindings.location' | translate:
+                     { page: duplicate.location.pageIndex + 1, section: duplicate.location.sectionIndex + 1 } }}</td>
+              <td class="findings-cell">
+                {{ 'toolbox.' + duplicate.location.element.type | translate }} <i>{{ duplicate.location.element.alias }}</i>
+              </td>
+              <td class="findings-cell">{{ duplicate.text }}</td>
+              <td class="findings-cell finding-value">{{ duplicate.item.alias }}</td>
+              <td class="findings-cell">
+                <div class="finding-actions">
+                  <button mat-stroked-button class="finding-action go-to-item" (click)="goToElement(duplicate.location)">
+                    {{ 'unitHints.goToElement' | translate }}
+                  </button>
                 </div>
               </td>
             </tr>

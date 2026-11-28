@@ -169,6 +169,71 @@ describe('Invalid variable names', { testIsolation: false }, () => {
   });
 });
 
+/* A response stores the name of a drop-list item, and a list takes the items of the lists connected to it as its
+   values. Two items under one name were two answers nobody could tell apart, and nothing showed them; renaming one of
+   them freed the name the other still carried, and the next new item got it a second time (#1741). */
+describe('Drop-list items that share a name', { testIsolation: false }, () => {
+  const item = (alias: string, text: string) => ({ text, id: `${alias}_${text}`, alias });
+  const list = (id: string, gridRow: number, items: Record<string, unknown>[], connectedTo: string[] = []) => ({
+    type: 'drop-list',
+    id,
+    alias: id,
+    connectedTo,
+    value: items,
+    position: {
+      gridColumn: 1, gridColumnRange: 1, gridRow, gridRowRange: 1
+    }
+  });
+  const sharedUnit = {
+    ...unit,
+    pages: [page([
+      list('quelle_a', 1, [item('value_1', 'Apfel')], ['ziel']),
+      list('quelle_b', 2, [item('value_1', 'Birne')], ['ziel']),
+      list('ziel', 3, [])
+    ])]
+  };
+  const itemsOfSelectedList = (): Cypress.Chainable<JQuery<HTMLElement>> => cy
+    .get('aspect-drop-list-properties aspect-option-list-panel .item-id');
+
+  before(() => {
+    cy.viewport(1300, 900);
+    cy.openEditor();
+    cy.sendEditorStartCommand(JSON.stringify(sharedUnit));
+  });
+
+  it('shows both items as soon as the unit is loaded', () => {
+    cy.get('mat-dialog-container').should('contain.text', 'Doppelte Namen von Einträgen');
+    cy.get('mat-dialog-container .duplicate-item-name-row').should('have.length', 2)
+      .and('contain.text', 'Apfel')
+      .and('contain.text', 'Birne');
+  });
+
+  it('takes the author to the list of an item', () => {
+    cy.get('mat-dialog-container .duplicate-item-name-row').eq(1).contains('button', 'Zum Element').click();
+    cy.get('mat-dialog-container').should('not.exist');
+    cy.get('.panel-title').should('contain.text', 'quelle_b');
+  });
+
+  it('keeps the name taken that the other item still carries once one is renamed', () => {
+    cy.get('aspect-drop-list-properties .option-draggable').contains('Birne').closest('.option-draggable')
+      .find('mat-icon').contains('build').click();
+    cy.get('mat-dialog-container').contains('mat-form-field', 'ID').find('input').clear().type('birne');
+    cy.get('mat-dialog-container').contains('button', 'Speichern').click();
+    cy.get('.variable-info-findings-button').should('not.exist');
+
+    cy.get('[data-list-alias="ziel"]').click({ force: true });
+    cy.get('.panel-title').should('contain.text', 'ziel');
+    cy.get('aspect-drop-list-properties aspect-option-list-panel textarea').first()
+      .invoke('val', 'Kirsche')
+      .trigger('input', { force: true });
+    cy.get('aspect-drop-list-properties aspect-option-list-panel button[mat-icon-button]').first()
+      .click({ force: true });
+
+    itemsOfSelectedList().should('have.length', 1).and('not.have.text', 'value_1');
+    cy.get('.variable-info-findings-button').should('not.exist');
+  });
+});
+
 /* Ids were editable until editor 2.6.0. Replacing one is offered, with the warning that the studio finds codings by
    the id; whatever referred to the old id follows the new one (#1508). */
 describe('Replacing an id that breaks the contract', { testIsolation: false }, () => {

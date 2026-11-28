@@ -21,6 +21,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { VariableInfoFinding } from 'editor/src/app/models/variable-info-finding';
 import { LoadErrorHint } from 'editor/src/app/models/load-error';
 import { VariableInfoLocation } from 'editor/src/app/utils/variable-info-origins';
+import { DuplicateItemName } from 'editor/src/app/utils/duplicate-item-names';
+import { DragNDropValueObject } from 'common/models/label-interfaces';
 import { VariableInfoIssue, VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
 import {
   VariableInfoFindingsDialogComponent
@@ -59,6 +61,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
     rulesIntoNothing: BehaviorSubject<RulesIntoNothing[]>,
     loadRepairs: BehaviorSubject<UIElement[]>,
     loadErrorHints: BehaviorSubject<LoadErrorHint[]>,
+    duplicateItemNames: BehaviorSubject<DuplicateItemName[]>,
     editStateVariables: () => void,
     replaceIds: Mock,
     revealElement: Mock,
@@ -117,6 +120,7 @@ describe('VariableInfoFindingsDialogComponent', () => {
       rulesIntoNothing: new BehaviorSubject<RulesIntoNothing[]>([]),
       loadRepairs: new BehaviorSubject<UIElement[]>([]),
       loadErrorHints: new BehaviorSubject<LoadErrorHint[]>([]),
+      duplicateItemNames: new BehaviorSubject<DuplicateItemName[]>([]),
       editStateVariables: vi.fn(),
       replaceIds: vi.fn(),
       revealElement: vi.fn(),
@@ -333,6 +337,28 @@ describe('VariableInfoFindingsDialogComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.rules-into-nothing-section')).toBeNull();
+    });
+  });
+
+  /* That two items share a name and where they are is what the end-to-end test in `variable-info-findings.spec.cy.ts`
+     checks; an item that is only a picture has no text, and stood in its row with an empty cell (#1741). */
+  describe('drop-list items that share a name', () => {
+    const list = element('drop-list', 'drop-list_1', 'liste');
+    const item = (itemText: string, imgFileName: string): DragNDropValueObject => ({
+      text: itemText, imgFileName, id: `${imgFileName}_id`, alias: 'value_1'
+    } as DragNDropValueObject);
+
+    it('should tell an item by its text, and an item without text by the file name of its picture', () => {
+      findings.next([]);
+      unitService.duplicateItemNames.next([
+        { location: location(0, 0, list, list), item: item('<p>Apfel</p>', '') },
+        { location: location(0, 0, list, list), item: item('', 'birne.png') }
+      ]);
+      fixture.detectChanges();
+
+      const itemCells = Array.from(fixture.nativeElement.querySelectorAll('.duplicate-item-name-row'))
+        .map(row => (row as HTMLElement).querySelectorAll('td')[2].textContent?.trim());
+      expect(itemCells).toEqual(['Apfel', 'birne.png']);
     });
   });
 

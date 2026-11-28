@@ -35,6 +35,7 @@ import { IDTypes } from 'common/models/id-interfaces';
 import { LoadErrorService } from 'editor/src/app/services/load-error.service';
 import { LoadErrorHint } from 'editor/src/app/models/load-error';
 import { LoadErrorHints } from 'editor/src/app/utils/load-error-hints';
+import { DuplicateItemName, DuplicateItemNames } from 'editor/src/app/utils/duplicate-item-names';
 
 /**
  * Holds the unit the editor is working on, and is the only place it is replaced.
@@ -68,6 +69,8 @@ export class UnitService {
   pageOrderChanged: Subject<void> = new Subject<void>();
   /** The variables of the unit that break the Verona contract, renewed whenever the unit is reported (#1129). */
   variableInfoFindings = new BehaviorSubject<VariableInfoFinding[]>([]);
+  /** The drop-list items whose name another item carries as well, renewed with the findings (#1741). */
+  duplicateItemNames = new BehaviorSubject<DuplicateItemName[]>([]);
   /** The sections whose visibility rules ask for something the unit does not hold, renewed with the findings. */
   rulesIntoNothing = new BehaviorSubject<RulesIntoNothing[]>([]);
   /** The elements loading took a reference into nothing from. Done already, so shown until the next load (#1520). */
@@ -95,7 +98,8 @@ export class UnitService {
   hintIndicator: Observable<{ open: number } | null> = combineLatest([
     this.loadErrorHints, this.rulesIntoNothing, this.loadRepairs
   ]).pipe(map(([loadErrors, rules, repairs]) => {
-    const open = this.variableInfoFindings.value.length + rules.length + loadErrors.length;
+    const open = this.variableInfoFindings.value.length + this.duplicateItemNames.value.length +
+      rules.length + loadErrors.length;
     return open + repairs.length === 0 ? null : { open };
   }));
 
@@ -228,7 +232,7 @@ export class UnitService {
        loading repaired and the visibility rules into nothing are shown in the same place (#1520). */
     const findings = this.refreshUnitHints();
     if (findings.some(finding => finding.holdsBackList) || repaired.length > 0 ||
-        this.rulesIntoNothing.value.length > 0) {
+        this.rulesIntoNothing.value.length > 0 || this.duplicateItemNames.value.length > 0) {
       this.dialogService.showVariableInfoFindingsDialog();
     }
   }
@@ -240,6 +244,7 @@ export class UnitService {
    * What the unit needs to be played and edited goes along every time (#1709).
    */
   updateUnitDefinition(): void {
+    this.registerHeldNames();
     const origins = VariableInfoOrigins.collect(this.unit);
     const findings = this.refreshUnitHints(origins);
     this.veronaApiService.sendChanged(
@@ -262,6 +267,8 @@ export class UnitService {
       .map(([index, issues]) => ({
         origin: origins[index], issues, holdsBackList: issues.some(issue => issue.part === 'alias')
       }));
+    // Before the findings, which the indicator and the hints area are renewed by.
+    this.duplicateItemNames.next(DuplicateItemNames.collect(this.unit));
     this.variableInfoFindings.next(findings);
     return findings;
   }
@@ -398,11 +405,28 @@ export class UnitService {
 
   reRegisterAll(): void {
     this.idService.reset();
+    this.registerHeldNames();
+  }
+
+  /**
+   * Marks every id and alias the unit holds as taken again. Releasing a name -- an element deleted or renamed, a
+   * drop-list item removed or renamed -- does not ask whether another element or item still holds it, so of two
+   * that share one, the second lost its claim with the first, and the next new one got the name a second time:
+   * two different drop-list items under one value (#1741). Every release reports the unit afterwards, once what
+   * gave the name up is gone, so the names this finds are those still held. It only registers: what a dialog has
+   * set aside for an element not in the unit yet stays as it is.
+   *
+   * Through `registerIDs`, which knows what an element holds besides its own names -- a drop-list its items (#1506).
+   * An element without an id service is passed over: it never registered or released a name, as both need one.
+   */
+  private registerHeldNames(): void {
     this.unit.stateVariables.forEach(v => {
       this.idService.register(v.id, true, false);
       this.idService.register(v.alias, false, true);
     });
-    this.unit.getAllElements().forEach(el => el.registerIDs());
+    this.unit.getAllElements()
+      .filter(el => el.idService)
+      .forEach(el => el.registerIDs());
   }
 
   /** Check references and confirm */

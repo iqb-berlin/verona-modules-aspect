@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UIElement } from 'common/models/elements/element';
+import { InputElement, UIElement } from 'common/models/elements/element';
 import { RulesIntoNothing, SectionLocation } from 'editor/src/app/classes/reference-manager';
 import { ElementLocator } from 'editor/src/app/utils/element-locator';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -12,6 +12,7 @@ import { VariableInfoLocation, VariableInfoOrigins } from 'editor/src/app/utils/
 import { VariableInfoIssueCode } from 'editor/src/app/utils/variable-info-validator';
 import { IdReplacement, IdReplacementTarget } from 'editor/src/app/utils/id-replacement';
 import { LoadErrorHint } from 'editor/src/app/models/load-error';
+import { DuplicateItemName } from 'editor/src/app/utils/duplicate-item-names';
 
 /** One line of the dialog: a finding with what it shows already worked out. */
 export interface VariableInfoFindingRow {
@@ -26,8 +27,9 @@ export interface VariableInfoFindingRow {
 }
 
 /**
- * The hints area of the unit: the variables that break the Verona contract (#1129), the visibility rules that ask for
- * nothing, what loading repaired (#1520) and what could not be loaded (#1537), each where the author has to look,
+ * The hints area of the unit: the variables that break the Verona contract (#1129), drop-list items that share a name
+ * (#1741), the visibility rules that ask for nothing, what loading repaired (#1520) and what could not be loaded
+ * (#1537), each where the author has to look,
  * with the way there. It follows the unit while it is open, so what it shows is never older than the unit.
  */
 @Component({
@@ -39,6 +41,11 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
   rows: VariableInfoFindingRow[] = [];
   /** What the unit could not load (#1537). */
   loadErrors: LoadErrorHint[] = [];
+  /**
+   * The drop-list items whose name another item carries as well (#1741), each with what tells it apart: its text as
+   * plain text, or the file name of its picture where it has no text.
+   */
+  duplicateItemNames: (DuplicateItemName & { text: string })[] = [];
   hasGeometryFinding: boolean = false;
   /** The sections whose visibility rules ask for something the unit does not hold (#1520). */
   rulesIntoNothing: RulesIntoNothing[] = [];
@@ -89,6 +96,14 @@ export class VariableInfoFindingsDialogComponent implements OnDestroy {
     this.unitService.rulesIntoNothing
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(rules => { this.rulesIntoNothing = rules; });
+    this.unitService.duplicateItemNames
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(duplicates => {
+        this.duplicateItemNames = duplicates.map(duplicate => ({
+          ...duplicate,
+          text: InputElement.stripHTML(duplicate.item.text).trim() || duplicate.item.imgFileName || ''
+        }));
+      });
     this.unitService.loadErrorHints
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(hints => { this.loadErrors = hints; });

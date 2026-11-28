@@ -26,6 +26,7 @@ Editor
 - **Ablegeliste**
   - In Aufgaben aus der Zeit vor Editor 2.6 behalten Optionen ohne eigenen Alias ihre ID als Alias. Bisher bekamen sie beim Laden fortlaufende neue Kennungen; waren früher Optionen gelöscht worden, verschoben sich diese gegenüber den IDs, und Kodierungen, die sich auf die alten IDs beziehen, passten nicht mehr. Aufgaben, die seit Editor 3.0 so gespeichert wurden, behalten die verschobenen Kennungen ([#1729](https://github.com/iqb-berlin/verona-modules-aspect/issues/1729))
   - Sind mehrere Ablegelisten ausgewählt, wird die Vorbelegung nicht mehr angeboten, denn jeder Eintrag hat eine eigene ID und einen eigenen Namen. Bisher bekamen alle ausgewählten Listen denselben Eintrag mit derselben ID und demselben Namen. Wurde er in einer Liste gelöscht, konnte ein neuer Eintrag denselben Namen bekommen, und eine verbundene Zielliste führte dann zwei Einträge unter einem Wert ([#1740](https://github.com/iqb-berlin/verona-modules-aspect/issues/1740))
+  - Tragen Einträge von Ablegelisten denselben Namen, zeigt der Editor sie unter „Hinweise zur Aufgabe“: Der Player stellt eine Antwort über den Namen wieder her und kann die Einträge dabei vertauschen. Ein eingefügter Abschnitt bekommt für Einträge, deren Namen die Aufgabe schon vergibt, neue Namen. Bisher blieben solche Namen unbemerkt ([#1741](https://github.com/iqb-berlin/verona-modules-aspect/issues/1741))
 - **Bildbereiche**
   - Sind mehrere Bildbereiche-Elemente mit unterschiedlichen Bereichen ausgewählt, werden die Bereiche nicht mehr angeboten. Bisher meldete der Editor beim Hinzufügen eines Bereichs einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
 - **Formelfeld**
@@ -38,6 +39,8 @@ Editor
   - Sind mehrere Optionentabellen ausgewählt, werden die Zeilen nicht mehr angeboten, denn jede Zeile hat eine eigene ID. Bisher kam eine neue Zeile als dieselbe Zeile mit derselben ID in alle ausgewählten Tabellen, und bei verschiedenen Spalten meldete der Editor einen Fehler. Aufgaben, in denen das schon geschehen ist, zeigt der Editor unter „Hinweise zur Aufgabe“ ([#1740](https://github.com/iqb-berlin/verona-modules-aspect/issues/1740))
 - **Rechenkästchen**
   - Sind mehrere Rechenkästchen mit unterschiedlichen Termzeilen ausgewählt, werden die Termzeilen nicht mehr angeboten. Bisher meldete der Editor bei „Termzeile hinzufügen“ einen Fehler ([#1739](https://github.com/iqb-berlin/verona-modules-aspect/issues/1739))
+- **Variablennamen**
+  - Wird ein Element oder ein Eintrag umbenannt oder gelöscht, dessen Namen noch ein anderes trägt, bleibt der Name vergeben. Bisher bekam ihn das nächste neue Element ein zweites Mal ([#1741](https://github.com/iqb-berlin/verona-modules-aspect/issues/1741))
 
 ## 3.1.2
 Keine eigenen Änderungen gegenüber 3.1.1
